@@ -83,6 +83,9 @@ mypy_path = "stubs"
 files = ["qaudit", "tests"]
 warn_unreachable = true
 show_error_codes = true
+# La fenêtre vise Windows (ctypes.windll) : on type pour win32 quelle que soit la
+# machine, sinon warn_unreachable signale ces branches sous Linux (CI).
+platform = "win32"
 
 # ---------------------------------------------------------------------------
 # ruff — complexité cyclomatique ≤ 10 (N-06), interdiction de l'aléatoire

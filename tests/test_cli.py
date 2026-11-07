@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import codecs
+import io
 import json
 import socket
 import subprocess
@@ -11,7 +13,7 @@ from pathlib import Path
 
 import pytest
 
-from qaudit.cli.main import main
+from qaudit.cli.main import main, utf8_output
 from qaudit.io.document import loads
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
@@ -298,13 +300,35 @@ def test_batch_subcommand(tmp_path: Path, capsys: pytest.CaptureFixture[str]) ->
 
 def test_console_entry_point_and_version() -> None:
     result = subprocess.run([sys.executable, "-m", "qaudit", "--version"], capture_output=True,
-                            text=True, check=False)
+                            text=True, encoding="utf-8", check=False)
     assert result.returncode == 0
     assert "qaudit 1.0.0" in result.stdout
     helped = subprocess.run([sys.executable, "-m", "qaudit", "audit", "--help"],
-                            capture_output=True, text=True, check=False)
+                            capture_output=True, text=True, encoding="utf-8", check=False)
     assert helped.returncode == 0
     assert "--mapping" in helped.stdout
+
+
+@pytest.mark.parametrize(("forced", "expected"), [(None, "utf-8"), ("cp1252", "cp1252")])
+def test_output_is_utf8_unless_the_user_forces_an_encoding(
+    monkeypatch: pytest.MonkeyPatch, forced: str | None, expected: str
+) -> None:
+    """Sortie redirigée sous Windows = code page ANSI (cp1252) : « → » faisait
+    échouer ``qaudit demo`` (vu en CI). La CLI passe en UTF-8, sauf si
+    l'utilisateur a choisi l'encodage (PYTHONIOENCODING)."""
+    if forced is None:
+        monkeypatch.delenv("PYTHONIOENCODING", raising=False)
+    else:
+        monkeypatch.setenv("PYTHONIOENCODING", forced)
+    raw = io.BytesIO()
+    stream = io.TextIOWrapper(raw, encoding="cp1252")
+    monkeypatch.setattr(sys, "stdout", stream)
+    utf8_output()
+    assert codecs.lookup(sys.stdout.encoding).name == expected
+    if forced is None:
+        sys.stdout.write("GO → NO-GO\n")
+        sys.stdout.flush()
+        assert "GO → NO-GO" in raw.getvalue().decode("utf-8")
 
 
 def test_gui_subcommand_forwards_language_and_arguments(monkeypatch: pytest.MonkeyPatch) -> None:

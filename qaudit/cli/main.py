@@ -10,6 +10,9 @@ standard) · 20 données invalides (ligne et colonne nommées) · 30 erreur inte
 from __future__ import annotations
 
 import argparse
+import codecs
+import io
+import os
 import sys
 import traceback
 from collections.abc import Sequence
@@ -202,7 +205,20 @@ def _report_error(error: QauditError, catalog: Catalog) -> int:
     return int(code)
 
 
+def utf8_output() -> None:
+    """Sorties standard en UTF-8 sur toutes les plateformes. Sous Windows, une
+    sortie redirigée prend sinon le code page ANSI (cp1252 en général) et un
+    caractère comme « → » fait échouer la commande. Un choix explicite de
+    l'utilisateur (PYTHONIOENCODING) est respecté."""
+    if os.environ.get("PYTHONIOENCODING"):
+        return
+    for stream in (sys.stdout, sys.stderr):
+        if isinstance(stream, io.TextIOWrapper) and codecs.lookup(stream.encoding).name != "utf-8":
+            stream.reconfigure(encoding="utf-8")
+
+
 def main(argv: Sequence[str] | None = None) -> int:
+    utf8_output()
     catalog = i18n.load(_lang_from_argv(argv))
     parser = build_parser(catalog)
     args = parser.parse_args(argv)
