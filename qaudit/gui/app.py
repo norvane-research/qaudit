@@ -12,6 +12,7 @@ clés ``gui.*`` des catalogues i18n.
 
 from __future__ import annotations
 
+import gc
 import queue
 import sys
 import threading
@@ -814,7 +815,25 @@ def main(argv: list[str] | None = None) -> int:
         messagebox.showerror("qaudit", i18n.load(lang).text("gui.crash", error=str(error),
                                                        log=str(log_file())))
         return 30
-    return app.exit_code
+    code = app.exit_code
+    del app  # dernière référence lâchée : la fenêtre n'est plus tenue que par ses cycles
+    reclaim_destroyed_windows()
+    return code
+
+
+def reclaim_destroyed_windows() -> None:
+    """Libère maintenant, dans le fil qui possède Tcl, les fenêtres déjà détruites.
+
+    Une fenêtre détruite survit par des cycles de références (chaque variable Tk
+    pointe vers sa racine, qui la référence en retour) jusqu'au prochain passage
+    du ramasse-miettes, lequel a lieu dans le fil qui alloue à ce moment-là —
+    typiquement le fil d'audit d'une fenêtre suivante. Or Tcl ne supporte d'être
+    appelé ou détruit que depuis son propre fil : « main thread is not in main
+    loop », fichiers de Tcl/Tk introuvables à la création de la fenêtre suivante,
+    voire arrêt du processus (« Tcl_AsyncDelete: async handler deleted by the
+    wrong thread »). À appeler depuis le fil principal, la fenêtre détruite et
+    lâchée."""
+    gc.collect()
 
 
 if __name__ == "__main__":

@@ -4,8 +4,10 @@ la fenêtre se construit et se remplit (test de fumée, ignoré sans affichage).
 
 from __future__ import annotations
 
+import gc
 import json
 import tkinter as tk
+from collections.abc import Iterator
 from dataclasses import replace
 from pathlib import Path
 from typing import Any
@@ -18,6 +20,17 @@ from qaudit.gui import controller as ctl
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
 CATALOG = i18n.load("fr")
+
+
+@pytest.fixture(autouse=True)
+def _reclaim_windows_in_the_main_thread() -> Iterator[None]:
+    """Une fenêtre créée par un test est libérée ici, dans le fil principal ; sinon
+    le ramasse-miettes la libère plus tard dans le fil d'audit d'un autre test, hors
+    du fil de Tcl (voir ``qaudit.gui.app.reclaim_destroyed_windows``)."""
+    yield
+    from qaudit.gui.app import reclaim_destroyed_windows
+
+    reclaim_destroyed_windows()
 
 
 def _request(
@@ -212,7 +225,7 @@ def test_launch_options_are_parsed() -> None:
 
 @pytest.mark.skipif(not _display_available(), reason="aucun affichage disponible")
 def test_launch_with_file_run_and_exit_returns_the_verdict_code(tmp_path: Path) -> None:
-    from qaudit.gui.app import main
+    from qaudit.gui.app import App, main
 
     code = main([str(FIXTURES / "healthy_witness.csv"), "--initial-balance", "10000",
                  "--out", str(tmp_path / "out"), "--run", "--exit-after"])
@@ -221,6 +234,9 @@ def test_launch_with_file_run_and_exit_returns_the_verdict_code(tmp_path: Path) 
     code = main([str(FIXTURES / "exotic_columns.csv"), "--out", str(tmp_path / "out"),
                  "--run", "--exit-after"])
     assert code == 10
+    # la fenêtre est libérée par main(), dans le fil de Tcl, pas par un passage
+    # ultérieur du ramasse-miettes dans le fil d'audit d'une autre fenêtre
+    assert not [o for o in gc.get_objects() if isinstance(o, App)]
 
 
 @pytest.mark.skipif(not _display_available(), reason="aucun affichage disponible")
