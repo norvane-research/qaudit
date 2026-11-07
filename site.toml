@@ -3,11 +3,11 @@
 
 [site]
 brand = "qaudit"
-issuer = ""                       # nom commercial affiché en pied de page (vide = brand)
-contact = "contact@exemple.com"   # adresse de contact affichée sur le site
+issuer = "Norvane Research"      # nom commercial affiché en pied de page (vide = brand)
+contact = "lafabrique.produits@gmail.com"  # adresse de contact affichée sur le site
 order_url = ""                    # formulaire de commande (Tally, Google Forms…) ; vide = mailto
 preverification_url = ""          # dépôt pour la pré-vérification gratuite ; vide = order_url
-repo_url = ""                     # adresse publique du dépôt du moteur ; vide = pas de lien
+repo_url = "https://github.com/norvane-research/qaudit"  # dépôt public du moteur ; vide = pas de lien
 languages = ["fr", "en"]          # « fr » à la racine, « en » sous /en/
 
 # Offre commerciale, dans l'ordre d'affichage. Le moteur est gratuit : on vend ce
@@ -51,4 +51,4 @@ action = "devis"
 # Liens de paiement par offre (Whop, facture…). Une offre sans lien renvoie vers
 # order_url. Pas Polar : ses conditions excluent les outils d'analyse de trading
 # et les prestations réalisées par une personne.
-attestation_cessible = ""
+attestation_cessible = "https://whop.com/lafabrique/qaudit-attestation"

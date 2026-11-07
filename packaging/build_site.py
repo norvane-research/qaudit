@@ -741,7 +741,11 @@ def _examples(root: Path, lang: str) -> None:
             shutil.copyfile(demo / "render" / f"{target}.{ext}", root / "exemples" / f"{target}.{ext}")
 
 
-def build_lang(cfg: SiteConfig, lang: str, root: Path, depth: int, registry: Path | None) -> None:
+def build_lang(cfg: SiteConfig, lang: str, root: Path, registry: Path | None) -> None:
+    # Les liens de navigation sont relatifs à la racine de la langue (``root``) :
+    # 0 pour les pages de premier niveau, 1 pour exemples/. Compter depuis la
+    # racine du site renverrait les pages anglaises vers leurs équivalents français.
+    depth = 0
     _examples(root, lang)
     methode = _run("methode", "--lang", lang)
     _write(root / "methode.html", shell(cfg, lang, t(lang, "title_method"), md_to_html(methode), depth=depth, doc=True))
@@ -767,7 +771,7 @@ def build(out: Path, registry: Path | None, config: Path | None = None) -> None:
     out.mkdir(parents=True, exist_ok=True)
     for lang in cfg.languages:
         root = out if lang == cfg.languages[0] else out / lang
-        build_lang(cfg, lang, root, 0 if lang == cfg.languages[0] else 1, registry)
+        build_lang(cfg, lang, root, registry)
     print(f"site : {out} ({len(list(out.rglob('*.html')))} pages, {', '.join(cfg.languages)})")
 
 

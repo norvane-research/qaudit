@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import importlib.util
+import re
 import sys
 from pathlib import Path
 
@@ -61,6 +62,27 @@ def test_site_builds_with_examples_and_public_pages(tmp_path: Path) -> None:
     assert "Les cinq barrières" in methode
     assert "<table>" in methode
     assert "GO" in (out / "exemples" / "temoin-sain.html").read_text(encoding="utf-8")
+    _assert_links_stay_in_their_language(out)
+
+
+def _assert_links_stay_in_their_language(out: Path) -> None:
+    """Chaque lien interne mène à un fichier existant de la même langue ; seul le
+    sélecteur de langue (class="lang") change de langue. Régression : les pages
+    anglaises renvoyaient vers les pages françaises (liens comptés depuis la
+    racine du site au lieu de la racine de la langue)."""
+    english = (out / "en").resolve()
+    for page in out.rglob("*.html"):
+        if page.name.startswith(("temoin-sain", "martingale")):
+            continue  # rapports rendus par le moteur, sans navigation du site
+        html = page.read_text("utf-8")
+        for klass, href in re.findall(r'<a(?: class="([^"]*)")? href="([^"#]+)"', html):
+            if href.startswith(("http://", "https://", "mailto:")):
+                continue
+            target = (page.parent / href).resolve()
+            assert target.exists(), f"{page.relative_to(out)} → {href}"
+            if klass != "lang":
+                same = target.is_relative_to(english) == page.resolve().is_relative_to(english)
+                assert same, f"{page.relative_to(out)} → {href} change de langue"
 
 
 def test_offers_come_from_site_toml_and_unknown_entries_are_named(tmp_path: Path) -> None:
