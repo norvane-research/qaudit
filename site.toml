@@ -8,6 +8,7 @@ contact = "lafabrique.produits@gmail.com"  # adresse de contact affichée sur le
 order_url = ""                    # formulaire de commande (Tally, Google Forms…) ; vide = mailto
 preverification_url = ""          # dépôt pour la pré-vérification gratuite ; vide = order_url
 repo_url = "https://github.com/norvane-research/qaudit"  # dépôt public du moteur ; vide = pas de lien
+site_url = "https://norvane-research.pages.dev"  # adresse publique : canonique, hreflang, sitemap.xml, robots.txt ; vide = rien
 languages = ["fr", "en"]          # « fr » à la racine, « en » sous /en/
 
 # Offre commerciale, dans l'ordre d'affichage. Le moteur est gratuit : on vend ce

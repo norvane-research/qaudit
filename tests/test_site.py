@@ -63,6 +63,38 @@ def test_site_builds_with_examples_and_public_pages(tmp_path: Path) -> None:
     assert "<table>" in methode
     assert "GO" in (out / "exemples" / "temoin-sain.html").read_text(encoding="utf-8")
     _assert_links_stay_in_their_language(out)
+    _assert_search_engines_get_one_address_per_page(out)
+
+
+def _assert_search_engines_get_one_address_per_page(out: Path) -> None:
+    """site.toml donne l'adresse publique : chaque page annonce son adresse canonique
+    (celle que sert l'hébergeur, sans .html) et sa version dans l'autre langue ;
+    sitemap.xml et robots.txt les reprennent."""
+    base = "https://norvane-research.pages.dev"
+    prep_en = (out / "en" / "preparer.html").read_text(encoding="utf-8")
+    assert f'<link rel="canonical" href="{base}/en/preparer">' in prep_en
+    assert f'hreflang="fr" href="{base}/preparer"' in prep_en
+    assert '<meta name="description" content="What to send' in prep_en
+    index_fr = (out / "index.html").read_text(encoding="utf-8")
+    assert f'<link rel="canonical" href="{base}/">' in index_fr
+    assert "Sharpe déflaté" in index_fr
+    examples_fr = (out / "exemples" / "index.html").read_text(encoding="utf-8")
+    assert f'hreflang="en" href="{base}/en/exemples/"' in examples_fr
+    sitemap = (out / "sitemap.xml").read_text(encoding="utf-8")
+    assert sitemap.count("<loc>") == 14
+    assert f"<loc>{base}/en/methode</loc>" in sitemap
+    assert f"Sitemap: {base}/sitemap.xml" in (out / "robots.txt").read_text(encoding="utf-8")
+
+
+def test_no_public_address_means_no_canonical_and_no_sitemap(tmp_path: Path) -> None:
+    build_site = _module()
+    cfg = build_site.SiteConfig()  # type: ignore[attr-defined]
+    html = build_site.shell(cfg, "en", "T", "<p>x</p>", path="index.html")  # type: ignore[attr-defined]
+    assert '<meta name="description"' in html
+    assert "canonical" not in html
+    assert "og:url" not in html
+    build_site.write_crawler_files(cfg, tmp_path)  # type: ignore[attr-defined]
+    assert list(tmp_path.iterdir()) == []
 
 
 def _assert_links_stay_in_their_language(out: Path) -> None:

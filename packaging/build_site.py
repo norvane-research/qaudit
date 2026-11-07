@@ -140,7 +140,14 @@ class SiteConfig:
     languages: tuple[str, ...] = ("fr", "en")
     payment: dict[str, str] = field(default_factory=dict)
     repo_url: str = ""
+    site_url: str = ""
     offers: tuple[Offer, ...] = DEFAULT_OFFERS
+
+    def page_url(self, lang: str, path: str) -> str:
+        """Adresse publique d'une page (``path`` relatif à la racine de la langue),
+        sous la forme que sert l'hébergeur : sans ``.html`` ni ``index.html``."""
+        base = self.site_url + ("/" if lang == self.languages[0] else f"/{lang}/")
+        return base + path.removesuffix("index.html").removesuffix(".html")
 
     def order(self, lang: str) -> str:
         subject = "Commande d'audit" if lang == "fr" else "Audit order"
@@ -172,6 +179,7 @@ def load_config(path: Path) -> SiteConfig:
         languages=tuple(str(x) for x in site.get("languages", ["fr", "en"])),
         payment={k: str(v) for k, v in raw.get("payment", {}).items() if v},
         repo_url=str(site.get("repo_url", "")),
+        site_url=str(site.get("site_url", "")).rstrip("/"),
         offers=parse_offers(raw.get("offres", [])) or DEFAULT_OFFERS,
     )
 
@@ -212,6 +220,7 @@ T: dict[str, dict[str, object]] = {
         "footer_links": (("methode.html", "Méthode"), ("donnees.html", "Données"),
                          ("cgv.html", "CGV"), ("verification.html", "Vérification")),
         "tagline": "audit statistique de systèmes de trading",
+        "meta_description": "Audit statistique indépendant de systèmes de trading et d'EA MetaTrader 4 et 5 : surajustement (Sharpe déflaté), bootstrap, détection de martingale et de grille, règles de prop firm, verdict GO / NO-GO. Moteur open source.",
         "title_index": "Audit de systèmes de trading",
         "hero_h1": "Un verdict sur votre système de trading que vous pouvez montrer.",
         "hero_lead": "Audit statistique indépendant d'un historique de trades : moteur open source, méthode publiée, seuils fixés à l'avance, rapport reproductible à l'octet près, attestation vérifiable par n'importe qui. Le moteur constate ; il ne conseille rien et ne prédit rien.",
@@ -344,6 +353,7 @@ T: dict[str, dict[str, object]] = {
         "footer_links": (("methode.html", "Method"), ("donnees.html", "Data"),
                          ("cgv.html", "Terms"), ("verification.html", "Verification")),
         "tagline": "statistical audit of trading systems",
+        "meta_description": "Independent statistical audit of trading systems and MetaTrader 4/5 expert advisors: overfitting (deflated Sharpe ratio), bootstrap, martingale and grid detection, prop-firm rules, GO / NO-GO verdict. Open-source engine.",
         "title_index": "Trading system audit",
         "hero_h1": "A verdict on your trading system that you can show.",
         "hero_lead": "Independent statistical audit of a trade history: open-source engine, published method, thresholds fixed in advance, report reproducible byte for byte, attestation anyone can verify. The engine states facts; it advises nothing and predicts nothing.",
@@ -478,8 +488,28 @@ def t(lang: str, key: str) -> str:
 # ---------------------------------------------------------------------------
 
 
+def head_meta(cfg: SiteConfig, lang: str, title: str, path: str, description: str) -> str:
+    """Description, puis (si ``site_url`` est connu) adresse canonique, versions
+    dans les autres langues et aperçu de partage (Open Graph)."""
+    desc = escape(description or t(lang, "meta_description"))
+    meta = f'<meta name="description" content="{desc}">\n'
+    if not (cfg.site_url and path):
+        return meta
+    url = cfg.page_url(lang, path)
+    meta += f'<link rel="canonical" href="{url}">\n'
+    for other in cfg.languages:
+        meta += f'<link rel="alternate" hreflang="{other}" href="{cfg.page_url(other, path)}">\n'
+    meta += f'<link rel="alternate" hreflang="x-default" href="{cfg.page_url(cfg.languages[0], path)}">\n'
+    locale = {"fr": "fr_FR", "en": "en_US"}.get(lang, lang)
+    return meta + (
+        f'<meta property="og:type" content="website">\n<meta property="og:url" content="{url}">\n'
+        f'<meta property="og:title" content="{escape(title)} — {escape(cfg.brand)}">\n'
+        f'<meta property="og:description" content="{desc}">\n<meta property="og:locale" content="{locale}">\n'
+    )
+
+
 def shell(cfg: SiteConfig, lang: str, title: str, body: str, *, depth: int = 0,
-          doc: bool = False) -> str:
+          doc: bool = False, path: str = "", description: str = "") -> str:
     prefix = "../" * depth
     nav_items = T[lang]["nav"]
     assert isinstance(nav_items, tuple)
@@ -496,7 +526,9 @@ def shell(cfg: SiteConfig, lang: str, title: str, body: str, *, depth: int = 0,
     return (
         f'<!DOCTYPE html>\n<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-        f"<title>{escape(title)} — {escape(cfg.brand)}</title>\n<style>{CSS}</style>\n</head>\n<body>\n"
+        f"<title>{escape(title)} — {escape(cfg.brand)}</title>\n"
+        + head_meta(cfg, lang, title, path, description)
+        + f"<style>{CSS}</style>\n</head>\n<body>\n"
         f'<header class="top"><div class="wrap"><a class="brand" href="{prefix}index.html">'
         f"<i></i>{escape(cfg.brand)}</a><nav>{nav}</nav></div></header>\n"
         f"<main{klass}>\n{body}\n</main>\n"
@@ -748,22 +780,52 @@ def build_lang(cfg: SiteConfig, lang: str, root: Path, registry: Path | None) ->
     depth = 0
     _examples(root, lang)
     methode = _run("methode", "--lang", lang)
-    _write(root / "methode.html", shell(cfg, lang, t(lang, "title_method"), md_to_html(methode), depth=depth, doc=True))
+    _write(root / "methode.html", shell(cfg, lang, t(lang, "title_method"), md_to_html(methode), depth=depth,
+                                        doc=True, path="methode.html"))
     note = f"<p class='note'>{escape(t(lang, 'doc_fr_only'))}</p>" if t(lang, "doc_fr_only") else ""
     for name, target, title in (("politique-donnees", "donnees.html", t(lang, "title_data")),
                                 ("cgv-modele", "cgv.html", t(lang, "title_terms"))):
         md = (ROOT / "docs" / f"{name}.md").read_text(encoding="utf-8")
-        _write(root / target, shell(cfg, lang, title, note + md_to_html(md), depth=depth, doc=True))
+        _write(root / target, shell(cfg, lang, title, note + md_to_html(md), depth=depth, doc=True, path=target))
     reg_html = root / "_registre.html"
     reg_args = ["--registry", str(registry)] if registry else []
     _run("registre", "--lang", lang, "--html", str(reg_html), *reg_args)
     registry_html = reg_html.read_text(encoding="utf-8")
     reg_html.unlink()
     _write(root / "verification.html", shell(cfg, lang, t(lang, "title_verify"),
-                                              page_verification(lang, registry_html), depth=depth))
-    _write(root / "index.html", shell(cfg, lang, t(lang, "title_index"), page_index(cfg, lang), depth=depth))
-    _write(root / "preparer.html", shell(cfg, lang, t(lang, "title_prepare"), page_preparer(cfg, lang), depth=depth))
-    _write(root / "exemples" / "index.html", shell(cfg, lang, t(lang, "title_examples"), page_examples(lang), depth=depth + 1))
+                                              page_verification(lang, registry_html), depth=depth,
+                                              path="verification.html", description=t(lang, "verify_lead")))
+    _write(root / "index.html", shell(cfg, lang, t(lang, "title_index"), page_index(cfg, lang), depth=depth,
+                                      path="index.html"))
+    _write(root / "preparer.html", shell(cfg, lang, t(lang, "title_prepare"), page_preparer(cfg, lang), depth=depth,
+                                         path="preparer.html", description=t(lang, "prep_lead")))
+    _write(root / "exemples" / "index.html", shell(cfg, lang, t(lang, "title_examples"), page_examples(lang),
+                                                   depth=depth + 1, path="exemples/index.html",
+                                                   description=t(lang, "examples_lead")))
+
+
+# Pages du site dans chaque langue (chemins relatifs à la racine de la langue), pour sitemap.xml.
+PAGES = ("index.html", "preparer.html", "methode.html", "verification.html", "exemples/index.html",
+         "donnees.html", "cgv.html")
+
+
+def write_crawler_files(cfg: SiteConfig, out: Path) -> None:
+    """robots.txt et sitemap.xml (avec les versions dans les autres langues), seulement
+    si l'adresse publique du site est connue : une adresse inventée serait pire que rien."""
+    if not cfg.site_url:
+        return
+    _write(out / "robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {cfg.site_url}/sitemap.xml\n")
+    urls = []
+    for lang in cfg.languages:
+        for path in PAGES:
+            alternates = "".join(
+                f'\n    <xhtml:link rel="alternate" hreflang="{other}" href="{cfg.page_url(other, path)}"/>'
+                for other in cfg.languages)
+            urls.append(f"  <url>\n    <loc>{cfg.page_url(lang, path)}</loc>{alternates}\n  </url>")
+    _write(out / "sitemap.xml",
+           '<?xml version="1.0" encoding="UTF-8"?>\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+           'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n' + "\n".join(urls) + "\n</urlset>\n")
 
 
 def build(out: Path, registry: Path | None, config: Path | None = None) -> None:
@@ -772,6 +834,7 @@ def build(out: Path, registry: Path | None, config: Path | None = None) -> None:
     for lang in cfg.languages:
         root = out if lang == cfg.languages[0] else out / lang
         build_lang(cfg, lang, root, registry)
+    write_crawler_files(cfg, out)
     print(f"site : {out} ({len(list(out.rglob('*.html')))} pages, {', '.join(cfg.languages)})")
 
 
