@@ -1,0 +1,18 @@
+[offre]
+code = "audit_prix"
+libelle = "Audit avec données de prix"
+
+[entrees]
+requis = ["trades", "prix"]
+optionnel = ["reglement", "taille_compte", "frais_challenge", "walkforward"]
+
+[rapport]
+sections = ["entete", "verdict", "en_clair", "kpi", "barrieres", "constats_critiques", "constats_complets",
+            "sharpe_degonfle", "sensibilite_essais", "monte_carlo", "regimes", "walkforward",
+            "detecteurs_prix", "seuil_arret", "conditions", "portee_et_limites", "pied"]
+
+[livrables]
+html = true
+pdf = true
+json = true
+attestation = true

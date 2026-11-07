@@ -1,0 +1,17 @@
+[offre]
+code = "verdict_propfirm"
+libelle = "Verdict Propfirm"
+
+[entrees]
+requis = ["trades", "reglement", "taille_compte"]
+optionnel = ["frais_challenge"]
+
+[rapport]
+sections = ["entete", "verdict", "en_clair", "kpi", "propfirm_challenge", "propfirm_finance",
+            "propfirm_economie", "constats_critiques", "portee_et_limites", "pied"]
+
+[livrables]
+html = true
+pdf = true
+json = false
+attestation = false

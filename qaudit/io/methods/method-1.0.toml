@@ -1,0 +1,148 @@
+# qaudit — configuration de la méthode d'audit, version 1.0
+#
+# Les seuils de décision vivent ici, jamais dans le code. Changer une valeur
+# incrémente `version` et invalide les rapports antérieurs (la version est
+# imprimée dans chaque rapport).
+
+[method]
+version = "1.0"
+
+# ---------------------------------------------------------------------------
+# Barrières de décision. sense = "below" : NO-GO si valeur < seuil ;
+# sense = "at_or_above" : NO-GO si valeur ≥ seuil. band = bande d'indécision
+# (porte E3 : verdict rendu, revue_humaine = true).
+# ---------------------------------------------------------------------------
+[barriers.dsr]
+threshold = 0.50
+band = [0.45, 0.55]
+sense = "below"
+message_key = "barrier.dsr"
+
+[barriers.pf_p05]
+threshold = 1.00
+band = [0.95, 1.05]
+sense = "below"
+message_key = "barrier.pf_p05"
+
+[barriers.dd_percentile]
+threshold = 5.0
+band = [3.0, 8.0]
+sense = "below"
+message_key = "barrier.dd_percentile"
+
+[barriers.null_pvalue]
+threshold = 0.05
+band = [0.03, 0.08]
+sense = "at_or_above"
+message_key = "barrier.null_pvalue"
+
+[barriers.wf_efficiency]
+threshold = 0.40
+band = [0.35, 0.50]
+sense = "below"
+message_key = "barrier.wf_efficiency"
+
+[findings]
+blocking_no_go = 1       # constats bloquants → NO-GO
+major_conditional = 3    # constats majeurs cumulés → GO SOUS CONDITIONS
+
+[sample]
+min_trades = 30          # en dessous : constat bloquant « échantillon insuffisant »
+
+[dsr]
+# Nombre d'essais retenu quand l'appelant n'en déclare aucun. Hypothèse de la
+# méthode : un système livré a été comparé à au moins une dizaine de variantes.
+default_n_trials = 10
+trial_grid = [1, 10, 50, 100, 300, 1000]
+
+[resample]
+n_iter = 10000
+bootstrap_method = "stationary"   # "iid" reste disponible explicitement
+
+[validate]
+max_gap_days = 30.0
+
+[propfirm]
+# Horizon, en journées de trading, des phases sans limite de durée (D-05) ;
+# surchargeable par --horizon-days, toujours imprimé dans le rapport.
+default_horizon_trading_days = 250
+
+# ---------------------------------------------------------------------------
+# Paramètres des détecteurs structurels (voir la docstring de chaque fichier
+# dans qaudit/core/detectors/).
+# ---------------------------------------------------------------------------
+[detectors.martingale]
+ratio_min = 1.5
+min_events = 10
+major_share = 0.30
+blocking_share = 0.60
+contrast_min = 0.15
+
+[detectors.grid]
+min_depth = 1
+major_share = 0.15
+blocking_share = 0.35
+min_trades = 20
+basket_close_seconds = 120.0
+
+[detectors.no_stop]
+minor_share = 0.10
+major_share = 0.50
+
+[detectors.profit_concentration]
+top_fraction = 0.05
+share_major = 0.70
+remove_fraction = 0.01
+min_trades = 30
+
+[detectors.equity_linearity]
+r2_major = 0.995
+min_trades = 50
+
+[detectors.payoff_asymmetry]
+win_rate_major = 0.85
+payoff_major = 0.20
+win_rate_blocking = 0.95
+payoff_blocking = 0.10
+min_trades = 30
+
+[detectors.period_dependence]
+min_periods = 4
+share_major = 0.80
+
+[detectors.holding_time]
+min_seconds = 1.0
+short_share_major = 0.10
+short_share_blocking = 0.50
+max_days = 365.0
+long_share_minor = 0.10
+
+# --- détecteurs à données de prix (désactivés proprement sans série OHLC) ---
+[detectors.stop_geometry]
+collapse_major = 0.50
+min_trades = 30
+min_aligned_share = 0.50
+
+[detectors.lookahead]
+tick_bps = 1.0
+min_share = 0.05
+p_major = 0.01
+p_blocking = 0.001
+min_aligned_share = 0.50
+min_trades = 30
+
+[detectors.execution_realism]
+tolerance_bps = 3.0
+minor_share = 0.01
+major_share = 0.05
+blocking_share = 0.20
+min_aligned_share = 0.50
+
+[regimes]
+volatility_window = 20   # trades précédents pour le proxy de volatilité (sans prix)
+atr_period = 14          # barres pour l'ATR (avec prix)
+
+[walkforward]
+n_folds = 5
+protocol = "anchored"      # anchored | rolling
+selection = "net_profit"   # net_profit | sharpe

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prepare your audit — qaudit</title>
+<style>
+:root{--ink:#0b1f3a;--ink-2:#17335d;--gold:#b8860b;--paper:#f6f4ef;--card:#fff;--text:#1f2933;
+--muted:#5f6b7a;--rule:#e4dfd4;--rule-2:#eef1f6;--go:#166534;--go-bg:#e8f5ec;--cond:#a15c07;
+--cond-bg:#fdf3e1;--nogo:#991b1b;--nogo-bg:#fdecec;
+--serif:Georgia,"Palatino Linotype","Book Antiqua",Cambria,serif;
+--sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+--mono:Consolas,"Cascadia Mono","Courier New",monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--text);
+font-family:var(--sans);font-size:16px;line-height:1.6}
+a{color:var(--ink-2)}a:hover{color:var(--gold)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+header.top{background:var(--ink);color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
+padding:16px 24px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.3rem;
+letter-spacing:.06em;color:#fff;text-decoration:none}
+.brand i{width:22px;height:22px;border:2px solid var(--gold);border-radius:50%;position:relative;
+display:inline-block}.brand i:after{content:"";position:absolute;inset:5px;background:var(--gold);
+border-radius:50%}
+nav a{color:#c8d0dc;text-decoration:none;margin-left:18px;font-size:.92rem}nav a:hover{color:#fff}
+nav a.lang{border:1px solid #3b4d6b;border-radius:6px;padding:2px 8px}
+.hero{padding:64px 0 40px;border-bottom:1px solid var(--rule)}
+.hero h1{font-family:var(--serif);font-weight:normal;font-size:2.6rem;line-height:1.15;color:var(--ink);
+margin:0 0 14px;max-width:22ch}
+.hero p.lead{font-size:1.15rem;color:var(--muted);max-width:60ch;margin:0 0 26px}
+.cta{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;padding:12px 22px;
+border-radius:10px;font-weight:600}.cta:hover{background:var(--ink-2);color:#fff}
+.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule);margin-left:10px}
+.cta.small{padding:7px 12px;font-size:.85rem;border-radius:8px}
+section{padding:44px 0}section+section{border-top:1px solid var(--rule)}
+h2{font-family:var(--serif);font-weight:normal;font-size:1.7rem;color:var(--ink);margin:0 0 18px;
+display:flex;align-items:center;gap:12px}
+h2:before{content:"";width:18px;height:3px;background:var(--gold);border-radius:2px}
+h3{font-family:var(--serif);font-weight:normal;font-size:1.2rem;color:var(--ink);margin:22px 0 8px}
+.grid{display:grid;gap:16px}.grid.c3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.grid.c2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:20px 22px}
+.card h3{margin-top:0}.card p{margin:.4rem 0;color:var(--text)}
+.card .k{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.q{font-family:var(--serif);font-size:1.15rem;color:var(--ink);margin:0 0 6px}
+.steps{counter-reset:s}.steps .card{position:relative;padding-left:64px}
+.steps .card:before{counter-increment:s;content:counter(s,decimal-leading-zero);position:absolute;
+left:20px;top:18px;font-family:var(--serif);font-size:1.6rem;color:var(--gold)}
+table{border-collapse:separate;border-spacing:0;width:100%;background:var(--card);
+border:1px solid var(--rule);border-radius:12px;overflow:hidden;font-size:.95rem;margin:14px 0}
+th,td{padding:.65rem .8rem;text-align:left;vertical-align:top;border-top:1px solid var(--rule-2)}
+tr:first-child>*{border-top:none}
+th{background:var(--rule-2);color:var(--ink);font-size:.76rem;text-transform:uppercase;
+letter-spacing:.06em}
+td.price{white-space:nowrap;font-family:var(--serif);font-size:1.1rem;color:var(--ink)}
+.chip{display:inline-block;border-radius:999px;padding:.12rem .62rem;font-size:.76rem;font-weight:600}
+.chip.go{background:var(--go-bg);color:var(--go)}.chip.nogo{background:var(--nogo-bg);color:var(--nogo)}
+.chip.cond{background:var(--cond-bg);color:var(--cond)}
+.rules .card{border-left:4px solid var(--gold)}
+blockquote{margin:0;padding:12px 18px;background:var(--cond-bg);border-left:4px solid var(--cond);
+border-radius:8px;color:var(--text)}
+code{font-family:var(--mono);font-size:.9em;background:var(--rule-2);padding:.1em .35em;border-radius:4px}
+.doc{max-width:820px}.doc h1{font-family:var(--serif);font-weight:normal;color:var(--ink);font-size:2.1rem;
+margin:36px 0 16px}.doc h2{margin-top:36px}.doc p{margin:.7rem 0}.doc ul{padding-left:1.2rem}
+.doc li{margin:.3rem 0}.doc table{font-size:.9rem}
+footer{background:var(--ink);color:#c8d0dc;padding:28px 0;font-size:.9rem;margin-top:40px}
+footer a{color:#fff;text-decoration:none;margin-right:16px}footer .wrap{display:flex;flex-wrap:wrap;
+gap:12px;justify-content:space-between}
+.search{display:flex;gap:10px;margin:14px 0 6px}.search input{flex:1;padding:10px 12px;
+border:1px solid var(--rule);border-radius:10px;font:inherit}
+.muted{color:var(--muted)}.small{font-size:.9rem}.note{font-size:.9rem;color:var(--muted);margin-top:8px}
+@media (max-width:640px){.hero h1{font-size:2rem}.cta.ghost{margin-left:0;margin-top:10px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="../index.html"><i></i>qaudit</a><nav><a href="../index.html">Service</a><a href="../preparer.html">Prepare your audit</a><a href="../methode.html">Method</a><a href="../verification.html">Verify an attestation</a><a href="../exemples/index.html">Samples</a><a class="lang" href="../../index.html">Français</a></nav></div></header>
+<main class="wrap">
+
+<section class="hero"><h1>Prepare your audit</h1><p class="lead">What to send, how to export it, what you receive. Allow ten minutes. Send your file first, without paying: the fifteen-minute pre-check says frankly whether it is usable — and if not, what to re-export.</p>
+  <a class="cta" href="mailto:contact@exemple.com?subject=Free%20pre-check">Send my file for the free pre-check</a></section>
+<section><h2>Step 1 — Export your trade history</h2><p>A single file is enough. Menu labels vary slightly between versions; if you cannot find the exact path, send a screenshot of your history tab and we will guide you.</p>
+  <table><thead><tr><th>Platform</th><th>Export path</th><th>Format</th></tr></thead><tbody><tr><td><b>MetaTrader 5 — backtest</b></td><td>Strategy Tester → right-click on the results → <i>Report</i></td><td>.html or Open XML (.xlsx)</td></tr><tr><td><b>MetaTrader 5 — live or demo account</b></td><td>Toolbox → <i>History</i> tab → period <i>All history</i> → right-click → <i>Report</i></td><td>.html or .xlsx</td></tr><tr><td><b>MetaTrader 4 — live or demo account</b></td><td>Terminal → <i>Account History</i> tab → period <i>All history</i> → right-click → <i>Save as Detailed Report</i></td><td>.html</td></tr><tr><td><b>Deriv</b></td><td>Reports → <i>Profit table</i> → export</td><td>.csv</td></tr><tr><td><b>Other platform / home-made file</b></td><td>A CSV, one row per closed trade</td><td>.csv</td></tr><tr><td><b>cTrader, others</b></td><td>Send the file to the pre-check: we will tell you whether it is read and, if not, which export to request</td><td>—</td></tr></tbody></table>
+  <h3>Two non-negotiable requirements</h3><p><b>The complete history.</b> Not a selection, not a chosen period. The engine flags gaps, duplicates, a ruin along the way and an inconsistent initial deposit; a truncated history distorts the conclusions and the report will say so.</p><p><b>The original file, not a screenshot.</b> An image cannot be analysed.</p>
+  <h3>If your CSV is home-made</h3><p>Minimum: open time, close time, net profit. Useful: direction, volume, symbol, entry and exit prices, stop, take-profit, commission, swap, ticket. Usual column names are recognised in French and English; otherwise a column mapping is offered.</p>
+  <h3>How many trades are needed?</h3><p>Below 30 the audit is meaningless and stops (blocking finding). Below 100 the conclusions are fragile and the report says so. Ideal: more than 200 trades over at least two years.</p></section>
+<section><h2>Step 2 — Four pieces of information</h2><div class="grid c2 steps"><div class="card"><h3>The account context</h3><p>Initial capital and currency (read automatically from an MT4/MT5 report), broker, account type. Without the starting capital no percentage makes sense.</p></div><div class="card"><h3>How many variants did you test?</h3><p>The number of parameter sets tried before this version. A range is enough: 1 to 5, 5 to 50, 50 to 300, over 300. It is the most important piece of information of the audit: the correction for chance depends on it. If you used the Strategy Tester optimiser, attach the optimisation report, the number of passes is in it.</p></div><div class="card"><h3>Your goal</h3><p>Own capital or funded account. If a propfirm: which one, which account type, which size, which challenge fee. The rulebook is taken from the firm's site on the day of the audit — do not summarise it, these rules change.</p></div><div class="card"><h3>What worries you</h3><p>One sentence is enough: “it loses live while the backtest is good”, “I want to know whether I can pass a challenge”, “a client asks me for an independent validation”. It guides the debrief, never the computations.</p></div></div></section>
+<section><h2>Step 3 — What you receive</h2><div class="grid c3"><div class="card"><h3>The report</h3><p>HTML and PDF. Verdict on page one, then “In plain words: what this report says” — the everyday-language explanation, made to be read without us —, barriers, findings, statistics, simulations, regimes, drawdown benchmarks, conditions.</p></div><div class="card"><h3>The raw results</h3><p>A JSON file with every figure, the fingerprint of your data and the computation seed (depending on the service). Everything is recomputable, including by someone other than us.</p></div><div class="card"><h3>The attestation</h3><p>Dated, numbered, recorded in the public registry with the data fingerprint. Issued only if the system passes the barriers. Transferable with the developer licence.</p></div><div class="card"><h3>The debrief call</h3><p>45 minutes to go through the report together and answer your questions.</p></div><div class="card"><h3>The deadline</h3><p>72 hours from receipt of a complete, admissible file.</p></div><div class="card"><h3>The language</h3><p>Report in French or English, your choice.</p></div></div></section>
+<section class="rules"><h2>Read before ordering</h2><div class="grid c3"><div class="card"><h3>A NO-GO stays a NO-GO</h3><p>The report is due and paid whatever the verdict. If you are looking for a rubber stamp, do not order.</p></div><div class="card"><h3>Guarantee</h3><p>Data unusable after payment despite the pre-check: full refund.</p></div><div class="card"><h3>What the audit does not do</h3><p>No forecast, no investment advice, no recommended settings — advising on parameters would make us co-author of the system under review. A correction of your system leads to a new audit.</p></div></div>
+  <p style="margin-top:22px"><a class="cta" href="mailto:contact@exemple.com?subject=Free%20pre-check">Send my file for the free pre-check</a>
+  <a class="cta ghost" href="index.html#offres">See the services</a></p></section>
+
+</main>
+<footer><div class="wrap"><div><a href="../methode.html">Method</a><a href="../donnees.html">Data</a><a href="../cgv.html">Terms</a><a href="../verification.html">Verification</a></div><div>qaudit — statistical audit of trading systems · <a href="mailto:contact@exemple.com">contact@exemple.com</a></div></div></footer>
+</body>
+</html>

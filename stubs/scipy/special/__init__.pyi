@@ -1,0 +1,13 @@
+from typing import overload
+
+import numpy as np
+from numpy.typing import NDArray
+
+@overload
+def ndtri(x: float) -> float: ...
+@overload
+def ndtri(x: NDArray[np.float64]) -> NDArray[np.float64]: ...
+@overload
+def ndtr(x: float) -> float: ...
+@overload
+def ndtr(x: NDArray[np.float64]) -> NDArray[np.float64]: ...

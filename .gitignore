@@ -1,0 +1,15 @@
+*.egg-info/
+*.pyc
+.coverage
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+.venv/
+__pycache__/
+build/
+dist/
+htmlcov/
+out/
+out_demo/
+apercu/
+ouvrir-tout.html

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Méthode — qaudit</title>
+<style>
+:root{--ink:#0b1f3a;--ink-2:#17335d;--gold:#b8860b;--paper:#f6f4ef;--card:#fff;--text:#1f2933;
+--muted:#5f6b7a;--rule:#e4dfd4;--rule-2:#eef1f6;--go:#166534;--go-bg:#e8f5ec;--cond:#a15c07;
+--cond-bg:#fdf3e1;--nogo:#991b1b;--nogo-bg:#fdecec;
+--serif:Georgia,"Palatino Linotype","Book Antiqua",Cambria,serif;
+--sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+--mono:Consolas,"Cascadia Mono","Courier New",monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--text);
+font-family:var(--sans);font-size:16px;line-height:1.6}
+a{color:var(--ink-2)}a:hover{color:var(--gold)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+header.top{background:var(--ink);color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
+padding:16px 24px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.3rem;
+letter-spacing:.06em;color:#fff;text-decoration:none}
+.brand i{width:22px;height:22px;border:2px solid var(--gold);border-radius:50%;position:relative;
+display:inline-block}.brand i:after{content:"";position:absolute;inset:5px;background:var(--gold);
+border-radius:50%}
+nav a{color:#c8d0dc;text-decoration:none;margin-left:18px;font-size:.92rem}nav a:hover{color:#fff}
+nav a.lang{border:1px solid #3b4d6b;border-radius:6px;padding:2px 8px}
+.hero{padding:64px 0 40px;border-bottom:1px solid var(--rule)}
+.hero h1{font-family:var(--serif);font-weight:normal;font-size:2.6rem;line-height:1.15;color:var(--ink);
+margin:0 0 14px;max-width:22ch}
+.hero p.lead{font-size:1.15rem;color:var(--muted);max-width:60ch;margin:0 0 26px}
+.cta{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;padding:12px 22px;
+border-radius:10px;font-weight:600}.cta:hover{background:var(--ink-2);color:#fff}
+.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule);margin-left:10px}
+.cta.small{padding:7px 12px;font-size:.85rem;border-radius:8px}
+section{padding:44px 0}section+section{border-top:1px solid var(--rule)}
+h2{font-family:var(--serif);font-weight:normal;font-size:1.7rem;color:var(--ink);margin:0 0 18px;
+display:flex;align-items:center;gap:12px}
+h2:before{content:"";width:18px;height:3px;background:var(--gold);border-radius:2px}
+h3{font-family:var(--serif);font-weight:normal;font-size:1.2rem;color:var(--ink);margin:22px 0 8px}
+.grid{display:grid;gap:16px}.grid.c3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.grid.c2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:20px 22px}
+.card h3{margin-top:0}.card p{margin:.4rem 0;color:var(--text)}
+.card .k{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.q{font-family:var(--serif);font-size:1.15rem;color:var(--ink);margin:0 0 6px}
+.steps{counter-reset:s}.steps .card{position:relative;padding-left:64px}
+.steps .card:before{counter-increment:s;content:counter(s,decimal-leading-zero);position:absolute;
+left:20px;top:18px;font-family:var(--serif);font-size:1.6rem;color:var(--gold)}
+table{border-collapse:separate;border-spacing:0;width:100%;background:var(--card);
+border:1px solid var(--rule);border-radius:12px;overflow:hidden;font-size:.95rem;margin:14px 0}
+th,td{padding:.65rem .8rem;text-align:left;vertical-align:top;border-top:1px solid var(--rule-2)}
+tr:first-child>*{border-top:none}
+th{background:var(--rule-2);color:var(--ink);font-size:.76rem;text-transform:uppercase;
+letter-spacing:.06em}
+td.price{white-space:nowrap;font-family:var(--serif);font-size:1.1rem;color:var(--ink)}
+.chip{display:inline-block;border-radius:999px;padding:.12rem .62rem;font-size:.76rem;font-weight:600}
+.chip.go{background:var(--go-bg);color:var(--go)}.chip.nogo{background:var(--nogo-bg);color:var(--nogo)}
+.chip.cond{background:var(--cond-bg);color:var(--cond)}
+.rules .card{border-left:4px solid var(--gold)}
+blockquote{margin:0;padding:12px 18px;background:var(--cond-bg);border-left:4px solid var(--cond);
+border-radius:8px;color:var(--text)}
+code{font-family:var(--mono);font-size:.9em;background:var(--rule-2);padding:.1em .35em;border-radius:4px}
+.doc{max-width:820px}.doc h1{font-family:var(--serif);font-weight:normal;color:var(--ink);font-size:2.1rem;
+margin:36px 0 16px}.doc h2{margin-top:36px}.doc p{margin:.7rem 0}.doc ul{padding-left:1.2rem}
+.doc li{margin:.3rem 0}.doc table{font-size:.9rem}
+footer{background:var(--ink);color:#c8d0dc;padding:28px 0;font-size:.9rem;margin-top:40px}
+footer a{color:#fff;text-decoration:none;margin-right:16px}footer .wrap{display:flex;flex-wrap:wrap;
+gap:12px;justify-content:space-between}
+.search{display:flex;gap:10px;margin:14px 0 6px}.search input{flex:1;padding:10px 12px;
+border:1px solid var(--rule);border-radius:10px;font:inherit}
+.muted{color:var(--muted)}.small{font-size:.9rem}.note{font-size:.9rem;color:var(--muted);margin-top:8px}
+@media (max-width:640px){.hero h1{font-size:2rem}.cta.ghost{margin-left:0;margin-top:10px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="index.html"><i></i>qaudit</a><nav><a href="index.html">Offre</a><a href="preparer.html">Préparer votre audit</a><a href="methode.html">Méthode</a><a href="verification.html">Vérifier une attestation</a><a href="exemples/index.html">Exemples</a><a class="lang" href="en/index.html">English</a></nav></div></header>
+<main class="wrap doc">
+<h1>Méthode qaudit — version 1.0</h1>
+<p>Ce document décrit intégralement la méthode appliquée par qaudit à un historique de trades : les tests, leurs seuils, les règles de décision, les détecteurs de défauts et leurs paramètres. Il est généré automatiquement depuis le fichier de configuration de la méthode : ce qui est écrit ici est exactement ce qui est calculé.</p>
+<p>Trois principes. (1) Le moteur calcule tout ce que les données fournies permettent ; l'offre achetée ne change que ce qui est montré, jamais le verdict. (2) Aucune note globale : chaque test a un seuil fixé à l'avance, un seul test échoué suffit à un NO-GO. (3) Déterminisme : mêmes données, même version de méthode, même graine → même rapport à l'octet près, vérifiable par quiconque dispose du fichier.</p>
+<h2>Les cinq barrières</h2>
+<p>Cinq barrières éliminatoires. Une barrière est « déclenchée » (échouée) quand sa valeur franchit le seuil dans le sens indiqué ; une valeur dans la bande d'indécision rend le verdict mais impose une revue humaine (porte E3) ; une barrière non calculable faute de données devient une condition (jamais un succès).</p>
+<table><thead><tr><th>Barrière</th><th>Question posée</th><th>Seuil NO-GO</th><th>Bande d'indécision</th></tr></thead><tbody><tr><td>Sharpe dégonflé (DSR)</td><td>Le hasard est-il écarté ?</td><td>&lt; 50,0 %</td><td>[45,0 % ; 55,0 %]</td></tr><tr><td>Profit factor, 5ᵉ centile du bootstrap par blocs</td><td>Et avec de la malchance ?</td><td>&lt; 1,00</td><td>[0,95 ; 1,05]</td></tr><tr><td>Centile du drawdown observé parmi les permutations d'ordre</td><td>Les pertes arrivent-elles groupées ?</td><td>&lt; 5,00</td><td>[3,00 ; 8,00]</td></tr><tr><td>p-value contre la nulle sans edge</td><td>Un système sans avantage ferait-il aussi bien ?</td><td>≥ 5,0 %</td><td>[3,0 % ; 8,0 %]</td></tr><tr><td>Efficacité walk-forward hors échantillon</td><td>Tient-il hors des périodes où il a été réglé ?</td><td>&lt; 40,0 %</td><td>[35,0 % ; 50,0 %]</td></tr></tbody></table>
+<h3>Le hasard est-il écarté ?</h3>
+<p>Sharpe dégonflé (Bailey &amp; López de Prado). Le ratio de Sharpe mesure la régularité des gains. Le PSR est la probabilité que le vrai Sharpe soit positif compte tenu du nombre de trades, de l'asymétrie et des queues de la distribution. Le DSR évalue cette probabilité contre le meilleur Sharpe attendu au hasard après N essais (N déclaré par le demandeur, sinon défaut de la méthode) ; la variance des Sharpe entre variantes, si elle n'est pas fournie, est approchée prudemment (approximation de Lo, signalée). Le rapport imprime la courbe du DSR pour N = 1 à 1 000 et le point de bascule.</p>
+<h3>Et avec de la malchance ?</h3>
+<p>Profit factor au 5ᵉ centile du bootstrap par blocs stationnaires (Politis–Romano, longueur de bloc automatique). Les trades sont rééchantillonnés par blocs pour préserver leur dépendance sérielle ; le profit factor est recalculé sur chaque rééchantillon. La barrière regarde le 5ᵉ centile : ce que donnerait la même stratégie dans les scénarios défavorables. Sous 1,00, elle perd de l'argent dans ces scénarios.</p>
+<h3>Les pertes arrivent-elles groupées ?</h3>
+<p>Centile du drawdown observé parmi les permutations d'ordre. Les mêmes trades sont réordonnés aléatoirement ; le profit total est invariant, seul le drawdown change. Le centile est la part des permutations dont le drawdown est inférieur ou égal à celui observé. Un centile très bas signale une courbe trop régulière pour être crédible (ordre arrangé, sélection) ; un centile très haut n'est pas éliminatoire mais signale des pertes groupées, imprimées comme telles.</p>
+<h3>Un système sans avantage ferait-il aussi bien ?</h3>
+<p>p-value contre la nulle « sans edge ». Des systèmes sans aucun avantage sont simulés en conservant les distributions empiriques des gains et des pertes et en neutralisant seulement la fréquence de réussite (taux d'équilibre p₀ = |perte moyenne| / (gain moyen + |perte moyenne|)). La p-value est la part de ces systèmes qui atteignent au moins le profit net observé. Ce n'est pas une nulle de marché efficient : la question posée est « le taux de réussite observé est-il explicable par la chance, à profil de gains/pertes donné ? ».</p>
+<h3>Tient-il hors des périodes où il a été réglé ?</h3>
+<p>Efficacité walk-forward. Le demandeur fournit un jeu de résultats par paramètres testés ; la méthode découpe la période en plis (protocole ancré ou glissant), sélectionne sur chaque pli le paramétrage selon le critère fixé, et mesure la performance du paramétrage sélectionné sur le pli suivant, jamais vu. L'efficacité est le rapport de la performance hors échantillon à la performance dans l'échantillon. L'auditeur n'exécute aucune stratégie : il compare des résultats fournis.</p>
+<h2>Règles de décision</h2>
+<ul><li>1 constat bloquant ou plus → NO-GO.</li><li>Une barrière déclenchée → NO-GO.</li><li>3 constats majeurs ou plus → GO SOUS CONDITIONS au mieux.</li><li>Une barrière non évaluée (données manquantes) → condition ; le verdict ne peut pas être GO.</li><li>Une valeur dans la bande d'indécision → verdict rendu, revue humaine requise (porte E3).</li><li>Moins de 30 trades utilisables → constat bloquant « échantillon insuffisant ».</li></ul>
+<p>Il n'existe ni pondération ni score composite : les barrières ne se compensent pas.</p>
+<h2>Détecteurs structurels</h2>
+<p>Onze détecteurs structurels examinent la façon de trader. Huit fonctionnent sans série de prix ; trois (géométrie du stop, look-ahead, réalisme d'exécution) exigent les cotations OHLC de l'instrument et sont déclarés « non exécutés » sinon. Chaque détecteur émet un constat de gravité info, mineur, majeur ou bloquant selon les paramètres ci-dessous ; un détecteur qui ne peut pas tourner le dit.</p>
+<table><thead><tr><th>Détecteur</th><th>Ce qu'il détecte</th><th>Paramètres</th></tr></thead><tbody><tr><td>Mise augmentée après les pertes (<code>martingale</code>)</td><td>Augmentation du volume après une perte (rapport de volume ≥ ratio_min), sur une part des trades post-perte ; contraste exigé avec le comportement après gain.</td><td>ratio_min = 1,5, min_events = 10, major_share = 0,3, blocking_share = 0,6, contrast_min = 0,15</td></tr><tr><td>Positions empilées contre le marché (<code>grid</code>)</td><td>Ajout de positions à une position perdante de même sens à prix pire, refermées ensemble (panier) ; part des trades concernés.</td><td>min_depth = 1, major_share = 0,15, blocking_share = 0,35, min_trades = 20, basket_close_seconds = 120</td></tr><tr><td>Trades sans stop de protection (<code>no_stop</code>)</td><td>Part des trades sans stop-loss renseigné.</td><td>minor_share = 0,1, major_share = 0,5</td></tr><tr><td>Profit porté par quelques trades (<code>profit_concentration</code>)</td><td>Part du gain brut apportée par les meilleurs trades (top_fraction) ; profit net une fois retirés les meilleurs (remove_fraction).</td><td>top_fraction = 0,05, share_major = 0,7, remove_fraction = 0,01, min_trades = 30</td></tr><tr><td>Courbe de gains trop régulière (<code>equity_linearity</code>)</td><td>Courbe d'equity anormalement linéaire : R² contre l'indice du trade au-dessus de r2_major.</td><td>r2_major = 0,995, min_trades = 50</td></tr><tr><td>Beaucoup de petits gains, quelques grosses pertes (<code>payoff_asymmetry</code>)</td><td>Taux de réussite très élevé combiné à un ratio gain moyen / perte moyenne très faible.</td><td>win_rate_major = 0,85, payoff_major = 0,2, win_rate_blocking = 0,95, payoff_blocking = 0,1, min_trades = 30</td></tr><tr><td>Résultat dû à une seule période (<code>period_dependence</code>)</td><td>Part du profit net apportée par un seul trimestre, sur au moins min_periods trimestres.</td><td>min_periods = 4, share_major = 0,8</td></tr><tr><td>Durées de position irréalistes (<code>holding_time</code>)</td><td>Durées de position irréalistes : part des trades de moins de min_seconds, ou de plus de max_days.</td><td>min_seconds = 1, short_share_major = 0,1, short_share_blocking = 0,5, max_days = 365, long_share_minor = 0,1</td></tr><tr><td>Stop trop sensible (<code>stop_geometry</code>)</td><td>Avec prix : part du gain brut qui disparaît si le stop est resserré de 10 %, 20 %, 30 %.</td><td>collapse_major = 0,5, min_trades = 30, min_aligned_share = 0,5</td></tr><tr><td>Entrées trop parfaites (<code>lookahead</code>)</td><td>Avec prix : part des entrées exactement au plus bas / plus haut de leur barre, testée contre le hasard (p-value).</td><td>tick_bps = 1, min_share = 0,05, p_major = 0,01, p_blocking = 0,001, min_aligned_share = 0,5, min_trades = 30</td></tr><tr><td>Prix d'exécution impossibles (<code>execution_realism</code>)</td><td>Avec prix : part des prix d'entrée ou de sortie hors de la fourchette haut–bas de leur barre (tolérance en points de base).</td><td>tolerance_bps = 3, minor_share = 0,01, major_share = 0,05, blocking_share = 0,2, min_aligned_share = 0,5</td></tr></tbody></table>
+<p>Les paramètres sont nommés comme dans le fichier de méthode ; les parts sont des fractions (0,30 = 30 %).</p>
+<h2>Simulations et paramètres</h2>
+<ul><li>10 000 itérations pour le bootstrap, la permutation et la nulle, chacune sur un flux aléatoire indépendant dérivé de la graine (rangs fixes).</li><li>Bootstrap : blocs stationnaires (Politis-Romano), longueur automatique.</li><li>Permutation d'ordre : le tableau d'entrée n'est jamais modifié ; le profit total est invariant.</li><li>Nulle sans edge : distributions empiriques des gains et des pertes conservées, fréquence neutralisée.</li><li>Nombre d'essais par défaut : 10 ; grille de sensibilité : 1, 10, 50, 100, 300, 1000.</li><li>Walk-forward : 5 plis, protocole ancré, sélection au profit net.</li><li>Régimes : terciles de volatilité sur 20 trades (sans prix) ou d'ATR sur 14 barres (avec prix).</li><li>Rejeu propfirm : trajectoires de journées de trading rééchantillonnées par blocs ; horizon des phases sans limite : 250 journées.</li><li>Validation : un trou de plus de 30 jours entre deux clôtures est signalé.</li><li>Graine par défaut 0, imprimée dans chaque rapport ; aucune source d'aléa globale.</li></ul>
+<h2>Entrées</h2>
+<p>Entrée obligatoire : les trades clos (heure d'ouverture, heure de clôture, profit net ; utiles : volume, sens, symbole, prix, stop, ticket, commission, swap). Entrées optionnelles : série de prix OHLC (active les trois détecteurs à prix et les régimes par ATR), un jeu de résultats par paramètres testés (active la barrière walk-forward), un règlement propfirm structuré (active le rejeu), le nombre de variantes essayées (N ; défaut de la méthode sinon).</p>
+<h2>Ce que la méthode ne teste pas</h2>
+<ul><li>Seuls les trades clos sont analysés : le P&amp;L flottant et les positions ouvertes sont inconnus.</li><li>Sans série de prix, la sensibilité du stop, le look-ahead et le réalisme d'exécution ne sont pas testés — le rapport le dit.</li><li>Sans jeu de résultats par paramètres, la robustesse hors échantillon n'est pas établie : le verdict ne peut pas être GO.</li><li>La méthode ne peut pas prouver qu'un historique n'a pas été tronqué au-delà de ses contrôles de cohérence (trous, ruine, doublons).</li><li>Aucune performance future n'est prédite ; un avantage réel peut disparaître.</li><li>Aucun paramétrage n'est recommandé ; l'auditeur constate.</li></ul>
+<h2>Versionnement</h2>
+<p>Version courante : 1.0. Tout changement d'un seuil, d'une bande ou d'un paramètre de détecteur crée une nouvelle version de méthode ; la version est imprimée dans chaque rapport et chaque attestation, qui ne valent que pour elle.</p>
+<h2>Reproduire un rapport</h2>
+<p>Pour reproduire un rapport : le même fichier de trades (son empreinte SHA-256 est imprimée), la même version de qaudit et de méthode, la même graine (imprimée). La commande « qaudit render --from archive.json » régénère les livrables depuis l'archive sans aucun recalcul et produit les mêmes octets que l'audit d'origine.</p>
+</main>
+<footer><div class="wrap"><div><a href="methode.html">Méthode</a><a href="donnees.html">Données</a><a href="cgv.html">CGV</a><a href="verification.html">Vérification</a></div><div>qaudit — audit statistique de systèmes de trading · <a href="mailto:contact@exemple.com">contact@exemple.com</a></div></div></footer>
+</body>
+</html>

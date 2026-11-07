@@ -1,0 +1,54 @@
+# Configuration du site de l'offre (packaging/build_site.py).
+# Remplir puis relancer : python packaging/build_site.py --registry ~/.qaudit/registre.jsonl
+
+[site]
+brand = "qaudit"
+issuer = ""                       # nom commercial affiché en pied de page (vide = brand)
+contact = "contact@exemple.com"   # adresse de contact affichée sur le site
+order_url = ""                    # formulaire de commande (Tally, Google Forms…) ; vide = mailto
+preverification_url = ""          # dépôt pour la pré-vérification gratuite ; vide = order_url
+repo_url = ""                     # adresse publique du dépôt du moteur ; vide = pas de lien
+languages = ["fr", "en"]          # « fr » à la racine, « en » sous /en/
+
+# Offre commerciale, dans l'ordre d'affichage. Le moteur est gratuit : on vend ce
+# qu'une copie du code ne donne pas (un audit refait par un tiers et inscrit au
+# registre public) et la licence commerciale.
+#   prix_eur    : 0 = gratuit ; absent = sur devis
+#   attestation : "" (aucune), "go" (si GO), "cessible" (si GO, présentable aux acquéreurs)
+#   action      : depot (lien vers repo_url), preverification, commande (lien [payment]
+#                 ou order_url), devis
+[[offres]]
+code = "moteur"
+prix_eur = 0
+action = "depot"
+
+[[offres]]
+code = "pre_verification"
+prix_eur = 0
+action = "preverification"
+
+[[offres]]
+code = "attestation_cessible"
+prix_eur = 390
+attestation = "cessible"
+action = "commande"
+
+[[offres]]
+code = "portefeuille"
+attestation = "go"
+action = "devis"
+
+[[offres]]
+code = "due_diligence"
+attestation = "cessible"
+action = "devis"
+
+[[offres]]
+code = "licence_commerciale"
+action = "devis"
+
+[payment]
+# Liens de paiement par offre (Whop, facture…). Une offre sans lien renvoie vers
+# order_url. Pas Polar : ses conditions excluent les outils d'analyse de trading
+# et les prestations réalisées par une personne.
+attestation_cessible = ""

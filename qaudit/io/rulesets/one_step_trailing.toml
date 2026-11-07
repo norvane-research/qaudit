@@ -1,0 +1,37 @@
+# Modèle générique « une phase, drawdown suiveur figé au solde initial ».
+# Relevé le 2026-09-13 ; vérifier auprès de la firme.
+name = "One-step evaluation, trailing drawdown locked at initial balance"
+as_of = 2026-09-13
+initial_balance = 50000
+currency = "USD"
+fee = 300
+refund_fee_on_funded = false
+profit_split = 0.80
+payout_cycle_days = 10
+balance_carry = "reset"
+
+[[phases]]
+name = "Evaluation"
+funded = false
+profit_target = 0.10
+max_daily_loss = 0.04
+daily_loss_base = "balance"
+max_total_loss = 0.06
+drawdown_type = "trailing"
+trailing_lock_at_initial = true
+min_trading_days = 3
+max_days = 0
+consistency_max_day_share = 0.0
+
+[[phases]]
+name = "Funded"
+funded = true
+profit_target = 0.0
+max_daily_loss = 0.04
+daily_loss_base = "balance"
+max_total_loss = 0.06
+drawdown_type = "trailing"
+trailing_lock_at_initial = true
+min_trading_days = 0
+max_days = 0
+consistency_max_day_share = 0.0

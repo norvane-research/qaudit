@@ -1,0 +1,21 @@
+# Toutes les sections, plus la note de comité.
+[offre]
+code = "due_diligence"
+libelle = "Due diligence"
+
+[entrees]
+requis = ["trades"]
+optionnel = ["prix", "reglement", "taille_compte", "frais_challenge", "walkforward", "portefeuille"]
+
+[rapport]
+sections = ["entete", "verdict", "en_clair", "kpi", "barrieres", "constats_critiques", "constats_complets",
+            "sharpe_degonfle", "sensibilite_essais", "monte_carlo", "regimes", "walkforward",
+            "detecteurs_prix", "propfirm_challenge", "propfirm_finance", "propfirm_economie",
+            "seuil_arret", "conditions", "portefeuille", "note_comite", "portee_et_limites", "pied"]
+
+[livrables]
+html = true
+pdf = true
+json = true
+attestation = true
+attestation_cessible = true

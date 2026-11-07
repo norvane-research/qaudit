@@ -1,0 +1,18 @@
+[offre]
+code = "audit_complet"
+libelle = "Audit complet"
+
+[entrees]
+requis = ["trades"]
+optionnel = ["reglement", "taille_compte", "frais_challenge", "walkforward"]
+
+[rapport]
+sections = ["entete", "verdict", "en_clair", "kpi", "barrieres", "constats_critiques", "constats_complets",
+            "sharpe_degonfle", "sensibilite_essais", "monte_carlo", "regimes", "seuil_arret",
+            "conditions", "portee_et_limites", "pied"]
+
+[livrables]
+html = true
+pdf = true
+json = true
+attestation = true

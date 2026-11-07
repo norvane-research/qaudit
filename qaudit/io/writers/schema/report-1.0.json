@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qaudit.local/schema/report-1.0.json",
+  "title": "qaudit.report 1.0",
+  "description": "Document canonique d'un audit qaudit. Les nombres non finis sont encodés en chaînes : \"NaN\", \"Infinity\", \"-Infinity\". Aucun texte de langue naturelle : les constats portent une clé i18n et des paramètres.",
+  "type": "object",
+  "required": [
+    "schema", "schema_version", "engine_version", "method_version", "seed", "n_iter", "n_trials",
+    "data", "verdict", "findings", "metrics", "significance", "resampling", "regimes", "quarters",
+    "walkforward", "propfirm"
+  ],
+  "properties": {
+    "schema": {"const": "qaudit.report"},
+    "schema_version": {"const": "1.0"},
+    "engine_version": {"type": "string"},
+    "method_version": {"type": "string"},
+    "seed": {"type": "integer"},
+    "n_iter": {"type": "integer"},
+    "n_trials": {"type": "integer"},
+    "data": {
+      "type": "object",
+      "required": ["fingerprint", "currency", "initial_balance", "n_trades", "n_usable", "ruin_index",
+                   "span_days", "first_open", "last_close", "known_fields", "prices_provided"],
+      "properties": {
+        "fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "currency": {"type": "string"},
+        "initial_balance": {"$ref": "#/$defs/number_or_null"},
+        "n_trades": {"type": "integer"},
+        "n_usable": {"type": "integer"},
+        "ruin_index": {"type": ["integer", "null"]},
+        "span_days": {"$ref": "#/$defs/number"},
+        "first_open": {"type": ["string", "null"]},
+        "last_close": {"type": ["string", "null"]},
+        "known_fields": {"type": "array", "items": {"type": "string"}},
+        "prices_provided": {"type": "boolean"}
+      }
+    },
+    "verdict": {
+      "type": "object",
+      "required": ["decision", "revue_humaine", "method_version", "counts", "barriers", "conditions"],
+      "properties": {
+        "decision": {"enum": ["GO", "GO_CONDITIONAL", "NO_GO"]},
+        "revue_humaine": {"type": "boolean"},
+        "method_version": {"type": "string"},
+        "counts": {
+          "type": "object",
+          "required": ["blocking", "major", "minor", "info"],
+          "properties": {
+            "blocking": {"type": "integer"}, "major": {"type": "integer"},
+            "minor": {"type": "integer"}, "info": {"type": "integer"}
+          }
+        },
+        "barriers": {"type": "array", "items": {"$ref": "#/$defs/barrier"}},
+        "conditions": {"type": "array", "items": {"$ref": "#/$defs/keyed"}}
+      }
+    },
+    "findings": {"type": "array", "items": {"$ref": "#/$defs/finding"}},
+    "metrics": {"type": "object"},
+    "significance": {
+      "type": "object",
+      "required": ["psr", "dsr", "sensitivity"],
+      "properties": {
+        "psr": {"$ref": "#/$defs/number"},
+        "dsr": {
+          "type": "object",
+          "required": ["dsr", "sr0", "n_trials", "var_sr", "variance_source"],
+          "properties": {"variance_source": {"enum": ["given", "lo_approx"]}}
+        },
+        "sensitivity": {
+          "type": "object",
+          "required": ["points", "threshold", "tipping_n_trials", "beyond_grid"],
+          "properties": {
+            "points": {"type": "array", "items": {"type": "object", "required": ["n_trials", "dsr"]}},
+            "tipping_n_trials": {"type": ["integer", "null"]},
+            "beyond_grid": {"type": "boolean"}
+          }
+        }
+      }
+    },
+    "resampling": {
+      "type": "object",
+      "required": ["bootstrap", "permutation", "null"],
+      "properties": {
+        "bootstrap": {"type": "object", "required": ["method", "n_iter", "block_length", "profit_factor_p05"]},
+        "permutation": {"type": "object", "required": ["n_iter", "total_profit", "observed_drawdown", "drawdown_percentile"]},
+        "null": {"type": "object", "required": ["n_iter", "evaluable", "p0", "p_value", "note_key"]}
+      }
+    },
+    "regimes": {"type": "object", "required": ["method", "stats", "n_unclassified"]},
+    "quarters": {"type": "array", "items": {"type": "object", "required": ["year", "quarter", "n", "net_profit", "profit_factor"]}},
+    "walkforward": {"type": ["object", "null"]},
+    "propfirm": {"type": ["object", "null"]}
+  },
+  "$defs": {
+    "number": {
+      "oneOf": [
+        {"type": "number"},
+        {"enum": ["NaN", "Infinity", "-Infinity"]}
+      ]
+    },
+    "number_or_null": {
+      "oneOf": [
+        {"type": "number"},
+        {"enum": ["NaN", "Infinity", "-Infinity"]},
+        {"type": "null"}
+      ]
+    },
+    "keyed": {
+      "type": "object",
+      "required": ["code", "message_key", "params"],
+      "properties": {
+        "code": {"type": "string"},
+        "message_key": {"type": "string"},
+        "params": {"type": "object"}
+      }
+    },
+    "finding": {
+      "type": "object",
+      "required": ["code", "severity", "source", "message_key", "params"],
+      "properties": {
+        "code": {"type": "string"},
+        "severity": {"enum": ["info", "minor", "major", "blocking"]},
+        "source": {"type": "string"},
+        "message_key": {"type": "string"},
+        "params": {"type": "object"}
+      }
+    },
+    "barrier": {
+      "type": "object",
+      "required": ["name", "value", "threshold", "band_low", "band_high", "sense", "evaluated",
+                   "triggered", "indecision", "message_key"],
+      "properties": {
+        "name": {"type": "string"},
+        "value": {"$ref": "#/$defs/number_or_null"},
+        "sense": {"enum": ["below", "at_or_above"]},
+        "evaluated": {"type": "boolean"},
+        "triggered": {"type": "boolean"},
+        "indecision": {"type": "boolean"}
+      }
+    }
+  }
+}

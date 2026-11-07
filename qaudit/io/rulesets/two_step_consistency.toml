@@ -1,0 +1,50 @@
+# Modèle générique « deux phases, base journalière au solde, règle de
+# consistance, durées limitées ». Relevé le 2026-09-13 ; vérifier auprès de la firme.
+name = "Two-step evaluation, balance-based daily loss, consistency rule"
+as_of = 2026-09-13
+initial_balance = 100000
+currency = "USD"
+fee = 500
+refund_fee_on_funded = false
+profit_split = 0.80
+payout_cycle_days = 20
+balance_carry = "reset"
+
+[[phases]]
+name = "Phase 1"
+funded = false
+profit_target = 0.08
+max_daily_loss = 0.05
+daily_loss_base = "balance"
+max_total_loss = 0.10
+drawdown_type = "static"
+trailing_lock_at_initial = false
+min_trading_days = 5
+max_days = 30
+consistency_max_day_share = 0.40
+
+[[phases]]
+name = "Phase 2"
+funded = false
+profit_target = 0.05
+max_daily_loss = 0.05
+daily_loss_base = "balance"
+max_total_loss = 0.10
+drawdown_type = "static"
+trailing_lock_at_initial = false
+min_trading_days = 5
+max_days = 60
+consistency_max_day_share = 0.40
+
+[[phases]]
+name = "Funded"
+funded = true
+profit_target = 0.0
+max_daily_loss = 0.05
+daily_loss_base = "balance"
+max_total_loss = 0.10
+drawdown_type = "static"
+trailing_lock_at_initial = false
+min_trading_days = 0
+max_days = 0
+consistency_max_day_share = 0.0

@@ -1,0 +1,184 @@
+# Plain-language texts for the end client ("In plain words" section and the
+# "How to read" boxes of every section). Everyday language, no jargon without a
+# definition, no parameter advice. Numbers are those of the archived document;
+# the sentences only name them.
+
+[explain]
+how_to_read = "How to read this section"
+section_title = "In plain words: what this report says"
+critical_none = "No serious flaw was found in the way the trading is done: no martingale, no grid, no abnormal concentration of profit, no sign of tampered data."
+critical_intro = "Flaws found that weigh on the verdict:"
+barriers_intro = "The five questions put to the results, and the numeric answer for this file:"
+not_advice = "This report states facts; it recommends no settings and predicts nothing."
+
+[explain.verdict]
+GO = "Green light. The results provided passed all five statistical tests and no serious flaw was found in the way the trading is done. This means the observed performance is neither explained by chance, nor carried by a few lucky trades, nor manufactured by questionable data — over the period and data provided."
+GO_CONDITIONAL = "Amber light. Nothing disqualifying was found, but the audit is not complete: {reasons}. While these points stay open the system is not demonstrated; nor is it disqualified."
+NO_GO = "Red light: {reasons}. The results provided do not allow the claim that this system has a real edge: what was earned can be explained by chance, by a few exceptional trades or by uncontrolled risk. This is not a forecast of future losses; it is the absence of proof."
+scope = "The verdict covers only what was given to the auditor: the closed trades in the file, over the period covered. It rests on no human judgement and no overall score: every test has a threshold fixed in advance by the method, and the verdict follows mechanically from those thresholds. The same file, audited again tomorrow with the same version, yields exactly the same report."
+
+[explain.reason]
+tests = "{n} statistical test(s) failed"
+blocking = "{n} blocking flaw(s) were found"
+unevaluated = "{n} test(s) could not be run for lack of data"
+indecision = "{n} test(s) sit in their uncertainty zone"
+majors = "{n} major flaw(s) were found"
+none = "no test failed"
+join_last = "{head} and {last}"
+
+[explain.next]
+GO = "What remains true despite the green light: a statistical test measures the past that was provided, not the future. The drawdown figures in the “Benchmarks” section show the size of temporary losses it is reasonable to expect from this system as it was observed."
+GO_CONDITIONAL = "To lift the amber light, provide the missing elements listed under “Conditions for going live” (for instance results per parameter set for the out-of-sample test, or a price series for the execution checks) and fix each major flaw at its source. The report will then be rerun identically on the new file."
+NO_GO = "A red light is not fixed in the report: it is fixed in the strategy or in the data, then verified on a new history. The points above say exactly which test failed and by how much, so that the discussion rests on facts."
+
+[explain.status]
+passed = "Test passed."
+triggered = "Test failed: one of the reasons for the verdict."
+indecision = "Result in the uncertainty zone around the threshold: the method then calls for a human review rather than an automatic decision."
+not_evaluated = "Not measurable with the data provided."
+
+[explain.barrier_title]
+dsr = "Is chance ruled out?"
+pf_p05 = "And with bad luck?"
+dd_percentile = "Do the losses come clustered?"
+null_pvalue = "Would a system with no edge do as well?"
+wf_efficiency = "Does it hold outside the periods it was tuned on?"
+
+[explain.barrier]
+dsr = "When several versions of a strategy are tried before one is kept, the best one always looks good, even if none has an edge. This test computes the probability that the performance is real once that effect is corrected, for {n_trials} declared variant(s): {value}. Pass threshold: {threshold}."
+pf_p05 = "The profit factor is the total won divided by the total lost (1.00 = break-even). The same trades were replayed {n_iter} times in a different order, in blocks, to see what the same strategy would yield with less luck: in the 5 % least favourable scenarios the profit factor falls to {value}. Threshold: {threshold} — below it, the strategy loses money in those scenarios."
+dd_percentile = "The drawdown is the largest fall between a peak and the trough that follows it. The observed one ({observed}) is larger than in {value} % of random reorderings of the same trades. A very low value (under {threshold} %) would signal a curve too smooth to be honest; a very high value means the losses came clustered, which is harder to live through than the final result suggests."
+null_pvalue = "{n_iter} systems with no edge at all, but winning and losing amounts of the same size as this one, were simulated; {value} of them did as well or better. Threshold: {threshold} — above it, this system cannot be told apart from a system with no edge."
+wf_efficiency = "A strategy tuned on one period tends to shine there and disappoint afterwards. This test compares its performance on periods not used for tuning: it keeps {value} of it. Threshold: {threshold}."
+wf_efficiency_na = "A strategy tuned on one period tends to shine there and disappoint afterwards. This test compares its performance on periods not used for tuning. It could not be run: it requires one set of results per parameter set tested, which was not provided."
+
+[explain.finding_title]
+martingale = "Stake increased after losses"
+grid = "Positions stacked against the market"
+no_stop = "Trades without a protective stop"
+profit_concentration = "Profit carried by a few trades"
+equity_linearity = "Equity curve too smooth"
+payoff_asymmetry = "Many small wins, a few large losses"
+period_dependence = "Result owed to a single period"
+holding_time = "Unrealistic holding times"
+stop_geometry = "Stop too sensitive"
+lookahead = "Entries too perfect"
+execution_realism = "Impossible execution prices"
+ruin = "Account ruined along the way"
+gap = "Gaps in the history"
+too_few_trades = "Too few trades to conclude"
+
+[explain.finding]
+martingale = "In plain words: after a loss, position size is increased to “win it back”. This yields long runs of small gains and then a very heavy loss on the day the losing streak lasts too long. The final balance does not show it until that day comes."
+grid = "In plain words: when a position is losing, more are opened in the same direction at an even worse price, hoping for a reversal. Total risk grows while the market moves against you; this is the mechanism behind sudden losses on an apparently steady account."
+no_stop = "In plain words: part of the positions had no automatic exit level in case of loss. The possible loss on those positions was therefore not bounded in advance."
+profit_concentration = "In plain words: remove a few exceptional trades and the result collapses. The performance therefore depends on rare hits that nothing guarantees will repeat; a robust system earns a little everywhere, not a lot in a few places."
+equity_linearity = "In plain words: an almost perfectly straight equity curve does not look like what a real market produces. It may come from risk management that postpones losses (martingale, grid) or from arranged data."
+payoff_asymmetry = "In plain words: a very high hit rate combined with average losses far larger than average gains is the signature of strategies that “pick up pennies in front of a steamroller”: they win often, then lose everything at once."
+period_dependence = "In plain words: most of the gain comes from a single quarter. Outside it, the strategy has proved little; the overall result hides an ordinary performance the rest of the time."
+holding_time = "In plain words: holding times of a few seconds, or abnormally uniform ones, are typical of an unrealistic backtest or an edited history, not of real trading."
+stop_geometry = "In plain words: had the protective stop been only slightly tighter, a large part of the gain would have vanished. The performance therefore hangs on a fine stop setting, which is fragile in live conditions (gaps, slippage)."
+lookahead = "In plain words: an abnormal share of entries happen exactly at the best price of the bar — as if the strategy knew the future. This is the classic sign of a backtest using information not available at trading time."
+execution_realism = "In plain words: some entry or exit prices did not exist in the market at the stated time (outside the bar's high–low range). Those trades could not have been executed that way."
+ruin = "In plain words: at some point in the history, cumulative losses exceeded the starting capital. Everything after that point would not have existed on a real account."
+gap = "In plain words: the history contains periods without any closed trade. Either the strategy did not run, or periods were removed; in both cases the report cannot judge what happened there."
+too_few_trades = "In plain words: with so few trades, no statistical test can tell a real edge from a lucky streak. The verdict is blocked out of caution, not because of a flaw in the strategy."
+
+[explain.section]
+entete = "The audit's identity card. The SHA-256 fingerprint is a unique signature of the trade file analysed: change a single character in the file and the fingerprint changes. The seed and the versions make it possible to reproduce exactly the same report. “N” is the number of variants of the strategy tried before this one was kept, declared by the requester or set by default by the method."
+verdict = "Three possible verdicts: GO (green light), GO CONDITIONAL (amber: checks are missing), NO-GO (red: a test failed or a blocking flaw exists). The verdict follows from thresholds fixed in advance, never from an appraisal. Findings are ranked by severity: blocking, major, minor, info."
+kpi = "Net profit: gains minus losses, commissions and swaps included. Profit factor: total won ÷ total lost (1.00 = break-even). Hit rate: share of winning trades. Win/loss ratio: average gain of a winning trade ÷ average loss of a losing trade. Expectancy: average gain per trade, all trades included. Sharpe: average gain relative to the variability of results (the higher, the steadier the gains). Maximum drawdown: largest fall between a peak and the following trough. Losing streak: longest run of consecutive losses."
+barrieres = "Each row is a test with a threshold fixed by the method. “Passed” = succeeded; “triggered” = failed (in capitals, because one is enough for a NO-GO); “indecision band” = too close to the threshold for an automatic decision, an auditor must rule; “not evaluated” = missing data. There is no overall score: a single failed test makes the verdict."
+constats_critiques = "The flaws serious enough to weigh on the verdict, with the figure that establishes them. One blocking finding is enough for a NO-GO; several major findings lead at best to a GO CONDITIONAL. These findings appear in every version of the report, whatever the service ordered."
+constats_complets = "Everything the auditor noted, including minor remarks and information items (for instance a test that could not run). An “info” line is not a flaw: it says what was done, or what could not be done and why."
+sharpe_degonfle = "The Sharpe ratio measures the steadiness of gains. The PSR is the probability that the true Sharpe is positive given the number of trades and the shape of the results. The DSR answers the harder question: does this performance exceed what chance would have given to the best of N attempts? If the requester tried more variants than declared, the true DSR is lower than the one shown."
+sensibilite_essais = "The same DSR recomputed for different numbers of variants tried. Read the row that matches your actual practice: if you tested 50 settings before keeping this one, the N = 50 row is the one that counts. The chart shows from which number of attempts the performance stops being distinguishable from chance (red line)."
+monte_carlo = "Three simulations on the same trades, for three questions. Bootstrap: with less luck, what profit and what drawdown? (the p05 / p50 / p95 ranges bracket 90 % of scenarios). Permutation: is the observed drawdown due to the order of the trades? No-edge null: how many systems with no edge at all, but the same sizes of gains and losses, would do as well?"
+regimes = "Trades are sorted into three tiers according to how agitated the market was when they took place (low, medium, high volatility), then by quarter. A healthy strategy earns across several regimes and several quarters; if all the profit comes from a single tier or a single period, the overall result is misleading. Rows in red are losing."
+walkforward = "Out-of-sample test: the strategy is tuned on one period (“in sample”) then judged on the following period it has not seen (“out of sample”), moving forward fold by fold. Efficiency is the share of performance kept out of sample. The auditor ran no strategy: it compares results supplied by the requester, one set per parameter set."
+detecteurs_prix = "Checks possible only with the instrument's price series: are entries made at too-perfect prices (look-ahead)? Did the execution prices really exist? Does the gain survive if the stop is slightly moved? “Nothing to report” means the test ran and found nothing."
+propfirm_challenge = "Replay of the strategy against the rulebook of a proprietary trading firm (propfirm): thousands of paths are drawn from the real trading days, and those that pass each phase without breaching the maximum loss or the deadline are counted. P(success) is the probability of passing the phase; P(cumulative) that of getting this far from the start."
+propfirm_finance = "Once funded, the account remains subject to a maximum loss: the probability of ruin is the share of paths that reach it over the horizon considered. Expected payouts are the average of the gains paid back to the trader over those paths."
+propfirm_economie = "The economic balance of the challenge for the trader: fee paid, probability of being funded, expected payouts, and the resulting net expectancy (fee deducted). These figures are floors of risk: only closed results are known, intraday floating losses are not."
+seuil_arret = "Benchmarks from the simulations: the drawdown exceeded in only 5 % (p95) and 1 % (p99) of scenarios. They serve to know what to expect, and to recognise the day the system no longer behaves as in its history. They are not recommended settings."
+conditions = "What would have to be provided or fixed for the audit to be complete. Each condition points to a precise test that could not be run or that stayed in its uncertainty zone."
+portefeuille = "When several systems are audited together, this section compares their results and applies a statistical correction (the more systems are tested, the more one of them looks good by chance). For a single audit it is empty."
+note_comite = "A few-line summary for an investment committee: decision, main statistical evidence, main risk, findings. It contains nothing that is not already in the report."
+portee_et_limites = "What the audit could not see, and what it does not claim to do. These limits are part of the result: a report that did not state them would be misleading."
+pied = "The identifiers that make this report verifiable: engine version, method version (the thresholds), seed, file fingerprint, service. Anyone holding the same file and the same version obtains the same report, byte for byte."
+
+[methode]
+title = "qaudit method — version {version}"
+intro = "This document fully describes the method qaudit applies to a trade history: the tests, their thresholds, the decision rules, the flaw detectors and their parameters. It is generated automatically from the method configuration file: what is written here is exactly what is computed."
+principles = "Three principles. (1) The engine computes everything the data provided allows; the service ordered only changes what is shown, never the verdict. (2) No overall score: every test has a threshold fixed in advance, a single failed test is enough for a NO-GO. (3) Determinism: same data, same method version, same seed → the same report byte for byte, verifiable by anyone holding the file."
+barriers_intro = "Five eliminatory barriers. A barrier is “triggered” (failed) when its value crosses the threshold in the stated direction; a value inside the indecision band yields the verdict but requires a human review (gate E3); a barrier that cannot be computed for lack of data becomes a condition (never a pass)."
+no_score = "There is neither weighting nor composite score: barriers do not offset one another."
+detectors_intro = "Eleven structural detectors examine the way the trading is done. Eight work without a price series; three (stop geometry, look-ahead, execution realism) require the instrument's OHLC quotes and are reported as “not run” otherwise. Each detector raises a finding of severity info, minor, major or blocking according to the parameters below; a detector that cannot run says so."
+detectors_note = "Parameters are named as in the method file; shares are fractions (0.30 = 30 %)."
+inputs = "Mandatory input: closed trades (open time, close time, net profit; useful: volume, direction, symbol, prices, stop, ticket, commission, swap). Optional inputs: OHLC price series (enables the three price detectors and ATR regimes), one set of results per parameter set tested (enables the walk-forward barrier), a structured propfirm rulebook (enables the replay), the number of variants tried (N; method default otherwise)."
+versioning = "Current version: {version}. Any change to a threshold, a band or a detector parameter creates a new method version; the version is printed in every report and every attestation, which are valid for it only."
+reproduce = "To reproduce a report: the same trade file (its SHA-256 fingerprint is printed), the same qaudit and method versions, the same seed (printed). The command “qaudit render --from archive.json” regenerates the deliverables from the archive without any recomputation and yields the same bytes as the original audit."
+
+[methode.h]
+barriers = "The five barriers"
+decision = "Decision rules"
+detectors = "Structural detectors"
+simulation = "Simulations and parameters"
+inputs = "Inputs"
+limits = "What the method does not test"
+versioning = "Versioning"
+reproduce = "Reproducing a report"
+
+[methode.col]
+question = "Question asked"
+detector = "Detector"
+what = "What it detects"
+params = "Parameters"
+
+[methode.barrier]
+dsr = "Deflated Sharpe ratio (Bailey & López de Prado). The Sharpe ratio measures the steadiness of gains. The PSR is the probability that the true Sharpe is positive given the number of trades, the skewness and the tails of the distribution. The DSR evaluates that probability against the best Sharpe expected by chance after N attempts (N declared by the requester, else the method default); the variance of Sharpe across variants, if not provided, is approximated conservatively (Lo approximation, flagged). The report prints the DSR curve for N = 1 to 1,000 and the tipping point."
+pf_p05 = "Profit factor at the 5th percentile of the stationary block bootstrap (Politis–Romano, automatic block length). Trades are resampled in blocks to preserve their serial dependence; the profit factor is recomputed on each resample. The barrier looks at the 5th percentile: what the same strategy would yield in unfavourable scenarios. Below 1.00 it loses money in those scenarios."
+dd_percentile = "Percentile of the observed drawdown among order permutations. The same trades are randomly reordered; total profit is invariant, only the drawdown changes. The percentile is the share of permutations whose drawdown is less than or equal to the observed one. A very low percentile signals a curve too smooth to be credible (arranged order, selection); a very high one is not eliminatory but signals clustered losses, printed as such."
+null_pvalue = "p-value against the “no-edge” null. Systems with no edge at all are simulated by keeping the empirical distributions of gains and losses and neutralising only the hit frequency (break-even rate p₀ = |mean loss| / (mean gain + |mean loss|)). The p-value is the share of those systems reaching at least the observed net profit. This is not an efficient-market null: the question asked is “is the observed hit rate explainable by chance, given the profile of gains and losses?”."
+wf_efficiency = "Walk-forward efficiency. The requester supplies one set of results per parameter set tested; the method splits the period into folds (anchored or rolling protocol), selects on each fold the parameter set by the fixed criterion, and measures the performance of the selected set on the following, unseen fold. Efficiency is the ratio of out-of-sample to in-sample performance. The auditor runs no strategy: it compares supplied results."
+
+[methode.rule]
+blocking = "{n} blocking finding(s) or more → NO-GO."
+triggered = "One triggered barrier → NO-GO."
+majors = "{n} major findings or more → GO CONDITIONAL at best."
+unevaluated = "One barrier not evaluated (missing data) → condition; the verdict cannot be GO."
+band = "A value inside the indecision band → verdict rendered, human review required (gate E3)."
+sample = "Fewer than {n} usable trades → blocking finding “insufficient sample”."
+
+[methode.detector]
+martingale = "Volume increased after a loss (volume ratio ≥ ratio_min) on a share of post-loss trades; contrast with post-gain behaviour required."
+grid = "Positions added to a losing position of the same direction at a worse price and closed together (basket); share of trades concerned."
+no_stop = "Share of trades without a stop-loss."
+profit_concentration = "Share of gross gain brought by the best trades (top_fraction); net profit once the best are removed (remove_fraction)."
+equity_linearity = "Abnormally linear equity curve: R² against the trade index above r2_major."
+payoff_asymmetry = "Very high hit rate combined with a very low average win / average loss ratio."
+period_dependence = "Share of net profit brought by a single quarter, over at least min_periods quarters."
+holding_time = "Unrealistic holding times: share of trades under min_seconds, or over max_days."
+stop_geometry = "With prices: share of gross gain that vanishes if the stop is tightened by 10 %, 20 %, 30 %."
+lookahead = "With prices: share of entries exactly at the low / high of their bar, tested against chance (p-value)."
+execution_realism = "With prices: share of entry or exit prices outside the high–low range of their bar (tolerance in basis points)."
+
+[methode.sim]
+iterations = "{n} iterations for the bootstrap, the permutation and the null, each on an independent random stream derived from the seed (fixed ranks)."
+bootstrap = "Bootstrap: {method}."
+permutation = "Order permutation: the input table is never modified; total profit is invariant."
+null = "No-edge null: empirical distributions of gains and losses kept, frequency neutralised."
+dsr = "Default number of trials: {n}; sensitivity grid: {grid}."
+walkforward = "Walk-forward: {folds} folds, {protocol} protocol, selection by {selection}."
+regimes = "Regimes: volatility terciles over {window} trades (without prices) or ATR over {atr} bars (with prices)."
+propfirm = "Propfirm replay: paths of trading days resampled in blocks; horizon of unlimited phases: {days} days."
+gap = "Validation: a gap of more than {days} days between two closes is flagged."
+seed = "Default seed 0, printed in every report; no global source of randomness."
+
+[methode.limit]
+closed = "Only closed trades are analysed: floating P&L and open positions are unknown."
+prices = "Without a price series, stop sensitivity, look-ahead and execution realism are not tested — the report says so."
+wf = "Without results per parameter set, out-of-sample robustness is not established: the verdict cannot be GO."
+truncation = "The method cannot prove that a history was not truncated beyond its consistency checks (gaps, ruin, duplicates)."
+future = "No future performance is predicted; a real edge can vanish."
+advice = "No settings are recommended; the auditor states facts."

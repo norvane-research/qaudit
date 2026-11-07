@@ -1,0 +1,564 @@
+# English catalogue — qaudit. Every key must also exist in fr.toml
+# (tests/test_i18n.py). Parameters are rendered with str.format.
+
+[meta]
+language = "English"
+decimal = "."
+
+[severity]
+info = "info"
+minor = "minor"
+major = "major"
+blocking = "blocking"
+
+[decision]
+GO = "GO"
+GO_CONDITIONAL = "GO WITH CONDITIONS"
+NO_GO = "NO-GO"
+
+[exit]
+go = "0 — verdict GO"
+conditional = "1 — verdict GO WITH CONDITIONS"
+no_go = "2 — verdict NO-GO"
+needs_mapping = "10 — gate E1: unrecognised columns, provide --mapping"
+needs_ruleset = "11 — gate E2: prop-firm ruleset missing or unstructured, complete the TOML skeleton"
+invalid_data = "20 — invalid data (the offending row and column are named)"
+internal_error = "30 — internal engine error"
+
+[location]
+row_column = "row {row}, column “{column}”"
+row = "row {row}"
+column = "column “{column}”"
+file = "whole file"
+
+[schema]
+missing_fields = "Required fields not found: {missing_fields}. Columns seen: {seen_columns}."
+
+[internal]
+missing_param = "Parameter “{name}” missing from finding “{code}”."
+array_ndim = "Array of dimension {ndim} where a vector was expected."
+length_mismatch = "Inconsistent length for “{field}”: expected {expected}, got {actual}."
+row_width = "Line {line}: expected {expected} columns, got {actual}."
+bad_initial_balance = "Internally invalid initial balance: {value}."
+no_initial_balance = "Equity requested while the initial balance is unknown."
+prices_unsorted = "Price series not sorted by timestamp."
+unknown_barrier = "Unknown barrier “{name}”."
+param_not_numeric = "Parameter “{name}” of finding “{code}” is not numeric."
+ruleset_no_phase = "Ruleset without any phase."
+pdf_layout = "Inconsistent PDF assembly ({expected} expected, {actual} got)."
+ruleset_bad_carry = "Unknown balance carry “{value}” (expected reset / carry)."
+ruleset_bad_drawdown = "Unknown drawdown type “{value}” (expected static / trailing)."
+ruleset_bad_base = "Unknown daily-loss base “{value}” (expected initial / balance)."
+missing_detector_param = "Parameter “{name}” missing from the configuration of detector “{detector}”."
+
+[resample]
+null_empirical = "The “no-edge” null keeps the empirical distributions of gains and losses and only neutralises their frequency (p₀ = {p0}). It answers: “is the observed hit rate explainable by luck, given this gain/loss profile?” — it is not an efficient-market null."
+
+[detector]
+skipped_missing_fields = "Detector “{detector}” not run: field(s) missing from the source: {fields}."
+skipped_no_prices = "Detector “{detector}” not run: no price series provided."
+skipped_too_few = "Detector “{detector}” not run: {n} usable observation(s), {required} required."
+martingale = "Martingale: after a loss, volume is multiplied by ≥ {ratio_min} in {share_after_loss:.0%} of cases (after a win: {share_after_win:.0%}), over {events} post-loss trades."
+grid = "Grid: {share:.0%} of trades add to a losing same-side position (worse price, volume ≥, basket close); maximum depth {max_depth}."
+no_stop = "No stop: {share:.0%} of trades have no stop-loss."
+profit_concentration = "Profit concentration: the top {top_count} trades bring {top_share:.0%} of gross profit; without the best {removed}, net profit falls to {net_without_best}."
+equity_linearity = "Abnormally linear equity curve: R² = {r2:.4f} against trade index."
+payoff_asymmetry = "Extreme asymmetry: {win_rate:.1%} hit rate for an average-win / average-loss ratio of {payoff:.2f}."
+period_dependence = "Period dependence: quarter {year}-Q{quarter} brings {share:.0%} of net profit; the rest of the history ({periods} quarters) returns {rest}."
+holding_time = "Unrealistic holding time: {short_share:.1%} of trades last ≤ {min_seconds} s, {long_share:.1%} last more than {max_days} days."
+prices_unaligned = "Detector “{detector}” not run: only {share:.0%} of trades align with the price series ({required:.0%} required)."
+stop_geometry = "Fragile stop geometry: a 10 % tighter stop would have removed {collapse_10:.0%} of gross profit ({collapse_20:.0%} at −20 %, {collapse_30:.0%} at −30 %) over {winners} winners; a 10 % wider stop would have spared {survived_10:.0%} of losers."
+stop_geometry_info = "Stop sensitivity: −10 % → {collapse_10:.0%} of gross profit lost, −20 % → {collapse_20:.0%}, −30 % → {collapse_30:.0%} ({winners} winners); +10 % → {survived_10:.0%} of losers spared, +20 % → {survived_20:.0%}, +30 % → {survived_30:.0%}."
+lookahead = "Probable look-ahead: {share:.1%} of entries ({count}) at the exact low/high of their bar, versus {expected:.2%} expected by chance (p = {p_value})."
+execution_realism = "Unrealistic execution: {count} prices ({share:.1%}) outside their bar's range beyond {tolerance_bps} bps."
+
+[audit]
+too_few_trades = "Insufficient sample: {n} usable trade(s), {required} required to conclude."
+dsr_lo_variance = "Variance of Sharpe ratios across variants unknown: Lo approximation (V = {var_sr}) for N = {n_trials} trials. Conservative correction: the true DSR is probably lower."
+
+[barrier]
+dsr = "Deflated Sharpe ratio (DSR)"
+pf_p05 = "Profit factor, 5th percentile of the block bootstrap"
+dd_percentile = "Percentile of the observed drawdown among order permutations"
+null_pvalue = "p-value against the no-edge null"
+wf_efficiency = "Out-of-sample walk-forward efficiency"
+
+[condition]
+not_evaluated = "Barrier “{barrier}” could not be evaluated: provide the required data before any production deployment."
+indecision = "Barrier “{barrier}” is {value}, inside its indecision band [{band_low}; {band_high}]: human review required."
+majors = "{count} cumulative major findings (threshold: {threshold}): resolve each before any production deployment."
+
+[method]
+missing_key = "Method file: required key missing."
+bad_sense = "Method file: unknown barrier sense “{value}” (expected below / at_or_above)."
+bad_choice = "Method file: unknown value “{value}” (expected: {allowed})."
+
+[reader]
+mt5_positions_not_found = "MT5 report: “Positions” section not found."
+mt4_closed_not_found = "MT4 report: “Closed Transactions” section not found."
+deriv_missing_profit = "Deriv export: neither a profit column nor a stake / payout pair."
+row_width = "Row with {actual} cell(s) where the header has {expected}."
+mt5_tester_no_deals = "MT5 Strategy Tester report: “Deals” table not found."
+mt5_tester_bad_deal = "MT5 Strategy Tester report: unreadable deal."
+mt5_tester_no_trades = "MT5 Strategy Tester report: no closed trade can be rebuilt from the deals."
+tester_ambiguous = "Tester report: {count} exit(s) matched by FIFO for lack of a position identifier (overlapping positions of the same symbol and side with different volumes). Total P&L is exact; the entry ↔ exit attribution of those trades is an assumption."
+tester_open_positions = "Tester report: {count} position(s) still open at the end of the report, discarded (only closed trades are audited)."
+
+[propfirm]
+missing_keys = "Incomplete prop-firm ruleset: missing keys: {missing_keys}. Complete the TOML skeleton; no rule is ever guessed."
+not_toml = "The ruleset is not structured TOML (prose?): {detail}. Complete the TOML skeleton; no rule is ever guessed."
+not_found = "Ruleset not found: “{path}”. Built-in models: {builtin}."
+bad_as_of = "Invalid or missing “as_of” date: “{value}” (expected YYYY-MM-DD). Firms change their rules: the date is mandatory."
+
+[regimes]
+volatility_terciles = "volatility terciles (rolling standard deviation of P&L, no prices)"
+atr_terciles = "ATR terciles (price series provided)"
+low = "low volatility"
+mid = "medium volatility"
+high = "high volatility"
+
+[period]
+quarter = "{year}-Q{quarter}"
+
+[prices]
+inconsistent_bar = "Inconsistent bar: high, low, open and close are not ordered."
+duplicate_bar = "Two bars carry the same timestamp."
+
+[report]
+title = "qaudit audit report"
+na = "n/a"
+system = "Audited system"
+engine_version = "Engine version"
+method_version = "Method version"
+seed = "Seed"
+fingerprint = "SHA-256 fingerprint of the data"
+n_iter = "Monte Carlo iterations"
+n_trials = "Number of trials used (N)"
+period = "Period covered"
+n_trades = "Usable / supplied trades"
+currency = "Currency"
+initial_balance = "Initial balance"
+profile = "Service"
+verdict_line = "Verdict: {decision}."
+counts = "Findings: {blocking} blocking, {major} major, {minor} minor, {info} informational."
+human_review = "A barrier value falls inside its indecision band: human review required (gate E3)."
+barrier_triggered = "Barrier triggered — {name}: {value} (threshold {threshold})."
+barrier_intro = "The verdict follows mechanically from the barriers below; no composite score."
+no_findings = "No finding at this level."
+no_conditions = "No condition."
+sharpe_intro = "PSR: probability that the true Sharpe is positive, corrected for skewness and fat tails. DSR: the same probability evaluated against the best Sharpe expected by chance after N trials."
+psr = "Probabilistic Sharpe ratio (PSR)"
+dsr = "Deflated Sharpe ratio (DSR)"
+sr0 = "Expected maximum Sharpe under the null (SR₀)"
+var_sr = "Variance of Sharpe ratios across variants (V)"
+variance_source = "Source of V"
+tipping = "This system stops being significant (DSR < {threshold}) beyond {n} tested variants."
+tipping_never = "This system is not significant for any number of trials, not even one."
+tipping_beyond = "This system stays significant up to at least {n} tested variants (grid bound)."
+regimes_method = "Classifier used: {method}; unclassified trades: {unclassified}."
+wf_missing = "No walk-forward supplied: the out-of-sample efficiency barrier was not evaluated."
+wf_intro = "{protocol} protocol, selection by {selection}, {folds} folds, {candidates} parameter set(s) supplied. The auditor ran no strategy: it compares supplied results."
+wf_summary = "Walk-forward efficiency: {efficiency}; positive out-of-sample folds: {positive}; cumulative out-of-sample net profit: {oos_net}."
+prices_missing = "No price series supplied: stop sensitivity, look-ahead and execution realism could not be tested."
+price_detector_clean = "{detector}: nothing to report."
+propfirm_missing = "No prop-firm ruleset supplied: no replay performed."
+propfirm_not_evaluable = "History too short (fewer than two trading days): replay impossible."
+propfirm_intro = "Ruleset “{name}” (as of {as_of}), {n_paths} resampled-day paths ({days} historical days, mean block {block}), P&L scaled ×{scale}, horizon of unlimited phases: {horizon} trading days, balance carry: {carry}."
+propfirm_funded = "Probability of ruin of the funded account over the horizon: {ruin}; expected payouts: {payouts}."
+propfirm_assumptions = "Only closed results are known: breach probabilities are lower bounds. Net expectation = −fee + P(funded)·refund + E[payouts]."
+horizon_param = "(parameter)"
+stop_intro = "Statistical drawdown markers from the block bootstrap, to compare with the live drawdown. They are not strategy settings."
+portfolio_single = "Single audit: the portfolio summary only exists in batch mode."
+footer = "qaudit {engine} — method {method} — schema {schema} — seed {seed} — fingerprint {fingerprint} — service {profile}."
+reproducible = "Reproducible: same inputs + same version + same seed = same report, byte for byte."
+
+toc = "Contents"
+brand_line = "Independent audit of trading systems — deterministic engine {version}"
+
+[report.section]
+entete = "Header"
+verdict = "Verdict"
+kpi = "Key indicators"
+barrieres = "Decision barriers"
+constats_critiques = "Critical findings"
+constats_complets = "All findings"
+sharpe_degonfle = "Probabilistic and deflated Sharpe"
+sensibilite_essais = "Sensitivity to the number of trials"
+monte_carlo = "Resampling"
+regimes = "Regimes and periods"
+walkforward = "Walk-forward"
+detecteurs_prix = "Price-data detectors"
+propfirm_challenge = "Prop firm — evaluation phases"
+propfirm_finance = "Prop firm — funded account"
+propfirm_economie = "Prop firm — challenge economics"
+seuil_arret = "Drawdown markers"
+conditions = "Conditions for production"
+portefeuille = "Portfolio"
+note_comite = "Committee note"
+portee_et_limites = "Scope and limits"
+pied = "Footer"
+
+[report.kpi]
+net_profit = "Net profit"
+profit_factor = "Profit factor"
+win_rate = "Hit rate"
+payoff = "Average win / average loss"
+expectancy = "Expectancy per trade"
+sharpe_trade = "Sharpe per trade"
+sharpe_annual = "Annualised Sharpe (measured frequency)"
+trades_per_year = "Trades per year (measured)"
+max_drawdown = "Maximum drawdown"
+max_drawdown_pct = "Maximum drawdown (% of equity peak)"
+cagr = "Compound annual growth rate"
+longest_losing_streak = "Longest losing streak"
+
+[report.status]
+not_evaluated = "not evaluated"
+triggered = "TRIGGERED"
+indecision = "indecision band"
+passed = "passed"
+
+[report.col]
+barrier = "Barrier"
+value = "Value"
+threshold = "NO-GO threshold"
+band = "Indecision band"
+status = "Status"
+n_trials = "N trials"
+dsr = "DSR"
+regime = "Regime"
+n = "Trades"
+net = "Net profit"
+pf = "PF"
+win_rate = "Hit rate"
+share = "Share of net"
+quarter = "Quarter"
+fold = "Fold"
+is_window = "IS window"
+oos_window = "OOS window"
+selected = "Selected"
+is_net = "IS net"
+oos_net = "OOS net"
+oos_trades = "OOS trades"
+phase = "Phase"
+horizon = "Horizon (trading days)"
+p_pass = "P(pass)"
+p_cumulative = "P(cumulative)"
+median_days = "Median days"
+causes = "Failure causes"
+
+[report.variance]
+given = "supplied by the client"
+lo_approx = "Lo approximation (conservative: the true DSR is probably lower)"
+
+[report.bootstrap]
+stationary = "stationary blocks (Politis-Romano), automatic length"
+iid = "IID (explicit option)"
+
+[report.mc]
+intro = "Three simulations, three questions: the bootstrap measures how unlucky the same edge can get; the permutation tests whether performance owes to trade order; the null counts edge-less systems that would do as well."
+method = "Bootstrap method"
+block_length = "Mean block length"
+pf_interval = "Profit factor p05 / p50 / p95"
+net_interval = "Net profit p05 / p50 / p95"
+dd_quantiles = "Drawdown p50 / p95 / p99"
+observed_dd = "Observed drawdown"
+dd_percentile = "Percentile of the observed drawdown among permutations"
+dd_perm_quantiles = "Permutation drawdown p50 / p95"
+p0 = "Equilibrium hit rate p₀"
+p_value = "p-value (net profit ≥ observed)"
+null_quantiles = "Net profit of null systems p50 / p95"
+
+[report.wf]
+anchored = "anchored"
+rolling = "rolling"
+net_profit = "net profit"
+sharpe = "Sharpe"
+
+[report.carry]
+reset = "reset to initial balance"
+carry = "balance carried over"
+
+[report.cause]
+daily_loss = "daily loss"
+max_loss = "maximum loss"
+timeout = "time limit"
+consistency = "consistency"
+min_days = "minimum days"
+
+[report.pf]
+p_funded = "Probability of getting funded"
+ruin = "Probability of ruin of the funded account"
+expected_payouts = "Expected payouts"
+median_gain = "Median trader gain (net of fees)"
+expected_net = "Net economic expectation of the challenge"
+
+[report.stop]
+observed = "Observed maximum drawdown"
+p95 = "Bootstrap drawdown, 95th percentile"
+p99 = "Bootstrap drawdown, 99th percentile"
+
+[report.note]
+decision = "Decision: {decision}."
+evidence = "Statistical evidence: DSR {dsr}, profit factor {pf}, {n} trades."
+risk = "Risk: observed drawdown {dd}, bootstrap 95th percentile {dd95}."
+findings = "Findings: {blocking} blocking, {major} major."
+
+[report.scope]
+closed_only = "Only closed trades are analysed: floating P&L and open positions are unknown."
+prices_yes = "A price series was supplied: the price-data detectors ran."
+prices_no = "No price series: stop sensitivity, look-ahead and execution realism untested."
+wf_yes = "The walk-forward relies on results supplied by the client, never replayed."
+wf_no = "No walk-forward supplied: out-of-sample robustness is not established."
+propfirm_yes = "The prop-firm replay only knows closed results: its breach probabilities are lower bounds."
+propfirm_no = "No prop-firm ruleset: no replay."
+null = "The “no-edge” null keeps the empirical distributions: it is not an efficient-market null."
+no_advice = "The auditor observes; it recommends no parameter setting."
+lo = "The variance of Sharpe ratios across variants is unknown: Lo correction, conservative."
+ruin = "Ruin observed at trade #{index}: computations stop there."
+
+[profile]
+missing_key = "Offer profile: required key missing."
+unknown_section = "Offer profile: unknown section identifier."
+missing_mandatory_section = "Offer profile: mandatory section missing."
+not_found = "Offer profile not found."
+
+[batch]
+title = "Portfolio summary — qaudit"
+intro = "{n} system(s) audited independently (same seed). Benjamini-Hochberg correction at level {alpha} on the no-edge null p-values: {survive} system(s) remain significant. Verdicts: {go} GO, {cond} GO with conditions, {nogo} NO-GO. The correction alters no individual verdict."
+yes = "yes"
+no = "no"
+
+[batch.col]
+system = "System"
+decision = "Verdict"
+n = "Trades"
+net = "Net profit"
+pf = "PF"
+dsr = "DSR"
+pf_p05 = "PF p05"
+dd_pct = "DD percentile"
+p = "p (null)"
+p_adj = "adjusted p (BH)"
+bh = "Survives BH"
+blocking = "Blocking"
+major = "Major"
+
+[cli]
+description = "qaudit {version} — trading-system audit and validation: deterministic core, offline, no language model."
+exit_codes_title = "Exit codes:"
+verdict = "Verdict: {decision} — {blocking} blocking finding(s), {major} major."
+boundary = "Boundary value: {name} = {value} inside band [{low}; {high}]."
+written = "Written: {path}"
+offer_missing_inputs = "Offer \"{offer}\": required inputs missing from the file: {inputs}. The report is rendered and says so; without these inputs the corresponding sections hold no result."
+batch_done = "Batch: {n} system(s) audited, {errors} failed — {go} GO, {cond} GO with conditions, {nogo} NO-GO; {survive} survive Benjamini-Hochberg."
+batch_error = "  {system}: {message}"
+validated = "File admissible: {n} trades, currency {currency}, fingerprint {fingerprint}. Fields present: {fields}."
+demo_line = "{system}: {decision} (expected: {expected}) → {path}"
+demo_mismatch = "The demo does not produce the expected verdicts: the engine is broken."
+
+[gui]
+crash = "The application stopped on an internal error: {error}\n\nDetails in the log: {log}"
+about = "qaudit {version} — desktop application of the auditor. Deterministic core, offline, no language model: same engine and same reports as the command line."
+cancel = "Cancel"
+review_yes = "Human review required (gate E3): a barrier quantity lies in its indecision band — see the Barriers tab."
+review_no = "No quantity in an indecision band."
+verdict_caption = "Verdict"
+failed = "Failed (code {code})"
+
+[gui.header]
+tagline = "Computes everything · reveals per order · same verdict for all"
+
+[gui.section]
+inputs = "Case"
+options = "Options"
+
+[gui.field]
+trades = "Trades file"
+kind = "Reader"
+initial_balance = "Initial balance"
+currency = "Currency"
+prices = "Price series (optional)"
+symbol = "Symbol"
+walkforward = "Walk-forward folder (optional)"
+mapping = "Column mapping (optional)"
+ruleset = "Prop-firm ruleset"
+profile = "Offer"
+lang = "Report language"
+seed = "Seed"
+n_iter = "Iterations (blank = method)"
+n_trials = "Variants tested (blank = method)"
+out = "Output folder"
+
+[gui.action]
+load_example = "Load the example"
+audit = "Run audit"
+open_html = "Open HTML"
+open_pdf = "Open PDF"
+open_folder = "Open folder"
+
+[gui.tab]
+barriers = "Barriers"
+findings = "Findings"
+history = "History"
+log = "Log"
+
+[gui.col]
+barrier = "Barrier"
+value = "Value"
+threshold = "Threshold"
+band = "Indecision band"
+status = "Status"
+severity = "Severity"
+code = "Code"
+text = "Finding"
+name = "System"
+decision = "Verdict"
+e3 = "E3"
+n = "Trades"
+period = "Period"
+seed = "Seed"
+method = "Method"
+
+[gui.menu]
+file = "File"
+open_archive = "Render a JSON archive…"
+batch = "Audit a whole folder (batch)…"
+quit = "Quit"
+tools = "Tools"
+ruleset_skeleton = "Save a ruleset skeleton…"
+mapping_editor = "Edit the column mapping…"
+help = "Help"
+about = "About"
+
+[gui.status]
+ready = "Ready."
+running = "Audit running…"
+done = "{decision} — archive: {path}"
+
+[gui.log]
+hello = "qaudit {version} — log: {log}"
+example = "Example loaded: embedded healthy witness (balance 10,000 USD, 3 walk-forward parameter sets, ruleset two_step_static). Click “Run audit”."
+start = "Auditing “{name}”."
+reading = "Reading {path}"
+validated = "Admissible file: {n} trades."
+prices = "Price series: {n} bars."
+walkforward = "Walk-forward: {n} parameter set(s)."
+running = "Computing ({n_iter} iterations)…"
+written = "Archive written: {path}"
+done = "Verdict: {decision}."
+mapping_saved = "Mapping saved: {path} — rerunning the audit."
+skeleton_saved = "Ruleset skeleton saved: {path}. Complete every key, then rerun."
+rendered = "Report of “{name}” rendered again from the archive (offer {profile})."
+batch_start = "Batch: {path}"
+batch_done = "Batch finished (code {code})."
+
+[gui.gate]
+e1 = "Gate E1: unrecognised columns"
+e1_detail = "Missing fields: {missing}. Columns seen: {seen}."
+e2 = "Gate E2: ruleset to complete"
+e2_ask = "The ruleset is missing, in prose or incomplete: no rule is guessed. Save the TOML skeleton to complete?"
+
+[gui.mapping]
+title = "Column mapping (gate E1)"
+intro = "Match each canonical field with a column of the file. Fields marked * are required; the others, left blank, cleanly disable the analyses that depend on them."
+apply = "Apply and rerun"
+missing = "Required fields without a column: {fields}."
+
+[gui.error]
+no_trades = "Choose a trades file first."
+bad_number = "Initial balance, seed, iterations and variants must be numbers."
+no_result = "No audit completed in this session."
+not_in_profile = "The chosen offer does not deliver a {ext} file."
+
+[gui.filetype]
+trades = "Trade histories"
+csv = "CSV files"
+toml = "TOML files"
+json = "JSON archives"
+
+[mapping]
+not_toml = "Unreadable mapping file (TOML expected): {value}"
+unknown_field = "Mapping file: unknown canonical field(s)."
+
+
+[validate]
+no_rows = "No data rows."
+missing_value = "Missing value."
+bad_float = "Unreadable number: “{value}”."
+bad_datetime = "Unreadable timestamp: “{value}”."
+bad_direction = "Unreadable position side: “{value}” (expected buy/sell, long/short, +1/−1)."
+bad_int = "Unreadable integer: “{value}”."
+nonpositive = "Value that should be strictly positive: {value}."
+close_before_open = "Close time ({close_time}) earlier than open time ({open_time})."
+duplicate_ticket = "Ticket {ticket} already seen at row {first_row}."
+duplicate_row = "Row identical to row {first_row}."
+mixed_currency = "Currency “{actual}” while the account is in “{expected}”: one currency per file."
+bad_initial_balance = "Invalid initial balance: {value} (must be strictly positive)."
+resorted = "Trades were not in close-time order; they were re-sorted (close, open, ticket)."
+gap = "{count} gap(s) longer than {max_gap_days} days between consecutive closes; longest: {days} days, from {start} to {end}."
+ruin = "RUIN: equity reaches {equity} (initial balance {initial_balance}) at trade #{trade_index}, on {time}. No return is computed beyond this point."
+missing_optional = "Fields absent from the source: {fields}. Analyses that depend on them are disabled and reported as such."
+no_initial_balance = "Initial balance unknown: ruin and equity-relative metrics cannot be evaluated; provide --initial-balance."
+
+[input]
+trades = "trades"
+prix = "price series"
+reglement = "propfirm ruleset"
+taille_compte = "account size (initial balance)"
+frais_challenge = "challenge fee"
+walkforward = "walk-forward folder"
+portefeuille = "portfolio (batch of systems)"
+
+[attestation]
+title = "Validation attestation"
+caption = "Attested verdict"
+the_auditor = "The auditor"
+declaration = "{issuer} attests to having submitted the trading system “{system}” to the full set of checks of the qaudit method version {method}, and that this system passed every eliminatory barrier of that method, on {issued_on}, on the data set whose fingerprint is reproduced below."
+scope = "This attestation covers a test passed, on a given date, on given data. It covers nothing else."
+barriers_intro = "Every barrier below was passed; no blocking or major finding was raised."
+integrity = "Structural integrity (blocking and major findings)"
+integrity_value = "{n} finding(s)"
+verify = "Anyone holding the original trade file can verify this attestation: the file's SHA-256 fingerprint must be exactly {fingerprint}. Changing a single character yields a different fingerprint. Reference {reference} is recorded in the issuer's attestation registry."
+verify_command = "Verification by the issuer: qaudit verify {reference}"
+footer = "Attestation {reference} issued on {issued_on} — qaudit {engine} — method {method} — fingerprint {fingerprint}."
+issued = "Attestation issued: {reference}."
+refused = "Attestation refused: the verdict is {decision}; only a GO archive can be attested."
+not_found = "No attestation carries the reference “{reference}”."
+verify_line = "{reference} — issued on {issued_on} — system “{system}” — verdict {decision} — method {method}, engine {engine} — fingerprint {fingerprint}"
+transferable_yes = "Transferable: the holder may present it to third-party acquirers of the system, who verify it by reference and fingerprint."
+transferable_no = "Nominative: issued to the holder, not transferable."
+
+[attestation.section]
+declaration = "Declaration"
+objet = "Subject of the attestation"
+barrieres = "Barriers passed"
+limites = "What this attestation does not say"
+verification = "Verification"
+
+[attestation.field]
+reference = "Reference"
+issued_on = "Issued on"
+holder = "Holder"
+capital = "Reference capital"
+transferable = "Scope"
+
+[attestation.limits]
+future = "It guarantees no future performance. A real statistical edge can vanish at any time through a change in market structure; nothing here is a forecast."
+advice = "It is not investment advice and recommends neither trading this system nor allocating any capital to it."
+data = "It covers only the data submitted. It cannot establish that a history was not truncated beyond the consistency checks applied, nor that live execution will reproduce the prices in the file."
+truncation = "It establishes neither the identity of the system's author nor ownership of the strategy; it establishes that a precise file passed a precise method."
+revision = "It lapses for any later version of the method: a change of threshold creates a new method, which requires a new audit."
+
+[attestation.registry]
+title = "qaudit attestation registry"
+intro = "Every attestation issued is recorded here with the SHA-256 fingerprint of the audited trade file. To verify an attestation, compare its reference and fingerprint with this list; the fingerprint of the original file must match exactly. No personal data is published."
+footer = "{n} attestation(s) in the registry."
+
+[attestation.registry.col]
+reference = "Reference"
+issued_on = "Issued on"
+system = "System"
+method = "Method"
+decision = "Verdict"
+fingerprint = "SHA-256 fingerprint"

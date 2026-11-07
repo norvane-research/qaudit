@@ -1,0 +1,184 @@
+# Textes d'explication destinés au client final (section « En clair » et
+# encadrés « Comment lire » de chaque section). Langage courant, aucun
+# jargon sans définition, aucune recommandation de réglage. Les nombres sont
+# ceux du document archivé ; les phrases ne font que les nommer.
+
+[explain]
+how_to_read = "Comment lire cette section"
+section_title = "En clair : ce que dit ce rapport"
+critical_none = "Aucun défaut grave n'a été relevé dans la manière de trader : pas de martingale, pas de grille, pas de concentration anormale du profit, pas de signe de tricherie sur les données."
+critical_intro = "Défauts relevés qui pèsent sur le verdict :"
+barriers_intro = "Les cinq questions posées aux résultats, et la réponse chiffrée pour ce dossier :"
+not_advice = "Ce rapport constate ; il ne conseille aucun réglage et ne prédit pas l'avenir."
+
+[explain.verdict]
+GO = "Feu vert. Les résultats fournis ont passé les cinq tests statistiques et aucun défaut grave n'a été trouvé dans la façon de trader. Cela veut dire que la performance observée n'est ni expliquée par le hasard, ni portée par quelques coups de chance, ni fabriquée par des données douteuses — sur la période et les données fournies."
+GO_CONDITIONAL = "Feu orange. Rien de rédhibitoire n'a été trouvé, mais l'audit n'est pas complet : {reasons}. Tant que ces points restent ouverts, le système n'est pas démontré ; il n'est pas non plus disqualifié."
+NO_GO = "Feu rouge : {reasons}. Les résultats fournis ne permettent pas d'affirmer que ce système a un avantage réel : ce qui a été gagné peut s'expliquer par le hasard, par quelques trades exceptionnels ou par une prise de risque non maîtrisée. Ce n'est pas une prédiction de perte future ; c'est l'absence de preuve."
+scope = "Le verdict porte uniquement sur les éléments fournis à l'auditeur : les trades clos du dossier, sur la période couverte. Il ne repose sur aucun jugement humain ni sur une note globale : chaque test a un seuil fixé à l'avance par la méthode, et le verdict découle mécaniquement de ces seuils. Le même dossier, réaudité demain avec la même version, donnera exactement le même rapport."
+
+[explain.reason]
+tests = "{n} test(s) statistique(s) ont échoué"
+blocking = "{n} défaut(s) bloquant(s) ont été relevés"
+unevaluated = "{n} test(s) n'ont pas pu être faits faute de données"
+indecision = "{n} test(s) sont dans leur zone d'incertitude"
+majors = "{n} défaut(s) majeur(s) ont été relevés"
+none = "aucun test n'a échoué"
+join_last = "{head} et {last}"
+
+[explain.next]
+GO = "Ce qui reste vrai malgré le feu vert : un test statistique mesure le passé fourni, pas le futur. Les chiffres de drawdown de la section « Repères » indiquent l'ampleur des pertes temporaires auxquelles il est raisonnable de s'attendre avec ce système, tel qu'il a été observé."
+GO_CONDITIONAL = "Pour lever le feu orange, il faut fournir les éléments manquants listés dans « Conditions de mise en production » (par exemple des résultats par jeu de paramètres pour le test hors échantillon, ou une série de prix pour les vérifications d'exécution) et traiter chaque défaut majeur à la source. Le rapport sera alors refait à l'identique sur le nouveau dossier."
+NO_GO = "Un feu rouge ne se corrige pas dans le rapport : il se corrige dans la stratégie ou dans les données, puis se vérifie sur un nouvel historique. Les points ci-dessus disent précisément quel test a échoué et de combien, pour que la discussion porte sur des faits."
+
+[explain.status]
+passed = "Test réussi."
+triggered = "Test échoué : c'est l'une des raisons du verdict."
+indecision = "Résultat dans la zone d'incertitude autour du seuil : la méthode demande alors une revue humaine plutôt qu'une décision automatique."
+not_evaluated = "Non mesurable avec les données fournies."
+
+[explain.barrier_title]
+dsr = "Le hasard est-il écarté ?"
+pf_p05 = "Et avec de la malchance ?"
+dd_percentile = "Les pertes arrivent-elles groupées ?"
+null_pvalue = "Un système sans avantage ferait-il aussi bien ?"
+wf_efficiency = "Tient-il hors des périodes où il a été réglé ?"
+
+[explain.barrier]
+dsr = "Quand on essaie plusieurs versions d'une stratégie avant d'en garder une, la meilleure paraît toujours bonne, même si aucune n'a d'avantage. Ce test calcule la probabilité que la performance soit réelle une fois cet effet corrigé, pour {n_trials} variante(s) déclarée(s) : {value}. Seuil de réussite : {threshold}."
+pf_p05 = "Le profit factor est le total gagné divisé par le total perdu (1,00 = équilibre). Les mêmes trades ont été rejoués {n_iter} fois dans un ordre différent, par blocs, pour voir ce que donnerait la même stratégie avec moins de chance : dans les 5 % de scénarios les plus défavorables, le profit factor tombe à {value}. Seuil : {threshold} — en dessous, la stratégie perd de l'argent dans ces scénarios."
+dd_percentile = "Le drawdown est la plus grosse baisse subie entre un sommet et le creux qui le suit. Celui observé ({observed}) est plus grand que dans {value} % des réordonnancements aléatoires des mêmes trades. Une valeur très basse (sous {threshold} %) signalerait une courbe trop régulière pour être honnête ; une valeur très haute signifie que les pertes sont arrivées groupées, ce qui est plus dur à vivre que ne le laisse penser le résultat final."
+null_pvalue = "On a simulé {n_iter} systèmes qui n'ont aucun avantage mais gagnent et perdent des montants de même taille que celui-ci ; {value} d'entre eux ont fait aussi bien ou mieux. Seuil : {threshold} — au-dessus, on ne peut pas distinguer ce système d'un système sans avantage."
+wf_efficiency = "Une stratégie réglée sur une période a tendance à y briller et à décevoir ensuite. Ce test compare sa performance sur des périodes qui n'ont pas servi au réglage : elle en conserve {value}. Seuil : {threshold}."
+wf_efficiency_na = "Une stratégie réglée sur une période a tendance à y briller et à décevoir ensuite. Ce test compare sa performance sur des périodes qui n'ont pas servi au réglage. Il n'a pas pu être fait : il faut pour cela un jeu de résultats par paramètres testés, qui n'a pas été fourni."
+
+[explain.finding_title]
+martingale = "Mise augmentée après les pertes"
+grid = "Positions empilées contre le marché"
+no_stop = "Trades sans stop de protection"
+profit_concentration = "Profit porté par quelques trades"
+equity_linearity = "Courbe de gains trop régulière"
+payoff_asymmetry = "Beaucoup de petits gains, quelques grosses pertes"
+period_dependence = "Résultat dû à une seule période"
+holding_time = "Durées de position irréalistes"
+stop_geometry = "Stop trop sensible"
+lookahead = "Entrées trop parfaites"
+execution_realism = "Prix d'exécution impossibles"
+ruin = "Compte ruiné en cours de route"
+gap = "Trous dans l'historique"
+too_few_trades = "Trop peu de trades pour conclure"
+
+[explain.finding]
+martingale = "En clair : après une perte, la taille des positions augmente pour « se refaire ». Cela produit de longues séries de petits gains puis une perte très lourde le jour où la série de pertes dure trop longtemps. Le compte final ne le montre pas tant que ce jour n'est pas arrivé."
+grid = "En clair : quand une position perd, d'autres sont ouvertes dans le même sens à un prix encore moins bon, en espérant un retournement. Le risque total grossit pendant que le marché va contre soi ; c'est le mécanisme des pertes brutales sur compte apparemment régulier."
+no_stop = "En clair : une part des positions n'avait aucun niveau de sortie automatique en cas de perte. La perte possible sur ces positions n'était donc pas bornée à l'avance."
+profit_concentration = "En clair : retirez quelques trades exceptionnels et le résultat s'effondre. La performance dépend donc de coups rares, dont rien ne garantit la répétition ; un système robuste gagne un peu partout, pas beaucoup à quelques endroits."
+equity_linearity = "En clair : une courbe de gains presque parfaitement droite ne ressemble pas à ce que produit un vrai marché. Cela peut venir d'une gestion du risque qui reporte les pertes (martingale, grille) ou de données arrangées."
+payoff_asymmetry = "En clair : un taux de réussite très élevé combiné à des pertes moyennes bien plus grandes que les gains moyens est la signature des stratégies qui « ramassent des pièces devant un rouleau compresseur » : elles gagnent souvent, puis perdent tout d'un coup."
+period_dependence = "En clair : l'essentiel du gain vient d'un seul trimestre. En dehors, la stratégie n'a pas prouvé grand-chose ; le résultat global masque une performance ordinaire le reste du temps."
+holding_time = "En clair : des durées de position de quelques secondes ou anormalement uniformes sont typiques d'un backtest irréaliste ou d'un historique retouché, pas d'un trading réel."
+stop_geometry = "En clair : si le stop de protection avait été à peine plus serré, une grande partie du gain aurait disparu. La performance tient donc à un réglage fin du stop, ce qui est fragile en conditions réelles (écarts de prix, glissements)."
+lookahead = "En clair : une proportion anormale d'entrées se fait exactement au meilleur prix de la barre — comme si la stratégie connaissait l'avenir. C'est le signe classique d'un backtest qui utilise une information non disponible au moment de trader."
+execution_realism = "En clair : certains prix d'entrée ou de sortie n'existaient pas sur le marché au moment indiqué (hors de la fourchette haut-bas de la barre). Ces trades n'auraient pas pu être exécutés ainsi."
+ruin = "En clair : à un moment de l'historique, les pertes cumulées ont dépassé le capital de départ. Tout ce qui suit ce point n'aurait pas existé sur un compte réel."
+gap = "En clair : l'historique comporte des périodes sans aucun trade clos. Soit la stratégie n'a pas tourné, soit des périodes ont été retirées ; dans les deux cas, le rapport ne peut pas juger ce qui s'y est passé."
+too_few_trades = "En clair : avec aussi peu de trades, aucun test statistique ne peut distinguer un vrai avantage d'un coup de chance. Le verdict est bloqué par prudence, pas par un défaut de la stratégie."
+
+[explain.section]
+entete = "La carte d'identité de l'audit. L'empreinte SHA-256 est une signature unique du fichier de trades analysé : si le fichier change d'un seul caractère, l'empreinte change. La graine et les versions permettent de refaire exactement le même rapport. « N » est le nombre de variantes de la stratégie essayées avant de retenir celle-ci, déclaré par le demandeur ou fixé par défaut par la méthode."
+verdict = "Trois verdicts possibles : GO (feu vert), GO SOUS CONDITIONS (feu orange : des vérifications manquent), NO-GO (feu rouge : un test a échoué ou un défaut bloquant existe). Le verdict découle de seuils fixés à l'avance, jamais d'une appréciation. Les constats sont classés par gravité : bloquant, majeur, mineur, info."
+kpi = "Profit net : gains moins pertes, commissions et swaps compris. Profit factor : total gagné ÷ total perdu (1,00 = équilibre). Taux de réussite : part des trades gagnants. Ratio gain/perte : gain moyen d'un trade gagnant ÷ perte moyenne d'un trade perdant. Espérance : gain moyen par trade, tous trades confondus. Sharpe : gain moyen rapporté à la variabilité des résultats (plus il est haut, plus les gains sont réguliers). Drawdown maximal : plus grosse baisse entre un sommet et le creux suivant. Série perdante : plus long enchaînement de pertes consécutives."
+barrieres = "Chaque ligne est un test avec un seuil fixé par la méthode. « Franchie » = réussi ; « déclenchée » = échoué (en majuscules, car cela suffit à un NO-GO) ; « bande d'indécision » = trop près du seuil pour trancher automatiquement, un auditeur doit se prononcer ; « non évaluée » = données manquantes. Il n'y a pas de note globale : un seul test échoué fait le verdict."
+constats_critiques = "Les défauts assez graves pour peser sur le verdict, avec le chiffre qui les établit. Un constat bloquant suffit à un NO-GO ; plusieurs constats majeurs conduisent à un GO SOUS CONDITIONS au mieux. Ces constats apparaissent dans toutes les versions du rapport, quelle que soit la prestation."
+constats_complets = "Tout ce que l'auditeur a relevé, y compris les remarques mineures et les informations (par exemple un test qui n'a pas pu tourner). Une ligne « info » n'est pas un défaut : elle dit ce qui a été fait, ou ce qui n'a pas pu l'être et pourquoi."
+sharpe_degonfle = "Le Sharpe mesure la régularité des gains. Le PSR est la probabilité que le vrai Sharpe soit positif compte tenu du nombre de trades et de la forme des résultats. Le DSR répond à la question la plus dure : cette performance dépasse-t-elle ce que le hasard aurait donné au meilleur de N essais ? Si le demandeur a essayé plus de variantes qu'il ne l'a déclaré, le vrai DSR est plus bas que celui affiché."
+sensibilite_essais = "Le même DSR recalculé pour différents nombres de variantes essayées. Lisez la ligne qui correspond à votre pratique réelle : si vous avez testé 50 réglages avant de garder celui-ci, c'est la ligne N = 50 qui compte. Le graphique montre à partir de quel nombre d'essais la performance cesse d'être distinguable du hasard (ligne rouge)."
+monte_carlo = "Trois simulations sur les mêmes trades, pour trois questions. Bootstrap : et avec moins de chance, quel profit et quel drawdown ? (les fourchettes p05 / p50 / p95 encadrent 90 % des scénarios). Permutation : le drawdown observé est-il dû à l'ordre des trades ? Nulle sans avantage : combien de systèmes sans aucun avantage, mais avec les mêmes tailles de gains et de pertes, feraient aussi bien ?"
+regimes = "Les trades sont classés en trois tiers selon l'agitation du marché au moment où ils ont eu lieu (volatilité basse, moyenne, haute), puis par trimestre. Une stratégie saine gagne dans plusieurs régimes et plusieurs trimestres ; si tout le profit vient d'un seul tiers ou d'une seule période, le résultat global est trompeur. Les lignes en rouge sont perdantes."
+walkforward = "Test hors échantillon : la stratégie est réglée sur une période (« dans l'échantillon ») puis jugée sur la période suivante qu'elle n'a pas vue (« hors échantillon »), en avançant pli par pli. L'efficacité est la part de la performance conservée hors échantillon. L'auditeur n'a exécuté aucune stratégie : il compare des résultats fournis par le demandeur, un jeu par paramètres."
+detecteurs_prix = "Vérifications possibles seulement avec la série de prix de l'instrument : les entrées se font-elles à des prix trop parfaits (look-ahead) ? Les prix d'exécution existaient-ils vraiment ? Le gain survit-il si le stop est légèrement déplacé ? « Rien à signaler » signifie que le test a tourné et n'a rien trouvé."
+propfirm_challenge = "Rejeu de la stratégie contre le règlement d'une société de trading pour compte propre (propfirm) : des milliers de trajectoires sont tirées à partir des journées réelles de trading, et l'on compte celles qui passent chaque phase sans violer la perte maximale ou le délai. P(réussite) est la probabilité de passer la phase ; P(cumulée) celle d'arriver jusque-là depuis le départ."
+propfirm_finance = "Une fois financé, le compte reste soumis à une perte maximale : la probabilité de ruine est la part des trajectoires qui l'atteignent sur l'horizon considéré. Les versements attendus sont la moyenne des gains reversés au trader sur ces trajectoires."
+propfirm_economie = "Le bilan économique du challenge pour le trader : frais payés, probabilité d'être financé, versements attendus, et l'espérance nette qui en résulte (frais déduits). Ces chiffres sont des planchers de risque : seuls les résultats clos sont connus, les pertes latentes en cours de journée ne le sont pas."
+seuil_arret = "Repères issus des simulations : le drawdown qui n'a été dépassé que dans 5 % (p95) et 1 % (p99) des scénarios. Ils servent à savoir à quoi s'attendre, et à reconnaître le jour où le système ne se comporte plus comme dans son historique. Ce ne sont pas des réglages recommandés."
+conditions = "Ce qu'il faudrait fournir ou corriger pour que l'audit soit complet. Chaque condition renvoie à un test précis qui n'a pas pu être mené ou qui est resté dans sa zone d'incertitude."
+portefeuille = "Quand plusieurs systèmes sont audités ensemble, cette section compare leurs résultats et applique une correction statistique (plus on teste de systèmes, plus l'un d'eux paraît bon par hasard). Pour un audit unitaire, elle est vide."
+note_comite = "Résumé en quelques lignes destiné à un comité d'investissement : décision, preuve statistique principale, risque principal, constats. Il ne contient rien qui ne soit déjà dans le rapport."
+portee_et_limites = "Ce que l'audit n'a pas pu voir, et ce qu'il ne prétend pas faire. Ces limites font partie du résultat : un rapport qui ne les dirait pas serait trompeur."
+pied = "Les identifiants qui rendent ce rapport vérifiable : version du moteur, version de la méthode (les seuils), graine, empreinte du fichier, prestation. Quiconque dispose du même fichier et de la même version obtient le même rapport, à l'octet près."
+
+[methode]
+title = "Méthode qaudit — version {version}"
+intro = "Ce document décrit intégralement la méthode appliquée par qaudit à un historique de trades : les tests, leurs seuils, les règles de décision, les détecteurs de défauts et leurs paramètres. Il est généré automatiquement depuis le fichier de configuration de la méthode : ce qui est écrit ici est exactement ce qui est calculé."
+principles = "Trois principes. (1) Le moteur calcule tout ce que les données fournies permettent ; l'offre achetée ne change que ce qui est montré, jamais le verdict. (2) Aucune note globale : chaque test a un seuil fixé à l'avance, un seul test échoué suffit à un NO-GO. (3) Déterminisme : mêmes données, même version de méthode, même graine → même rapport à l'octet près, vérifiable par quiconque dispose du fichier."
+barriers_intro = "Cinq barrières éliminatoires. Une barrière est « déclenchée » (échouée) quand sa valeur franchit le seuil dans le sens indiqué ; une valeur dans la bande d'indécision rend le verdict mais impose une revue humaine (porte E3) ; une barrière non calculable faute de données devient une condition (jamais un succès)."
+no_score = "Il n'existe ni pondération ni score composite : les barrières ne se compensent pas."
+detectors_intro = "Onze détecteurs structurels examinent la façon de trader. Huit fonctionnent sans série de prix ; trois (géométrie du stop, look-ahead, réalisme d'exécution) exigent les cotations OHLC de l'instrument et sont déclarés « non exécutés » sinon. Chaque détecteur émet un constat de gravité info, mineur, majeur ou bloquant selon les paramètres ci-dessous ; un détecteur qui ne peut pas tourner le dit."
+detectors_note = "Les paramètres sont nommés comme dans le fichier de méthode ; les parts sont des fractions (0,30 = 30 %)."
+inputs = "Entrée obligatoire : les trades clos (heure d'ouverture, heure de clôture, profit net ; utiles : volume, sens, symbole, prix, stop, ticket, commission, swap). Entrées optionnelles : série de prix OHLC (active les trois détecteurs à prix et les régimes par ATR), un jeu de résultats par paramètres testés (active la barrière walk-forward), un règlement propfirm structuré (active le rejeu), le nombre de variantes essayées (N ; défaut de la méthode sinon)."
+versioning = "Version courante : {version}. Tout changement d'un seuil, d'une bande ou d'un paramètre de détecteur crée une nouvelle version de méthode ; la version est imprimée dans chaque rapport et chaque attestation, qui ne valent que pour elle."
+reproduce = "Pour reproduire un rapport : le même fichier de trades (son empreinte SHA-256 est imprimée), la même version de qaudit et de méthode, la même graine (imprimée). La commande « qaudit render --from archive.json » régénère les livrables depuis l'archive sans aucun recalcul et produit les mêmes octets que l'audit d'origine."
+
+[methode.h]
+barriers = "Les cinq barrières"
+decision = "Règles de décision"
+detectors = "Détecteurs structurels"
+simulation = "Simulations et paramètres"
+inputs = "Entrées"
+limits = "Ce que la méthode ne teste pas"
+versioning = "Versionnement"
+reproduce = "Reproduire un rapport"
+
+[methode.col]
+question = "Question posée"
+detector = "Détecteur"
+what = "Ce qu'il détecte"
+params = "Paramètres"
+
+[methode.barrier]
+dsr = "Sharpe dégonflé (Bailey & López de Prado). Le ratio de Sharpe mesure la régularité des gains. Le PSR est la probabilité que le vrai Sharpe soit positif compte tenu du nombre de trades, de l'asymétrie et des queues de la distribution. Le DSR évalue cette probabilité contre le meilleur Sharpe attendu au hasard après N essais (N déclaré par le demandeur, sinon défaut de la méthode) ; la variance des Sharpe entre variantes, si elle n'est pas fournie, est approchée prudemment (approximation de Lo, signalée). Le rapport imprime la courbe du DSR pour N = 1 à 1 000 et le point de bascule."
+pf_p05 = "Profit factor au 5ᵉ centile du bootstrap par blocs stationnaires (Politis–Romano, longueur de bloc automatique). Les trades sont rééchantillonnés par blocs pour préserver leur dépendance sérielle ; le profit factor est recalculé sur chaque rééchantillon. La barrière regarde le 5ᵉ centile : ce que donnerait la même stratégie dans les scénarios défavorables. Sous 1,00, elle perd de l'argent dans ces scénarios."
+dd_percentile = "Centile du drawdown observé parmi les permutations d'ordre. Les mêmes trades sont réordonnés aléatoirement ; le profit total est invariant, seul le drawdown change. Le centile est la part des permutations dont le drawdown est inférieur ou égal à celui observé. Un centile très bas signale une courbe trop régulière pour être crédible (ordre arrangé, sélection) ; un centile très haut n'est pas éliminatoire mais signale des pertes groupées, imprimées comme telles."
+null_pvalue = "p-value contre la nulle « sans edge ». Des systèmes sans aucun avantage sont simulés en conservant les distributions empiriques des gains et des pertes et en neutralisant seulement la fréquence de réussite (taux d'équilibre p₀ = |perte moyenne| / (gain moyen + |perte moyenne|)). La p-value est la part de ces systèmes qui atteignent au moins le profit net observé. Ce n'est pas une nulle de marché efficient : la question posée est « le taux de réussite observé est-il explicable par la chance, à profil de gains/pertes donné ? »."
+wf_efficiency = "Efficacité walk-forward. Le demandeur fournit un jeu de résultats par paramètres testés ; la méthode découpe la période en plis (protocole ancré ou glissant), sélectionne sur chaque pli le paramétrage selon le critère fixé, et mesure la performance du paramétrage sélectionné sur le pli suivant, jamais vu. L'efficacité est le rapport de la performance hors échantillon à la performance dans l'échantillon. L'auditeur n'exécute aucune stratégie : il compare des résultats fournis."
+
+[methode.rule]
+blocking = "{n} constat bloquant ou plus → NO-GO."
+triggered = "Une barrière déclenchée → NO-GO."
+majors = "{n} constats majeurs ou plus → GO SOUS CONDITIONS au mieux."
+unevaluated = "Une barrière non évaluée (données manquantes) → condition ; le verdict ne peut pas être GO."
+band = "Une valeur dans la bande d'indécision → verdict rendu, revue humaine requise (porte E3)."
+sample = "Moins de {n} trades utilisables → constat bloquant « échantillon insuffisant »."
+
+[methode.detector]
+martingale = "Augmentation du volume après une perte (rapport de volume ≥ ratio_min), sur une part des trades post-perte ; contraste exigé avec le comportement après gain."
+grid = "Ajout de positions à une position perdante de même sens à prix pire, refermées ensemble (panier) ; part des trades concernés."
+no_stop = "Part des trades sans stop-loss renseigné."
+profit_concentration = "Part du gain brut apportée par les meilleurs trades (top_fraction) ; profit net une fois retirés les meilleurs (remove_fraction)."
+equity_linearity = "Courbe d'equity anormalement linéaire : R² contre l'indice du trade au-dessus de r2_major."
+payoff_asymmetry = "Taux de réussite très élevé combiné à un ratio gain moyen / perte moyenne très faible."
+period_dependence = "Part du profit net apportée par un seul trimestre, sur au moins min_periods trimestres."
+holding_time = "Durées de position irréalistes : part des trades de moins de min_seconds, ou de plus de max_days."
+stop_geometry = "Avec prix : part du gain brut qui disparaît si le stop est resserré de 10 %, 20 %, 30 %."
+lookahead = "Avec prix : part des entrées exactement au plus bas / plus haut de leur barre, testée contre le hasard (p-value)."
+execution_realism = "Avec prix : part des prix d'entrée ou de sortie hors de la fourchette haut–bas de leur barre (tolérance en points de base)."
+
+[methode.sim]
+iterations = "{n} itérations pour le bootstrap, la permutation et la nulle, chacune sur un flux aléatoire indépendant dérivé de la graine (rangs fixes)."
+bootstrap = "Bootstrap : {method}."
+permutation = "Permutation d'ordre : le tableau d'entrée n'est jamais modifié ; le profit total est invariant."
+null = "Nulle sans edge : distributions empiriques des gains et des pertes conservées, fréquence neutralisée."
+dsr = "Nombre d'essais par défaut : {n} ; grille de sensibilité : {grid}."
+walkforward = "Walk-forward : {folds} plis, protocole {protocol}, sélection au {selection}."
+regimes = "Régimes : terciles de volatilité sur {window} trades (sans prix) ou d'ATR sur {atr} barres (avec prix)."
+propfirm = "Rejeu propfirm : trajectoires de journées de trading rééchantillonnées par blocs ; horizon des phases sans limite : {days} journées."
+gap = "Validation : un trou de plus de {days} jours entre deux clôtures est signalé."
+seed = "Graine par défaut 0, imprimée dans chaque rapport ; aucune source d'aléa globale."
+
+[methode.limit]
+closed = "Seuls les trades clos sont analysés : le P&L flottant et les positions ouvertes sont inconnus."
+prices = "Sans série de prix, la sensibilité du stop, le look-ahead et le réalisme d'exécution ne sont pas testés — le rapport le dit."
+wf = "Sans jeu de résultats par paramètres, la robustesse hors échantillon n'est pas établie : le verdict ne peut pas être GO."
+truncation = "La méthode ne peut pas prouver qu'un historique n'a pas été tronqué au-delà de ses contrôles de cohérence (trous, ruine, doublons)."
+future = "Aucune performance future n'est prédite ; un avantage réel peut disparaître."
+advice = "Aucun paramétrage n'est recommandé ; l'auditeur constate."

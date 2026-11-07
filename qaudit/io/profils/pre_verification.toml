@@ -1,0 +1,19 @@
+# Pré-vérification : recevabilité du dossier seule (sous-commande
+# `qaudit validate`). Aucun verdict n'est rendu ; le rapport de validation
+# contient les sections obligatoires du socle.
+[offre]
+code = "pre_verification"
+libelle = "Pré-vérification"
+
+[entrees]
+requis = ["trades"]
+optionnel = []
+
+[rapport]
+sections = ["entete", "verdict", "en_clair", "constats_critiques", "portee_et_limites", "pied"]
+
+[livrables]
+html = true
+pdf = false
+json = false
+attestation = false

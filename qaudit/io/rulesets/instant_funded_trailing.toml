@@ -1,0 +1,24 @@
+# Modèle générique « compte financé instantané, drawdown suiveur, solde reporté ».
+# Relevé le 2026-09-13 ; vérifier auprès de la firme.
+name = "Instant funded account, trailing drawdown"
+as_of = 2026-09-13
+initial_balance = 25000
+currency = "USD"
+fee = 900
+refund_fee_on_funded = false
+profit_split = 0.70
+payout_cycle_days = 30
+balance_carry = "carry"
+
+[[phases]]
+name = "Funded"
+funded = true
+profit_target = 0.0
+max_daily_loss = 0.03
+daily_loss_base = "balance"
+max_total_loss = 0.05
+drawdown_type = "trailing"
+trailing_lock_at_initial = false
+min_trading_days = 0
+max_days = 0
+consistency_max_day_share = 0.0

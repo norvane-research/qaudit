@@ -1,0 +1,406 @@
+{
+  "data": {
+    "currency": "?",
+    "fingerprint": "d4f73aca2abb4c9fc7d98e36556914619a30fd503e57dbe4ac6471c2fb446d5f",
+    "first_open": "2021-01-11T16:40:28",
+    "initial_balance": 10000.0,
+    "known_fields": [
+      "close_price",
+      "close_time",
+      "direction",
+      "open_price",
+      "open_time",
+      "profit",
+      "stop_loss",
+      "symbol",
+      "take_profit",
+      "ticket",
+      "volume"
+    ],
+    "last_close": "2024-02-24T04:29:18",
+    "n_trades": 600,
+    "n_usable": 600,
+    "prices_provided": false,
+    "ruin_index": null,
+    "span_days": 1138.49224537
+  },
+  "engine_version": "1.0.0",
+  "findings": [
+    {
+      "code": "missing_optional",
+      "message_key": "validate.missing_optional",
+      "params": {
+        "fields": "commission, swap, currency"
+      },
+      "severity": "info",
+      "source": "validate"
+    },
+    {
+      "code": "dsr_lo_variance",
+      "message_key": "audit.dsr_lo_variance",
+      "params": {
+        "n_trials": 10,
+        "var_sr": 0.00168365933112
+      },
+      "severity": "info",
+      "source": "audit"
+    },
+    {
+      "code": "null_empirical",
+      "message_key": "resample.null_empirical",
+      "params": {
+        "p0": 0.38322458309
+      },
+      "severity": "info",
+      "source": "audit"
+    },
+    {
+      "code": "stop_geometry_skipped",
+      "message_key": "detector.skipped_no_prices",
+      "params": {
+        "detector": "stop_geometry"
+      },
+      "severity": "info",
+      "source": "detector.stop_geometry"
+    },
+    {
+      "code": "lookahead_skipped",
+      "message_key": "detector.skipped_no_prices",
+      "params": {
+        "detector": "lookahead"
+      },
+      "severity": "info",
+      "source": "detector.lookahead"
+    },
+    {
+      "code": "execution_realism_skipped",
+      "message_key": "detector.skipped_no_prices",
+      "params": {
+        "detector": "execution_realism"
+      },
+      "severity": "info",
+      "source": "detector.execution_realism"
+    }
+  ],
+  "method_version": "1.0",
+  "metrics": {
+    "avg_holding_hours": 17.4409023148,
+    "avg_loss": -103.827213622,
+    "avg_win": 167.103249097,
+    "cagr_pct": 30.1772428248,
+    "expectancy": 21.25235,
+    "gross_loss": -33536.19,
+    "gross_profit": 46287.6,
+    "kurtosis": 1.98558765046,
+    "largest_loss": -236.76,
+    "largest_win": 445.86,
+    "longest_losing_streak": 9,
+    "max_drawdown": 2042.87,
+    "max_drawdown_pct": 12.8844694736,
+    "n": 600,
+    "n_flat": 0,
+    "n_losses": 323,
+    "n_wins": 277,
+    "net_profit": 12751.41,
+    "payoff_ratio": 1.60943593946,
+    "profit_factor": 1.38022834436,
+    "sharpe_annual": 1.98119426831,
+    "sharpe_trade": 0.142797749768,
+    "skew": 0.478513506455,
+    "span_days": 1138.49224537,
+    "std_profit": 148.828325618,
+    "total_return_pct": 127.5141,
+    "trades_per_year": 192.491429688,
+    "win_rate": 0.461666666667
+  },
+  "n_iter": 2000,
+  "n_trials": 10,
+  "propfirm": null,
+  "quarters": [
+    {
+      "n": 31,
+      "net_profit": 1840.05,
+      "profit_factor": 2.47327755314,
+      "quarter": 1,
+      "year": 2021
+    },
+    {
+      "n": 52,
+      "net_profit": 1132.66,
+      "profit_factor": 1.39924708934,
+      "quarter": 2,
+      "year": 2021
+    },
+    {
+      "n": 47,
+      "net_profit": 1388.94,
+      "profit_factor": 1.60470462234,
+      "quarter": 3,
+      "year": 2021
+    },
+    {
+      "n": 49,
+      "net_profit": 826.58,
+      "profit_factor": 1.27473360233,
+      "quarter": 4,
+      "year": 2021
+    },
+    {
+      "n": 51,
+      "net_profit": -1007.03,
+      "profit_factor": 0.711745106683,
+      "quarter": 1,
+      "year": 2022
+    },
+    {
+      "n": 48,
+      "net_profit": 2181.53,
+      "profit_factor": 1.8802241787,
+      "quarter": 2,
+      "year": 2022
+    },
+    {
+      "n": 45,
+      "net_profit": 1269.35,
+      "profit_factor": 1.56929693947,
+      "quarter": 3,
+      "year": 2022
+    },
+    {
+      "n": 62,
+      "net_profit": 1066.97,
+      "profit_factor": 1.33143536984,
+      "quarter": 4,
+      "year": 2022
+    },
+    {
+      "n": 49,
+      "net_profit": 684.72,
+      "profit_factor": 1.23445139907,
+      "quarter": 1,
+      "year": 2023
+    },
+    {
+      "n": 38,
+      "net_profit": -647.49,
+      "profit_factor": 0.753869721897,
+      "quarter": 2,
+      "year": 2023
+    },
+    {
+      "n": 60,
+      "net_profit": 1302.22,
+      "profit_factor": 1.35019846606,
+      "quarter": 3,
+      "year": 2023
+    },
+    {
+      "n": 42,
+      "net_profit": 1886.74,
+      "profit_factor": 1.93102920785,
+      "quarter": 4,
+      "year": 2023
+    },
+    {
+      "n": 26,
+      "net_profit": 826.17,
+      "profit_factor": 1.57870036354,
+      "quarter": 1,
+      "year": 2024
+    }
+  ],
+  "regimes": {
+    "method": "volatility_terciles",
+    "n_unclassified": 2,
+    "stats": [
+      {
+        "expectancy": 30.01165,
+        "label": "low",
+        "n": 200,
+        "net_profit": 6002.33,
+        "profit_factor": 1.52251468784,
+        "share_of_net": 0.470718924417,
+        "win_rate": 0.47
+      },
+      {
+        "expectancy": 10.3802512563,
+        "label": "mid",
+        "n": 199,
+        "net_profit": 2065.67,
+        "profit_factor": 1.18775319145,
+        "share_of_net": 0.161995418546,
+        "win_rate": 0.442211055276
+      },
+      {
+        "expectancy": 24.3692964824,
+        "label": "high",
+        "n": 199,
+        "net_profit": 4849.49,
+        "profit_factor": 1.44569773736,
+        "share_of_net": 0.38031009904,
+        "win_rate": 0.477386934673
+      }
+    ]
+  },
+  "resampling": {
+    "bootstrap": {
+      "block_length": 1.0,
+      "max_drawdown_p50": 1710.28,
+      "max_drawdown_p95": 2928.89,
+      "max_drawdown_p99": 3896.03,
+      "method": "stationary",
+      "n_iter": 2000,
+      "net_profit_p05": 6618.44,
+      "net_profit_p50": 12786.1,
+      "net_profit_p95": 18759.74,
+      "profit_factor_p05": 1.18554644104,
+      "profit_factor_p50": 1.38260418371,
+      "profit_factor_p95": 1.59852955321
+    },
+    "null": {
+      "evaluable": true,
+      "n_iter": 2000,
+      "note_key": "resample.null_empirical",
+      "null_net_p50": 17.67,
+      "null_net_p95": 6044.43,
+      "observed_net": 12751.41,
+      "p0": 0.38322458309,
+      "p_value": 0.000499750124938
+    },
+    "permutation": {
+      "drawdown_p50": 1696.97,
+      "drawdown_p95": 2605.06,
+      "drawdown_percentile": 77.3,
+      "n_iter": 2000,
+      "observed_drawdown": 2042.87,
+      "total_profit": 12751.41
+    }
+  },
+  "schema": "qaudit.report",
+  "schema_version": "1.0",
+  "seed": 1,
+  "significance": {
+    "dsr": {
+      "dsr": 0.975991794336,
+      "n_trials": 10,
+      "sr0": 0.0646095757633,
+      "var_sr": 0.00168365933112,
+      "variance_source": "lo_approx"
+    },
+    "psr": 0.999847532192,
+    "sensitivity": {
+      "beyond_grid": true,
+      "points": [
+        {
+          "dsr": 0.999847532192,
+          "n_trials": 1
+        },
+        {
+          "dsr": 0.975991794336,
+          "n_trials": 10
+        },
+        {
+          "dsr": 0.89418840825,
+          "n_trials": 50
+        },
+        {
+          "dsr": 0.837748354955,
+          "n_trials": 100
+        },
+        {
+          "dsr": 0.727947396338,
+          "n_trials": 300
+        },
+        {
+          "dsr": 0.592299840692,
+          "n_trials": 1000
+        }
+      ],
+      "threshold": 0.5,
+      "tipping_n_trials": null
+    }
+  },
+  "verdict": {
+    "barriers": [
+      {
+        "band_high": 0.55,
+        "band_low": 0.45,
+        "evaluated": true,
+        "indecision": false,
+        "message_key": "barrier.dsr",
+        "name": "dsr",
+        "sense": "below",
+        "threshold": 0.5,
+        "triggered": false,
+        "value": 0.975991794336
+      },
+      {
+        "band_high": 1.05,
+        "band_low": 0.95,
+        "evaluated": true,
+        "indecision": false,
+        "message_key": "barrier.pf_p05",
+        "name": "pf_p05",
+        "sense": "below",
+        "threshold": 1.0,
+        "triggered": false,
+        "value": 1.18554644104
+      },
+      {
+        "band_high": 8.0,
+        "band_low": 3.0,
+        "evaluated": true,
+        "indecision": false,
+        "message_key": "barrier.dd_percentile",
+        "name": "dd_percentile",
+        "sense": "below",
+        "threshold": 5.0,
+        "triggered": false,
+        "value": 77.3
+      },
+      {
+        "band_high": 0.08,
+        "band_low": 0.03,
+        "evaluated": true,
+        "indecision": false,
+        "message_key": "barrier.null_pvalue",
+        "name": "null_pvalue",
+        "sense": "at_or_above",
+        "threshold": 0.05,
+        "triggered": false,
+        "value": 0.000499750124938
+      },
+      {
+        "band_high": 0.5,
+        "band_low": 0.35,
+        "evaluated": false,
+        "indecision": false,
+        "message_key": "barrier.wf_efficiency",
+        "name": "wf_efficiency",
+        "sense": "below",
+        "threshold": 0.4,
+        "triggered": false,
+        "value": null
+      }
+    ],
+    "conditions": [
+      {
+        "code": "not_evaluated",
+        "message_key": "condition.not_evaluated",
+        "params": {
+          "barrier": "wf_efficiency"
+        }
+      }
+    ],
+    "counts": {
+      "blocking": 0,
+      "info": 6,
+      "major": 0,
+      "minor": 0
+    },
+    "decision": "GO_CONDITIONAL",
+    "method_version": "1.0",
+    "revue_humaine": false
+  },
+  "walkforward": null
+}

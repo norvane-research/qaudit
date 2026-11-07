@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rapport d&#x27;audit qaudit — martingale</title>
+<style>
+:root{--ink:#0b1f3a;--ink-2:#17335d;--gold:#b8860b;--gold-2:#e2c26a;--paper:#f6f4ef;
+--card:#fff;--text:#1f2933;--muted:#5f6b7a;--rule:#e4dfd4;--rule-2:#eef1f6;
+--go:#166534;--go-bg:#e8f5ec;--cond:#a15c07;--cond-bg:#fdf3e1;--nogo:#991b1b;--nogo-bg:#fdecec;
+--blocking:#991b1b;--blocking-bg:#fdecec;--major:#c2410c;--major-bg:#fff0e6;
+--minor:#8a6d00;--minor-bg:#fff8db;--info:#475569;--info-bg:#eef2f7;
+--serif:Georgia,"Palatino Linotype","Book Antiqua",Cambria,serif;
+--sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+--mono:Consolas,"Cascadia Mono","Courier New",monospace}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);
+font-size:15px;line-height:1.55;font-variant-numeric:tabular-nums}
+a{color:var(--ink-2);text-decoration:none}a:hover{text-decoration:underline}
+.page{max-width:1080px;margin:0 auto;padding:28px 28px 72px}
+.mast{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:stretch;
+border-top:6px solid var(--ink);padding-top:22px}
+.brand{font-family:var(--serif);font-size:1.05rem;letter-spacing:.14em;text-transform:uppercase;
+color:var(--ink);display:flex;align-items:center;gap:10px}
+.brand i{display:inline-block;width:26px;height:26px;border:2px solid var(--gold);
+border-radius:50%;position:relative}
+.brand i:after{content:"";position:absolute;inset:6px;background:var(--ink);border-radius:50%}
+.brand-line{color:var(--muted);font-size:.86rem;margin-top:4px}
+h1{font-family:var(--serif);font-weight:normal;font-size:2.35rem;line-height:1.12;color:var(--ink);
+margin:26px 0 8px}
+.subject{font-size:1.05rem;color:var(--muted)}.subject b{color:var(--text);font-weight:600}
+.verdict-panel{border-radius:14px;padding:22px 24px;border:1px solid var(--vc);
+background:var(--vbg);display:flex;flex-direction:column;justify-content:center;gap:10px}
+.verdict-panel .k{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--vc);
+font-weight:600}
+.verdict-panel .d{font-family:var(--serif);font-size:2rem;line-height:1.1;color:var(--vc)}
+.verdict-panel .counts{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.GO{--vc:var(--go);--vbg:var(--go-bg)}.GO_CONDITIONAL{--vc:var(--cond);--vbg:var(--cond-bg)}
+.NO_GO{--vc:var(--nogo);--vbg:var(--nogo-bg)}
+.review{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;
+border-radius:8px;padding:8px 12px;font-size:.88rem;margin-top:4px}
+.review:before{content:"E3";font-family:var(--mono);background:var(--gold);color:var(--ink);
+border-radius:4px;padding:1px 6px;font-weight:700}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);
+border:1px solid var(--rule);border-radius:12px;overflow:hidden;margin:26px 0 10px}
+.facts div{background:var(--card);padding:14px 16px}
+.facts .l{font-size:.74rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.facts .v{font-family:var(--serif);font-size:1.12rem;color:var(--ink);margin-top:3px;
+word-break:keep-all}
+.toc{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin:14px 0 6px;
+font-size:.86rem}
+.toc .l{color:var(--muted);text-transform:uppercase;letter-spacing:.1em;font-size:.72rem;
+margin-right:4px}
+.toc a{color:var(--ink-2);border-bottom:1px solid transparent}.toc a:hover{border-color:var(--gold);
+text-decoration:none}
+section.card{background:var(--card);border:1px solid var(--rule);border-radius:14px;
+padding:22px 26px 20px;margin:18px 0;break-inside:avoid}
+h2{font-family:var(--serif);font-weight:normal;font-size:1.42rem;color:var(--ink);margin:0 0 12px;
+padding-bottom:10px;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:12px}
+h2:before{content:"";width:18px;height:3px;background:var(--gold);border-radius:2px;flex:none}
+p{margin:.55rem 0}p.lead{color:var(--muted)}
+ul{padding-left:1.15rem;margin:.5rem 0}li{margin:.3rem 0}
+.alert li{list-style:none;position:relative;padding-left:1.1rem}
+.alert li:before{content:"";position:absolute;left:0;top:.55em;width:8px;height:8px;
+border-radius:50%;background:var(--nogo)}
+table{border-collapse:separate;border-spacing:0;width:100%;margin:.7rem 0;font-size:.92rem;
+border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+th,td{padding:.5rem .7rem;text-align:left;vertical-align:top;border-top:1px solid var(--rule-2)}
+tr:first-child>*{border-top:none}
+th{background:var(--rule-2);color:var(--ink);font-weight:600;font-size:.78rem;text-transform:uppercase;
+letter-spacing:.06em}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.grid tbody tr:nth-child(even) td{background:#fbfaf7}
+table.kv td:first-child{color:var(--muted);width:42%;font-size:.88rem}
+table.kv td:last-child{font-weight:500;overflow-wrap:anywhere}
+tr.neg td{color:var(--nogo)}tr.neg td:first-child{color:var(--nogo)}
+.chip{display:inline-block;border-radius:999px;padding:.12rem .62rem;font-size:.76rem;
+font-weight:600;letter-spacing:.03em;white-space:nowrap;border:1px solid transparent;
+background:var(--cbg);color:var(--cc);border-color:color-mix(in srgb,var(--cc) 25%,transparent)}
+.chip.passed{--cc:var(--go);--cbg:var(--go-bg)}
+.chip.triggered{--cc:var(--nogo);--cbg:var(--nogo-bg)}
+.chip.indecision{--cc:var(--cond);--cbg:var(--cond-bg)}
+.chip.not_evaluated{--cc:var(--info);--cbg:var(--info-bg)}
+.chip.blocking{--cc:var(--blocking);--cbg:var(--blocking-bg)}
+.chip.major{--cc:var(--major);--cbg:var(--major-bg)}
+.chip.minor{--cc:var(--minor);--cbg:var(--minor-bg)}.chip.info{--cc:var(--info);--cbg:var(--info-bg)}
+.chip.count{--cc:var(--muted);--cbg:#fff;font-weight:500}
+.chip.count b{color:var(--text);margin-left:4px}
+.chip.zero{opacity:.55}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:12px;
+margin:.6rem 0}
+.kpi{border:1px solid var(--rule);border-radius:10px;padding:12px 14px 10px;background:#fff}
+.kpi .l{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);
+min-height:2.2em;display:flex;align-items:flex-end}
+.kpi .v{font-family:var(--serif);font-size:1.55rem;color:var(--ink);margin-top:6px;line-height:1.15}
+.finding{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:start;
+padding:11px 14px;border-radius:10px;margin:8px 0;background:var(--fbg);
+border-left:4px solid var(--fc)}
+.finding .code{font-family:var(--mono);font-size:.8rem;color:var(--muted);grid-column:2;
+margin-top:-2px}
+.finding .txt{grid-column:2;margin:0}
+.finding.blocking{--fc:var(--blocking);--fbg:var(--blocking-bg)}
+.finding.major{--fc:var(--major);--fbg:var(--major-bg)}
+.finding.minor{--fc:var(--minor);--fbg:var(--minor-bg)}
+.finding.info{--fc:var(--info);--fbg:var(--info-bg)}
+.finding.passed{--fc:var(--go);--fbg:var(--go-bg)}
+.finding.triggered{--fc:var(--nogo);--fbg:var(--nogo-bg)}
+.finding.indecision{--fc:var(--cond);--fbg:var(--cond-bg)}
+.finding.not_evaluated{--fc:var(--info);--fbg:var(--info-bg)}
+.help{background:var(--rule-2);border-left:3px solid var(--gold);border-radius:8px;
+padding:10px 14px;margin:2px 0 14px;color:var(--ink-2);font-size:.9rem;line-height:1.5}
+.help b{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+color:var(--muted);margin-bottom:3px}
+#en_clair{background:#fffdf6;border-color:#e6d7a6}
+#en_clair p{font-size:1.02rem}
+#en_clair .finding .code{font-family:var(--serif);font-size:1.05rem;color:var(--ink);margin-top:0}
+#en_clair .closing{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule)}
+figure{margin:.8rem 0 .4rem}figure svg{width:100%;height:auto;display:block}
+figcaption{font-size:.8rem;color:var(--muted);margin-top:4px}
+#pied p{font-family:var(--mono);font-size:.8rem;color:var(--muted);overflow-wrap:anywhere}
+@media (max-width:760px){.mast,.facts{grid-template-columns:1fr}.page{padding:18px 14px 48px}
+h1{font-size:1.8rem}table.kv td:first-child{width:auto}}
+@media print{@page{margin:16mm}body{background:#fff;font-size:11.5px}
+.page{max-width:none;padding:0}.toc{display:none}
+section.card{border:none;padding:0 0 6px;margin:14px 0;break-inside:avoid;
+border-bottom:1px solid var(--rule)}
+.verdict-panel,.facts div,.kpi,.finding,th{-webkit-print-color-adjust:exact;
+print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="mast">
+<div><div class="brand"><i></i>qaudit</div><div class="brand-line">Audit indépendant de systèmes de trading — moteur déterministe 1.0.0</div><h1>Rapport d&#x27;audit qaudit</h1><div class="subject"><b>martingale</b> · Audit complet</div></div>
+<div class="verdict-panel NO_GO"><div class="k">Verdict</div><div class="d">NO-GO</div><div class="counts"><span class="chip count">bloquant<b>1</b></span><span class="chip count">majeur<b>1</b></span><span class="chip count zero">mineur<b>0</b></span><span class="chip count">info<b>6</b></span></div><div class="review">Une grandeur de barrière tombe dans sa bande d&#x27;indécision : revue humaine requise (porte E3).</div></div>
+</header>
+<div class="facts"><div><div class="l">Période couverte</div><div class="v">2021-01-05 → 2022-04-03</div></div><div><div class="l">Trades utilisables / fournis</div><div class="v">600 / 600</div></div><div><div class="l">Solde initial</div><div class="v">10 000,00 USD</div></div><div><div class="l">Nombre d&#x27;essais retenu (N)</div><div class="v">10</div></div></div>
+<nav class="toc"><span class="l">Sommaire</span><a href="#verdict">Verdict</a><a href="#en_clair">En clair : ce que dit ce rapport</a><a href="#kpi">Indicateurs clés</a><a href="#barrieres">Barrières de décision</a><a href="#constats_critiques">Constats critiques</a><a href="#constats_complets">Tous les constats</a><a href="#sharpe_degonfle">Sharpe probabiliste et dégonflé</a><a href="#sensibilite_essais">Sensibilité au nombre d&#x27;essais</a><a href="#monte_carlo">Rééchantillonnage</a><a href="#regimes">Régimes et périodes</a><a href="#seuil_arret">Repères de drawdown</a><a href="#conditions">Conditions de mise en production</a><a href="#portee_et_limites">Portée et limites</a></nav>
+<section class="card" id="entete"><h2>En-tête</h2>
+<aside class="help"><b>Comment lire cette section</b>La carte d&#x27;identité de l&#x27;audit. L&#x27;empreinte SHA-256 est une signature unique du fichier de trades analysé : si le fichier change d&#x27;un seul caractère, l&#x27;empreinte change. La graine et les versions permettent de refaire exactement le même rapport. « N » est le nombre de variantes de la stratégie essayées avant de retenir celle-ci, déclaré par le demandeur ou fixé par défaut par la méthode.</aside>
+<table class="kv"><tbody><tr><td>Système audité</td><td>martingale</td></tr><tr><td>Version du moteur</td><td>1.0.0</td></tr><tr><td>Version de la méthode</td><td>1.0</td></tr><tr><td>Graine</td><td>0</td></tr><tr><td>Empreinte SHA-256 des données</td><td>ae4badd1047e27534d61db5914dd8b7232470df67bdc4663c85783394ca19ef5</td></tr><tr><td>Itérations Monte Carlo</td><td>10 000</td></tr><tr><td>Nombre d&#x27;essais retenu (N)</td><td>10</td></tr><tr><td>Période couverte</td><td>2021-01-05T06:21:46 → 2022-04-03T23:51:20</td></tr><tr><td>Trades utilisables / fournis</td><td>600 / 600</td></tr><tr><td>Devise</td><td>USD</td></tr><tr><td>Solde initial</td><td>10 000,00</td></tr><tr><td>Prestation</td><td>Audit complet (audit_complet)</td></tr></tbody></table>
+</section>
+<section class="card" id="verdict"><h2>Verdict</h2>
+<aside class="help"><b>Comment lire cette section</b>Trois verdicts possibles : GO (feu vert), GO SOUS CONDITIONS (feu orange : des vérifications manquent), NO-GO (feu rouge : un test a échoué ou un défaut bloquant existe). Le verdict découle de seuils fixés à l&#x27;avance, jamais d&#x27;une appréciation. Les constats sont classés par gravité : bloquant, majeur, mineur, info.</aside>
+<p>Verdict : NO-GO.</p>
+<p>Constats : 1 bloquant(s), 1 majeur(s), 0 mineur(s), 6 information(s).</p>
+<p>Une grandeur de barrière tombe dans sa bande d&#x27;indécision : revue humaine requise (porte E3).</p>
+<ul class="alert"><li>Martingale : après une perte, le volume est multiplié par ≥ 1,5 dans 96% des cas (après un gain : 1%), sur 135 trades post-perte.</li></ul>
+</section>
+<section class="card" id="en_clair"><h2>En clair : ce que dit ce rapport</h2>
+<p>Feu rouge : 1 défaut(s) bloquant(s) ont été relevés, 1 test(s) n&#x27;ont pas pu être faits faute de données, 3 test(s) sont dans leur zone d&#x27;incertitude et 1 défaut(s) majeur(s) ont été relevés. Les résultats fournis ne permettent pas d&#x27;affirmer que ce système a un avantage réel : ce qui a été gagné peut s&#x27;expliquer par le hasard, par quelques trades exceptionnels ou par une prise de risque non maîtrisée. Ce n&#x27;est pas une prédiction de perte future ; c&#x27;est l&#x27;absence de preuve.</p>
+<p>Le verdict porte uniquement sur les éléments fournis à l&#x27;auditeur : les trades clos du dossier, sur la période couverte. Il ne repose sur aucun jugement humain ni sur une note globale : chaque test a un seuil fixé à l&#x27;avance par la méthode, et le verdict découle mécaniquement de ces seuils. Le même dossier, réaudité demain avec la même version, donnera exactement le même rapport.</p>
+<p>Les cinq questions posées aux résultats, et la réponse chiffrée pour ce dossier :</p>
+<div class="finding indecision"><span class="chip indecision">bande d&#x27;indécision</span><div class="code">Le hasard est-il écarté ?</div><p class="txt">Quand on essaie plusieurs versions d&#x27;une stratégie avant d&#x27;en garder une, la meilleure paraît toujours bonne, même si aucune n&#x27;a d&#x27;avantage. Ce test calcule la probabilité que la performance soit réelle une fois cet effet corrigé, pour 10 variante(s) déclarée(s) : 54,0 %. Seuil de réussite : 50,0 %. Résultat dans la zone d&#x27;incertitude autour du seuil : la méthode demande alors une revue humaine plutôt qu&#x27;une décision automatique.</p></div>
+<div class="finding indecision"><span class="chip indecision">bande d&#x27;indécision</span><div class="code">Et avec de la malchance ?</div><p class="txt">Le profit factor est le total gagné divisé par le total perdu (1,00 = équilibre). Les mêmes trades ont été rejoués 10 000 fois dans un ordre différent, par blocs, pour voir ce que donnerait la même stratégie avec moins de chance : dans les 5 % de scénarios les plus défavorables, le profit factor tombe à 1,027. Seuil : 1,00 — en dessous, la stratégie perd de l&#x27;argent dans ces scénarios. Résultat dans la zone d&#x27;incertitude autour du seuil : la méthode demande alors une revue humaine plutôt qu&#x27;une décision automatique.</p></div>
+<div class="finding passed"><span class="chip passed">franchie</span><div class="code">Les pertes arrivent-elles groupées ?</div><p class="txt">Le drawdown est la plus grosse baisse subie entre un sommet et le creux qui le suit. Celui observé (1 155,00) est plus grand que dans 88,0 % des réordonnancements aléatoires des mêmes trades. Une valeur très basse (sous 5 %) signalerait une courbe trop régulière pour être honnête ; une valeur très haute signifie que les pertes sont arrivées groupées, ce qui est plus dur à vivre que ne le laisse penser le résultat final. Test réussi.</p></div>
+<div class="finding indecision"><span class="chip indecision">bande d&#x27;indécision</span><div class="code">Un système sans avantage ferait-il aussi bien ?</div><p class="txt">On a simulé 10 000 systèmes qui n&#x27;ont aucun avantage mais gagnent et perdent des montants de même taille que celui-ci ; 4,8 % d&#x27;entre eux ont fait aussi bien ou mieux. Seuil : 5,0 % — au-dessus, on ne peut pas distinguer ce système d&#x27;un système sans avantage. Résultat dans la zone d&#x27;incertitude autour du seuil : la méthode demande alors une revue humaine plutôt qu&#x27;une décision automatique.</p></div>
+<div class="finding not_evaluated"><span class="chip not_evaluated">non évaluée</span><div class="code">Tient-il hors des périodes où il a été réglé ?</div><p class="txt">Une stratégie réglée sur une période a tendance à y briller et à décevoir ensuite. Ce test compare sa performance sur des périodes qui n&#x27;ont pas servi au réglage. Il n&#x27;a pas pu être fait : il faut pour cela un jeu de résultats par paramètres testés, qui n&#x27;a pas été fourni. Non mesurable avec les données fournies.</p></div>
+<div class="finding blocking"><span class="chip blocking">bloquant</span><div class="code">Mise augmentée après les pertes</div><p class="txt">Martingale : après une perte, le volume est multiplié par ≥ 1,5 dans 96% des cas (après un gain : 1%), sur 135 trades post-perte. En clair : après une perte, la taille des positions augmente pour « se refaire ». Cela produit de longues séries de petits gains puis une perte très lourde le jour où la série de pertes dure trop longtemps. Le compte final ne le montre pas tant que ce jour n&#x27;est pas arrivé.</p></div>
+<div class="finding major"><span class="chip major">majeur</span><div class="code">Trades sans stop de protection</div><p class="txt">Absence de stop : 100% des trades n&#x27;ont aucun stop-loss renseigné. En clair : une part des positions n&#x27;avait aucun niveau de sortie automatique en cas de perte. La perte possible sur ces positions n&#x27;était donc pas bornée à l&#x27;avance.</p></div>
+<div class="closing"><p>Un feu rouge ne se corrige pas dans le rapport : il se corrige dans la stratégie ou dans les données, puis se vérifie sur un nouvel historique. Les points ci-dessus disent précisément quel test a échoué et de combien, pour que la discussion porte sur des faits.</p><p>Ce rapport constate ; il ne conseille aucun réglage et ne prédit pas l&#x27;avenir.</p></div>
+</section>
+<section class="card" id="kpi"><h2>Indicateurs clés</h2>
+<aside class="help"><b>Comment lire cette section</b>Profit net : gains moins pertes, commissions et swaps compris. Profit factor : total gagné ÷ total perdu (1,00 = équilibre). Taux de réussite : part des trades gagnants. Ratio gain/perte : gain moyen d&#x27;un trade gagnant ÷ perte moyenne d&#x27;un trade perdant. Espérance : gain moyen par trade, tous trades confondus. Sharpe : gain moyen rapporté à la variabilité des résultats (plus il est haut, plus les gains sont réguliers). Drawdown maximal : plus grosse baisse entre un sommet et le creux suivant. Série perdante : plus long enchaînement de pertes consécutives.</aside>
+<div class="kpis"><div class="kpi"><div class="l">Profit net</div><div class="v">2 050,00</div></div><div class="kpi"><div class="l">Profit factor</div><div class="v">1,260</div></div><div class="kpi"><div class="l">Taux de réussite</div><div class="v">77,5 %</div></div><div class="kpi"><div class="l">Ratio gain moyen / perte moyenne</div><div class="v">0,366</div></div><div class="kpi"><div class="l">Espérance par trade</div><div class="v">3,42</div></div><div class="kpi"><div class="l">Sharpe par trade</div><div class="v">0,069</div></div><div class="kpi"><div class="l">Sharpe annualisé (fréquence mesurée)</div><div class="v">1,52</div></div><div class="kpi"><div class="l">Trades par an (mesuré)</div><div class="v">483,0</div></div><div class="kpi"><div class="l">Drawdown maximal</div><div class="v">1 155,00</div></div><div class="kpi"><div class="l">Drawdown maximal (% du sommet d&#x27;equity)</div><div class="v">9,0 %</div></div><div class="kpi"><div class="l">Taux de croissance annualisé</div><div class="v">16,2 %</div></div><div class="kpi"><div class="l">Plus longue série perdante</div><div class="v">4</div></div></div>
+</section>
+<section class="card" id="barrieres"><h2>Barrières de décision</h2>
+<aside class="help"><b>Comment lire cette section</b>Chaque ligne est un test avec un seuil fixé par la méthode. « Franchie » = réussi ; « déclenchée » = échoué (en majuscules, car cela suffit à un NO-GO) ; « bande d&#x27;indécision » = trop près du seuil pour trancher automatiquement, un auditeur doit se prononcer ; « non évaluée » = données manquantes. Il n&#x27;y a pas de note globale : un seul test échoué fait le verdict.</aside>
+<p class="lead">Le verdict découle mécaniquement des barrières ci-dessous ; aucun score composite.</p>
+<table class="grid"><thead><tr><th>Barrière</th><th>Valeur</th><th>Seuil NO-GO</th><th>Bande d&#x27;indécision</th><th>Statut</th></tr></thead><tbody><tr><td>Sharpe dégonflé (DSR)</td><td>0,540</td><td>&lt; 0,500</td><td>[0,450 ; 0,550]</td><td><span class="chip indecision">bande d&#x27;indécision</span></td></tr><tr><td>Profit factor, 5ᵉ centile du bootstrap par blocs</td><td>1,027</td><td>&lt; 1,000</td><td>[0,950 ; 1,050]</td><td><span class="chip indecision">bande d&#x27;indécision</span></td></tr><tr><td>Centile du drawdown observé parmi les permutations d&#x27;ordre</td><td>87,970</td><td>&lt; 5,000</td><td>[3,000 ; 8,000]</td><td><span class="chip passed">franchie</span></td></tr><tr><td>p-value contre la nulle sans edge</td><td>0,048</td><td>≥ 0,050</td><td>[0,030 ; 0,080]</td><td><span class="chip indecision">bande d&#x27;indécision</span></td></tr><tr><td>Efficacité walk-forward hors échantillon</td><td>n. d.</td><td>&lt; 0,400</td><td>[0,350 ; 0,500]</td><td><span class="chip not_evaluated">non évaluée</span></td></tr></tbody></table>
+</section>
+<section class="card" id="constats_critiques"><h2>Constats critiques</h2>
+<aside class="help"><b>Comment lire cette section</b>Les défauts assez graves pour peser sur le verdict, avec le chiffre qui les établit. Un constat bloquant suffit à un NO-GO ; plusieurs constats majeurs conduisent à un GO SOUS CONDITIONS au mieux. Ces constats apparaissent dans toutes les versions du rapport, quelle que soit la prestation.</aside>
+<div class="finding blocking"><span class="chip blocking">bloquant</span><div class="code">martingale</div><p class="txt">Martingale : après une perte, le volume est multiplié par ≥ 1,5 dans 96% des cas (après un gain : 1%), sur 135 trades post-perte.</p></div>
+<div class="finding major"><span class="chip major">majeur</span><div class="code">no_stop</div><p class="txt">Absence de stop : 100% des trades n&#x27;ont aucun stop-loss renseigné.</p></div>
+</section>
+<section class="card" id="constats_complets"><h2>Tous les constats</h2>
+<aside class="help"><b>Comment lire cette section</b>Tout ce que l&#x27;auditeur a relevé, y compris les remarques mineures et les informations (par exemple un test qui n&#x27;a pas pu tourner). Une ligne « info » n&#x27;est pas un défaut : elle dit ce qui a été fait, ou ce qui n&#x27;a pas pu l&#x27;être et pourquoi.</aside>
+<div class="finding blocking"><span class="chip blocking">bloquant</span><div class="code">martingale</div><p class="txt">Martingale : après une perte, le volume est multiplié par ≥ 1,5 dans 96% des cas (après un gain : 1%), sur 135 trades post-perte.</p></div>
+<div class="finding major"><span class="chip major">majeur</span><div class="code">no_stop</div><p class="txt">Absence de stop : 100% des trades n&#x27;ont aucun stop-loss renseigné.</p></div>
+<div class="finding info"><span class="chip info">info</span><div class="code">dsr_lo_variance</div><p class="txt">Variance des Sharpe entre variantes inconnue : approximation de Lo (V = 0,0017) pour N = 10 essais. Correction prudente : le vrai DSR est probablement inférieur.</p></div>
+<div class="finding info"><span class="chip info">info</span><div class="code">execution_realism_skipped</div><p class="txt">Détecteur « execution_realism » non exécuté : aucune série de prix fournie.</p></div>
+<div class="finding info"><span class="chip info">info</span><div class="code">lookahead_skipped</div><p class="txt">Détecteur « lookahead » non exécuté : aucune série de prix fournie.</p></div>
+<div class="finding info"><span class="chip info">info</span><div class="code">missing_optional</div><p class="txt">Champs absents de la source : commission, swap. Les analyses qui en dépendent sont désactivées et signalées.</p></div>
+<div class="finding info"><span class="chip info">info</span><div class="code">null_empirical</div><p class="txt">La nulle « sans edge » conserve les distributions empiriques des gains et des pertes et n&#x27;en neutralise que la fréquence (p₀ = 0,7321). Elle répond : « le taux de réussite observé est-il explicable par la chance, à profil de gains/pertes donné ? » — ce n&#x27;est pas une nulle de marché efficient.</p></div>
+<div class="finding info"><span class="chip info">info</span><div class="code">stop_geometry_skipped</div><p class="txt">Détecteur « stop_geometry » non exécuté : aucune série de prix fournie.</p></div>
+</section>
+<section class="card" id="sharpe_degonfle"><h2>Sharpe probabiliste et dégonflé</h2>
+<aside class="help"><b>Comment lire cette section</b>Le Sharpe mesure la régularité des gains. Le PSR est la probabilité que le vrai Sharpe soit positif compte tenu du nombre de trades et de la forme des résultats. Le DSR répond à la question la plus dure : cette performance dépasse-t-elle ce que le hasard aurait donné au meilleur de N essais ? Si le demandeur a essayé plus de variantes qu&#x27;il ne l&#x27;a déclaré, le vrai DSR est plus bas que celui affiché.</aside>
+<p class="lead">PSR : probabilité que le Sharpe vrai soit positif, corrigée de l&#x27;asymétrie et des queues. DSR : même probabilité évaluée contre le meilleur Sharpe attendu au hasard après N essais.</p>
+<table class="kv"><tbody><tr><td>Sharpe probabiliste (PSR)</td><td>0,9315</td></tr><tr><td>Sharpe dégonflé (DSR)</td><td>0,5401</td></tr><tr><td>Sharpe maximal attendu sous la nulle (SR₀)</td><td>0,0644</td></tr><tr><td>Nombre d&#x27;essais retenu (N)</td><td>10</td></tr><tr><td>Variance des Sharpe entre variantes (V)</td><td>0,001671</td></tr><tr><td>Origine de V</td><td>approximation de Lo (prudente : le vrai DSR est probablement inférieur)</td></tr></tbody></table>
+</section>
+<section class="card" id="sensibilite_essais"><h2>Sensibilité au nombre d&#x27;essais</h2>
+<aside class="help"><b>Comment lire cette section</b>Le même DSR recalculé pour différents nombres de variantes essayées. Lisez la ligne qui correspond à votre pratique réelle : si vous avez testé 50 réglages avant de garder celui-ci, c&#x27;est la ligne N = 50 qui compte. Le graphique montre à partir de quel nombre d&#x27;essais la performance cesse d&#x27;être distinguable du hasard (ligne rouge).</aside>
+<p class="lead">Ce système cesse d&#x27;être significatif (DSR &lt; 0,50) au-delà de 12 variantes testées.</p>
+<figure><svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg" role="img"><line x1="64" y1="176" x2="628" y2="176" stroke="#cfd6e0" stroke-width="1"/><line x1="64" y1="137.5" x2="628" y2="137.5" stroke="#eef1f6" stroke-width="1"/><text x="56" y="141.5" font-size="10" fill="#5f6b7a" text-anchor="end" font-family="Segoe UI,Arial,sans-serif">0,25</text><line x1="64" y1="99.0" x2="628" y2="99.0" stroke="#eef1f6" stroke-width="1"/><line x1="64" y1="60.5" x2="628" y2="60.5" stroke="#eef1f6" stroke-width="1"/><text x="56" y="64.5" font-size="10" fill="#5f6b7a" text-anchor="end" font-family="Segoe UI,Arial,sans-serif">0,75</text><line x1="64" y1="22.0" x2="628" y2="22.0" stroke="#eef1f6" stroke-width="1"/><text x="56" y="26.0" font-size="10" fill="#5f6b7a" text-anchor="end" font-family="Segoe UI,Arial,sans-serif">1,00</text><rect x="83.7" y="32.6" width="54.5" height="143.4" rx="3" fill="#17335d"/><text x="111.0" y="27.6" font-size="11" text-anchor="middle" fill="#1f2933" font-family="Segoe UI,Arial,sans-serif">0,931</text><text x="111.0" y="192" font-size="11" text-anchor="middle" fill="#5f6b7a" font-family="Segoe UI,Arial,sans-serif">N = 1</text><rect x="177.7" y="92.8" width="54.5" height="83.2" rx="3" fill="#17335d"/><text x="205.0" y="87.8" font-size="11" text-anchor="middle" fill="#1f2933" font-family="Segoe UI,Arial,sans-serif">0,540</text><text x="205.0" y="192" font-size="11" text-anchor="middle" fill="#5f6b7a" font-family="Segoe UI,Arial,sans-serif">N = 10</text><rect x="271.7" y="129.4" width="54.5" height="46.6" rx="3" fill="#991b1b"/><text x="299.0" y="124.4" font-size="11" text-anchor="middle" fill="#1f2933" font-family="Segoe UI,Arial,sans-serif">0,303</text><text x="299.0" y="192" font-size="11" text-anchor="middle" fill="#5f6b7a" font-family="Segoe UI,Arial,sans-serif">N = 50</text><rect x="365.7" y="140.7" width="54.5" height="35.3" rx="3" fill="#991b1b"/><text x="393.0" y="135.7" font-size="11" text-anchor="middle" fill="#1f2933" font-family="Segoe UI,Arial,sans-serif">0,229</text><text x="393.0" y="192" font-size="11" text-anchor="middle" fill="#5f6b7a" font-family="Segoe UI,Arial,sans-serif">N = 100</text><rect x="459.7" y="153.8" width="54.5" height="22.2" rx="3" fill="#991b1b"/><text x="487.0" y="148.8" font-size="11" text-anchor="middle" fill="#1f2933" font-family="Segoe UI,Arial,sans-serif">0,144</text><text x="487.0" y="192" font-size="11" text-anchor="middle" fill="#5f6b7a" font-family="Segoe UI,Arial,sans-serif">N = 300</text><rect x="553.7" y="163.1" width="54.5" height="12.9" rx="3" fill="#991b1b"/><text x="581.0" y="158.1" font-size="11" text-anchor="middle" fill="#1f2933" font-family="Segoe UI,Arial,sans-serif">0,084</text><text x="581.0" y="192" font-size="11" text-anchor="middle" fill="#5f6b7a" font-family="Segoe UI,Arial,sans-serif">N = 1 000</text><line x1="64" y1="99.0" x2="628" y2="99.0" stroke="#991b1b" stroke-width="1.2" stroke-dasharray="5 4"/><text x="56" y="103.0" font-size="10" text-anchor="end" fill="#991b1b" font-weight="600" font-family="Segoe UI,Arial,sans-serif">DSR 0,50</text></svg></figure>
+<table class="grid"><thead><tr><th class="n">N essais</th><th class="n">DSR</th></tr></thead><tbody><tr><td class="n">1</td><td class="n">0,9315</td></tr><tr><td class="n">10</td><td class="n">0,5401</td></tr><tr class="neg"><td class="n">50</td><td class="n">0,3026</td></tr><tr class="neg"><td class="n">100</td><td class="n">0,2294</td></tr><tr class="neg"><td class="n">300</td><td class="n">0,1441</td></tr><tr class="neg"><td class="n">1 000</td><td class="n">0,0840</td></tr></tbody></table>
+</section>
+<section class="card" id="monte_carlo"><h2>Rééchantillonnage</h2>
+<aside class="help"><b>Comment lire cette section</b>Trois simulations sur les mêmes trades, pour trois questions. Bootstrap : et avec moins de chance, quel profit et quel drawdown ? (les fourchettes p05 / p50 / p95 encadrent 90 % des scénarios). Permutation : le drawdown observé est-il dû à l&#x27;ordre des trades ? Nulle sans avantage : combien de systèmes sans aucun avantage, mais avec les mêmes tailles de gains et de pertes, feraient aussi bien ?</aside>
+<p class="lead">Trois simulations, trois questions : le bootstrap mesure la malchance possible avec le même edge ; la permutation teste si la performance tient à l&#x27;ordre des trades ; la nulle compte les systèmes sans edge qui feraient aussi bien.</p>
+<p>La nulle « sans edge » conserve les distributions empiriques des gains et des pertes et n&#x27;en neutralise que la fréquence (p₀ = 0,7321). Elle répond : « le taux de réussite observé est-il explicable par la chance, à profil de gains/pertes donné ? » — ce n&#x27;est pas une nulle de marché efficient.</p>
+<table class="kv"><tbody><tr><td>Méthode de bootstrap</td><td>blocs stationnaires (Politis-Romano), longueur automatique</td></tr><tr><td>Longueur moyenne de bloc</td><td>15,21</td></tr><tr><td>Profit factor p05 / p50 / p95</td><td>1,027 / 1,277 / 1,593</td></tr><tr><td>Profit net p05 / p50 / p95</td><td>280,00 / 2 145,00 / 3 535,00</td></tr><tr><td>Drawdown p50 / p95 / p99</td><td>805,00 / 1 625,00 / 2 140,00</td></tr></tbody></table>
+<table class="kv"><tbody><tr><td>Drawdown observé</td><td>1 155,00</td></tr><tr><td>Centile du drawdown observé parmi les permutations</td><td>88,0</td></tr><tr><td>Drawdown des permutations p50 / p95</td><td>875,00 / 1 300,00</td></tr></tbody></table>
+<table class="kv"><tbody><tr><td>Taux de réussite d&#x27;équilibre p₀</td><td>73,2 %</td></tr><tr><td>p-value (profit net ≥ observé)</td><td>0,0479</td></tr><tr><td>Profit net des systèmes nuls p50 / p95</td><td>10,00 / 2 025,00</td></tr></tbody></table>
+</section>
+<section class="card" id="regimes"><h2>Régimes et périodes</h2>
+<aside class="help"><b>Comment lire cette section</b>Les trades sont classés en trois tiers selon l&#x27;agitation du marché au moment où ils ont eu lieu (volatilité basse, moyenne, haute), puis par trimestre. Une stratégie saine gagne dans plusieurs régimes et plusieurs trimestres ; si tout le profit vient d&#x27;un seul tiers ou d&#x27;une seule période, le résultat global est trompeur. Les lignes en rouge sont perdantes.</aside>
+<p class="lead">Classificateur utilisé : terciles de volatilité (écart-type glissant des P&amp;L, sans prix) ; trades non classés : 2.</p>
+<table class="grid"><thead><tr><th>Régime</th><th class="n">Trades</th><th class="n">Profit net</th><th class="n">PF</th><th class="n">Réussite</th><th class="n">Part du net</th></tr></thead><tbody><tr><td>volatilité basse</td><td class="n">218</td><td class="n">975,00</td><td class="n">1,508</td><td class="n">80,3 %</td><td class="n">47,6 %</td></tr><tr><td>volatilité moyenne</td><td class="n">188</td><td class="n">575,00</td><td class="n">1,236</td><td class="n">75,5 %</td><td class="n">28,0 %</td></tr><tr><td>volatilité haute</td><td class="n">192</td><td class="n">470,00</td><td class="n">1,134</td><td class="n">76,0 %</td><td class="n">22,9 %</td></tr></tbody></table>
+<table class="grid"><thead><tr><th>Trimestre</th><th class="n">Trades</th><th class="n">Profit net</th><th class="n">PF</th></tr></thead><tbody><tr><td>2021-T1</td><td class="n">118</td><td class="n">895,00</td><td class="n">1,973</td></tr><tr><td>2021-T2</td><td class="n">120</td><td class="n">690,00</td><td class="n">1,575</td></tr><tr><td>2021-T3</td><td class="n">116</td><td class="n">720,00</td><td class="n">1,667</td></tr><tr class="neg"><td>2021-T4</td><td class="n">128</td><td class="n">-585,00</td><td class="n">0,805</td></tr><tr><td>2022-T1</td><td class="n">114</td><td class="n">320,00</td><td class="n">1,200</td></tr><tr><td>2022-T2</td><td class="n">4</td><td class="n">10,00</td><td class="n">1,125</td></tr></tbody></table>
+</section>
+<section class="card" id="seuil_arret"><h2>Repères de drawdown</h2>
+<aside class="help"><b>Comment lire cette section</b>Repères issus des simulations : le drawdown qui n&#x27;a été dépassé que dans 5 % (p95) et 1 % (p99) des scénarios. Ils servent à savoir à quoi s&#x27;attendre, et à reconnaître le jour où le système ne se comporte plus comme dans son historique. Ce ne sont pas des réglages recommandés.</aside>
+<p class="lead">Repères statistiques de drawdown issus du bootstrap par blocs, à comparer au drawdown réel en exploitation. Ce ne sont pas des réglages de la stratégie.</p>
+<table class="kv"><tbody><tr><td>Drawdown maximal observé</td><td>1 155,00</td></tr><tr><td>Drawdown bootstrap, 95ᵉ centile</td><td>1 625,00</td></tr><tr><td>Drawdown bootstrap, 99ᵉ centile</td><td>2 140,00</td></tr></tbody></table>
+</section>
+<section class="card" id="conditions"><h2>Conditions de mise en production</h2>
+<aside class="help"><b>Comment lire cette section</b>Ce qu&#x27;il faudrait fournir ou corriger pour que l&#x27;audit soit complet. Chaque condition renvoie à un test précis qui n&#x27;a pas pu être mené ou qui est resté dans sa zone d&#x27;incertitude.</aside>
+<ul><li>La barrière « dsr » vaut 0,5401 dans sa bande d&#x27;indécision [0,45 ; 0,55] : revue humaine requise.</li><li>La barrière « pf_p05 » vaut 1,0274 dans sa bande d&#x27;indécision [0,95 ; 1,05] : revue humaine requise.</li><li>La barrière « null_pvalue » vaut 0,0479 dans sa bande d&#x27;indécision [0,03 ; 0,08] : revue humaine requise.</li><li>La barrière « wf_efficiency » n&#x27;a pas pu être évaluée : fournir les données nécessaires avant toute mise en production.</li></ul>
+</section>
+<section class="card" id="portee_et_limites"><h2>Portée et limites</h2>
+<aside class="help"><b>Comment lire cette section</b>Ce que l&#x27;audit n&#x27;a pas pu voir, et ce qu&#x27;il ne prétend pas faire. Ces limites font partie du résultat : un rapport qui ne les dirait pas serait trompeur.</aside>
+<ul><li>Seuls les trades clos sont analysés : le P&amp;L flottant et les positions ouvertes sont inconnus.</li><li>Aucune série de prix : sensibilité du stop, look-ahead et réalisme d&#x27;exécution non testés.</li><li>Aucun walk-forward fourni : la robustesse hors échantillon n&#x27;est pas établie.</li><li>Aucun règlement propfirm : pas de rejeu.</li><li>La nulle « sans edge » conserve les distributions empiriques : ce n&#x27;est pas une nulle de marché efficient.</li><li>L&#x27;auditeur constate ; il ne recommande aucun paramétrage.</li><li>La variance des Sharpe entre variantes est inconnue : correction de Lo, prudente.</li></ul>
+</section>
+<section class="card" id="pied"><h2>Pied de page</h2>
+<aside class="help"><b>Comment lire cette section</b>Les identifiants qui rendent ce rapport vérifiable : version du moteur, version de la méthode (les seuils), graine, empreinte du fichier, prestation. Quiconque dispose du même fichier et de la même version obtient le même rapport, à l&#x27;octet près.</aside>
+<p>qaudit 1.0.0 — méthode 1.0 — schéma 1.0 — graine 0 — empreinte ae4badd1047e27534d61db5914dd8b7232470df67bdc4663c85783394ca19ef5 — prestation audit_complet.</p>
+<p>Reproductible : mêmes entrées + même version + même graine = même rapport, à l&#x27;octet près.</p>
+</section>
+</div>
+</body>
+</html>

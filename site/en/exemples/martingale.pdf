@@ -1,0 +1,725 @@
+%PDF-1.4
+%âãÏÓ
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 7375 >>
+stream
+0.043 0.122 0.227 rg 46.00 792.00 503.00 4.00 re f
+0.722 0.525 0.043 RG 1.20 w 46.00 767.00 11.00 11.00 re S
+0.043 0.122 0.227 rg 49.20 770.20 4.60 4.60 re f
+0.043 0.122 0.227 rg BT /F2 9.5 Tf 63.00 770.00 Td (Q A U D I T) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 46.00 757.00 Td (Independent audit of trading systems - deterministic engine 1.0.0) Tj ET
+0.992 0.925 0.925 rg 347.80 694.42 201.20 87.58 re f
+0.600 0.106 0.106 RG 0.80 w 347.80 694.42 201.20 87.58 re S
+0.600 0.106 0.106 rg BT /F2 7.2 Tf 359.80 766.00 Td (VERDICT) Tj ET
+0.600 0.106 0.106 rg BT /F2 15.5 Tf 359.80 748.00 Td (NO-GO) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 359.80 732.00 Td (blocking 1   major 1   minor 0   info 6) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 359.80 722.21 Td (A barrier value falls inside its indecision band:) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 359.80 712.42 Td (human review required \(gate E3\).) Tj ET
+0.043 0.122 0.227 rg BT /F2 21.0 Tf 46.00 722.00 Td (qaudit audit report) Tj ET
+0.373 0.420 0.478 rg BT /F1 10.0 Tf 46.00 695.85 Td (martingale  |  Audit complet) Tj ET
+1.000 1.000 1.000 rg 46.00 619.71 503.00 52.54 re f
+0.894 0.875 0.831 RG 0.60 w 46.00 619.71 503.00 52.54 re S
+0.373 0.420 0.478 rg BT /F1 6.6 Tf 54.00 657.05 Td (PERIOD COVERED) Tj ET
+0.043 0.122 0.227 rg BT /F2 9.4 Tf 54.00 645.07 Td (2021-01-05 ->) Tj ET
+0.043 0.122 0.227 rg BT /F2 9.4 Tf 54.00 632.29 Td (2022-04-03) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 171.75 672.25 m 171.75 619.71 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 6.6 Tf 179.75 657.05 Td (USABLE / SUPPLIED TRADES) Tj ET
+0.043 0.122 0.227 rg BT /F2 9.4 Tf 179.75 645.07 Td (600 / 600) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 297.50 672.25 m 297.50 619.71 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 6.6 Tf 305.50 657.05 Td (INITIAL BALANCE) Tj ET
+0.043 0.122 0.227 rg BT /F2 9.4 Tf 305.50 645.07 Td (10 000.00 USD) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 423.25 672.25 m 423.25 619.71 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 6.6 Tf 431.25 657.05 Td (NUMBER OF TRIALS USED \(N\)) Tj ET
+0.043 0.122 0.227 rg BT /F2 9.4 Tf 431.25 645.07 Td (10) Tj ET
+0.722 0.525 0.043 rg 46.00 590.55 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 587.55 Td (Header) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 580.55 m 549.00 580.55 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 523.30 503.00 53.25 re f
+0.722 0.525 0.043 rg 46.00 523.30 2.40 53.25 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 565.35 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 554.19 Td (The audit's identity card. The SHA-256 fingerprint is a unique signature of the trade file analysed: change a single character in the) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 543.04 Td (file and the fingerprint changes. The seed and the versions make it possible to reproduce exactly the same report. "N" is the number) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 531.89 Td (of variants of the strategy tried before this one was kept, declared by the requester or set by default by the method.) Tj ET
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 503.10 Td (Audited system) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 503.10 Td (martingale) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 495.60 m 549.00 495.60 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 483.40 Td (Engine version) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 483.40 Td (1.0.0) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 475.91 m 549.00 475.91 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 463.71 Td (Method version) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 463.71 Td (1.0) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 456.21 m 549.00 456.21 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 444.01 Td (Seed) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 444.01 Td (0) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 436.51 m 549.00 436.51 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 424.31 Td (SHA-256 fingerprint of the data) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 424.31 Td (ae4badd1047e27534d61db5914dd8b7232470df67bdc4663c85783394) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 412.62 Td (ca19ef5) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 405.12 m 549.00 405.12 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 392.92 Td (Monte Carlo iterations) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 392.92 Td (10 000) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 385.43 m 549.00 385.43 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 373.23 Td (Number of trials used \(N\)) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 373.23 Td (10) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 365.73 m 549.00 365.73 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 353.53 Td (Period covered) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 353.53 Td (2021-01-05T06:21:46 -> 2022-04-03T23:51:20) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 346.03 m 549.00 346.03 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 333.83 Td (Usable / supplied trades) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 333.83 Td (600 / 600) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 326.34 m 549.00 326.34 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 314.14 Td (Currency) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 314.14 Td (USD) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 306.64 m 549.00 306.64 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 294.44 Td (Initial balance) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 294.44 Td (10 000.00) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 286.95 m 549.00 286.95 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 274.75 Td (Service) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 274.75 Td (Audit complet \(audit_complet\)) Tj ET
+0.722 0.525 0.043 rg 46.00 244.09 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 241.09 Td (Verdict) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 234.09 m 549.00 234.09 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 176.84 503.00 53.25 re f
+0.722 0.525 0.043 rg 46.00 176.84 2.40 53.25 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 218.89 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 207.74 Td (Three possible verdicts: GO \(green light\), GO CONDITIONAL \(amber: checks are missing\), NO-GO \(red: a test failed or a blocking) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 196.59 Td (flaw exists\). The verdict follows from thresholds fixed in advance, never from an appraisal. Findings are ranked by severity: blocking,) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 185.43 Td (major, minor, info.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 158.06 Td (Verdict: NO-GO.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 143.27 Td (Findings: 1 blocking, 1 major, 0 minor, 6 informational.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 128.49 Td (A barrier value falls inside its indecision band: human review required \(gate E3\).) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 113.71 Td (Martingale: after a loss, volume is multiplied by >= 1.5 in 96% of cases \(after a win: 1%\), over 135 post-loss trades.) Tj ET
+0.600 0.106 0.106 rg 48.50 116.31 3.20 3.20 re f
+0.894 0.875 0.831 RG 0.6 w 46.00 70.00 m 549.00 70.00 l S
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 46.00 60.00 Td (qaudit  |  martingale  |  Audit complet) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 534.99 60.00 Td (1 / 7) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 18 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 8137 >>
+stream
+0.722 0.525 0.043 rg 46.00 778.84 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 775.84 Td (In plain words: what this report says) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 768.84 m 549.00 768.84 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 752.06 Td (Red light: 1 blocking flaw\(s\) were found, 1 test\(s\) could not be run for lack of data, 3 test\(s\) sit in their uncertainty zone) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 739.27 Td (and 1 major flaw\(s\) were found. The results provided do not allow the claim that this system has a real edge: what was) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 726.49 Td (earned can be explained by chance, by a few exceptional trades or by uncontrolled risk. This is not a forecast of future) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 713.70 Td (losses; it is the absence of proof.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 698.92 Td (The verdict covers only what was given to the auditor: the closed trades in the file, over the period covered. It rests on no) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 686.14 Td (human judgement and no overall score: every test has a threshold fixed in advance by the method, and the verdict) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 673.35 Td (follows mechanically from those thresholds. The same file, audited again tomorrow with the same version, yields exactly) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 660.57 Td (the same report.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 645.78 Td (The five questions put to the results, and the numeric answer for this file:) Tj ET
+0.992 0.953 0.882 rg 46.00 571.50 503.00 72.29 re f
+0.631 0.361 0.027 rg 46.00 571.50 2.60 72.29 re f
+0.631 0.361 0.027 rg BT /F2 7.2 Tf 58.00 631.58 Td (INDECISION BAND) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 133.85 631.58 Td (Is chance ruled out?) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 618.80 Td (When several versions of a strategy are tried before one is kept, the best one always looks good, even if none has) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 606.02 Td (an edge. This test computes the probability that the performance is real once that effect is corrected, for 10) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 593.23 Td (declared variant\(s\): 54.0 %. Pass threshold: 50.0 %. Result in the uncertainty zone around the threshold: the) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 580.45 Td (method then calls for a human review rather than an automatic decision.) Tj ET
+0.992 0.953 0.882 rg 46.00 482.42 503.00 85.07 re f
+0.631 0.361 0.027 rg 46.00 482.42 2.60 85.07 re f
+0.631 0.361 0.027 rg BT /F2 7.2 Tf 58.00 555.30 Td (INDECISION BAND) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 133.85 555.30 Td (And with bad luck?) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 542.51 Td (The profit factor is the total won divided by the total lost \(1.00 = break-even\). The same trades were replayed 10) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 529.73 Td (000 times in a different order, in blocks, to see what the same strategy would yield with less luck: in the 5 % least) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 516.94 Td (favourable scenarios the profit factor falls to 1.027. Threshold: 1.00 - below it, the strategy loses money in those) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 504.16 Td (scenarios. Result in the uncertainty zone around the threshold: the method then calls for a human review rather) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 491.38 Td (than an automatic decision.) Tj ET
+0.910 0.960 0.925 rg 46.00 406.14 503.00 72.29 re f
+0.086 0.400 0.204 rg 46.00 406.14 2.60 72.29 re f
+0.086 0.400 0.204 rg BT /F2 7.2 Tf 58.00 466.22 Td (PASSED) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 96.96 466.22 Td (Do the losses come clustered?) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 453.44 Td (The drawdown is the largest fall between a peak and the trough that follows it. The observed one \(1 155.00\) is) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 440.66 Td (larger than in 88.0 % of random reorderings of the same trades. A very low value \(under 5 %\) would signal a curve) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 427.87 Td (too smooth to be honest; a very high value means the losses came clustered, which is harder to live through than) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 415.09 Td (the final result suggests. Test passed.) Tj ET
+0.992 0.953 0.882 rg 46.00 329.85 503.00 72.29 re f
+0.631 0.361 0.027 rg 46.00 329.85 2.60 72.29 re f
+0.631 0.361 0.027 rg BT /F2 7.2 Tf 58.00 389.94 Td (INDECISION BAND) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 133.85 389.94 Td (Would a system with no edge do as well?) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 377.15 Td (10 000 systems with no edge at all, but winning and losing amounts of the same size as this one, were simulated;) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 364.37 Td (4.8 % of them did as well or better. Threshold: 5.0 % - above it, this system cannot be told apart from a system with) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 351.58 Td (no edge. Result in the uncertainty zone around the threshold: the method then calls for a human review rather than) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 338.80 Td (an automatic decision.) Tj ET
+0.933 0.949 0.969 rg 46.00 266.34 503.00 59.50 re f
+0.278 0.333 0.412 rg 46.00 266.34 2.60 59.50 re f
+0.278 0.333 0.412 rg BT /F2 7.2 Tf 58.00 313.65 Td (NOT EVALUATED) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 129.61 313.65 Td (Does it hold outside the periods it was tuned on?) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 300.86 Td (A strategy tuned on one period tends to shine there and disappoint afterwards. This test compares its performance) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 288.08 Td (on periods not used for tuning. It could not be run: it requires one set of results per parameter set tested, which was) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 275.30 Td (not provided. Not measurable with the data provided.) Tj ET
+0.992 0.925 0.925 rg 46.00 202.84 503.00 59.50 re f
+0.600 0.106 0.106 rg 46.00 202.84 2.60 59.50 re f
+0.600 0.106 0.106 rg BT /F2 7.2 Tf 58.00 250.14 Td (BLOCKING) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 105.44 250.14 Td (Stake increased after losses) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 237.36 Td (Martingale: after a loss, volume is multiplied by >= 1.5 in 96% of cases \(after a win: 1%\), over 135 post-loss trades.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 224.58 Td (In plain words: after a loss, position size is increased to "win it back". This yields long runs of small gains and then a) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 211.79 Td (very heavy loss on the day the losing streak lasts too long. The final balance does not show it until that day comes.) Tj ET
+1.000 0.941 0.902 rg 46.00 152.12 503.00 46.72 re f
+0.761 0.255 0.047 rg 46.00 152.12 2.60 46.72 re f
+0.761 0.255 0.047 rg BT /F2 7.2 Tf 58.00 186.64 Td (MAJOR) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 92.71 186.64 Td (Trades without a protective stop) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 173.86 Td (No stop: 100% of trades have no stop-loss. In plain words: part of the positions had no automatic exit level in case) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 161.07 Td (of loss. The possible loss on those positions was therefore not bounded in advance.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 133.34 Td (A red light is not fixed in the report: it is fixed in the strategy or in the data, then verified on a new history. The points) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 120.55 Td (above say exactly which test failed and by how much, so that the discussion rests on facts.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 105.77 Td (This report states facts; it recommends no settings and predicts nothing.) Tj ET
+0.894 0.875 0.831 RG 0.6 w 46.00 70.00 m 549.00 70.00 l S
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 46.00 60.00 Td (qaudit  |  martingale  |  Audit complet) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 534.99 60.00 Td (2 / 7) Tj ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 18 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Length 9280 >>
+stream
+0.722 0.525 0.043 rg 46.00 778.84 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 775.84 Td (Key indicators) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 768.84 m 549.00 768.84 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 700.44 503.00 64.40 re f
+0.722 0.525 0.043 rg 46.00 700.44 2.40 64.40 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 753.64 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 742.49 Td (Net profit: gains minus losses, commissions and swaps included. Profit factor: total won ÷ total lost \(1.00 = break-even\). Hit rate:) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 731.34 Td (share of winning trades. Win/loss ratio: average gain of a winning trade ÷ average loss of a losing trade. Expectancy: average gain) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 720.18 Td (per trade, all trades included. Sharpe: average gain relative to the variability of results \(the higher, the steadier the gains\). Maximum) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 709.03 Td (drawdown: largest fall between a peak and the following trough. Losing streak: longest run of consecutive losses.) Tj ET
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 680.24 Td (Net profit) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 680.24 Td (2 050.00) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 672.74 m 549.00 672.74 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 660.54 Td (Profit factor) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 660.54 Td (1.260) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 653.05 m 549.00 653.05 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 640.85 Td (Hit rate) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 640.85 Td (77.5 %) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 633.35 m 549.00 633.35 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 621.15 Td (Average win / average loss) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 621.15 Td (0.366) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 613.66 m 549.00 613.66 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 601.46 Td (Expectancy per trade) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 601.46 Td (3.42) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 593.96 m 549.00 593.96 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 581.76 Td (Sharpe per trade) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 581.76 Td (0.069) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 574.26 m 549.00 574.26 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 562.06 Td (Annualised Sharpe \(measured frequency\)) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 562.06 Td (1.52) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 554.57 m 549.00 554.57 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 542.37 Td (Trades per year \(measured\)) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 542.37 Td (483.0) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 534.87 m 549.00 534.87 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 522.67 Td (Maximum drawdown) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 522.67 Td (1 155.00) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 515.18 m 549.00 515.18 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 502.98 Td (Maximum drawdown \(% of equity peak\)) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 502.98 Td (9.0 %) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 495.48 m 549.00 495.48 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 483.28 Td (Compound annual growth rate) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 483.28 Td (16.2 %) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 475.78 m 549.00 475.78 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 463.58 Td (Longest losing streak) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 463.58 Td (4) Tj ET
+0.722 0.525 0.043 rg 46.00 432.93 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 429.93 Td (Decision barriers) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 422.93 m 549.00 422.93 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 365.68 503.00 53.25 re f
+0.722 0.525 0.043 rg 46.00 365.68 2.40 53.25 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 407.73 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 396.58 Td (Each row is a test with a threshold fixed by the method. "Passed" = succeeded; "triggered" = failed \(in capitals, because one is) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 385.42 Td (enough for a NO-GO\); "indecision band" = too close to the threshold for an automatic decision, an auditor must rule; "not evaluated") Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 374.27 Td (= missing data. There is no overall score: a single failed test makes the verdict.) Tj ET
+0.373 0.420 0.478 rg BT /F1 9.4 Tf 46.00 346.90 Td (The verdict follows mechanically from the barriers below; no composite score.) Tj ET
+0.933 0.945 0.965 rg 46.00 316.31 503.00 26.58 re f
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 50.00 331.70 Td (BARRIER) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 301.54 331.70 Td (VALUE) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 337.79 331.70 Td (NO-GO) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 337.79 321.90 Td (THRESHOLD) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 414.07 331.70 Td (INDECISION) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 414.07 321.90 Td (BAND) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 483.77 331.70 Td (STATUS) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 316.31 m 549.00 316.31 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 304.11 Td (Deflated Sharpe ratio \(DSR\)) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 301.54 304.11 Td (0.540) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 337.79 304.11 Td (< 0.500) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 414.07 304.11 Td ([0.450 ; 0.550]) Tj ET
+0.631 0.361 0.027 rg BT /F2 8.2 Tf 483.77 304.11 Td (indecision band) Tj ET
+0.984 0.980 0.969 rg 46.00 280.01 503.00 18.15 re f
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 298.16 m 549.00 298.16 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 285.96 Td (Profit factor, 5th percentile of the block bootstrap) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 301.54 285.96 Td (1.027) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 337.79 285.96 Td (< 1.000) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 414.07 285.96 Td ([0.950 ; 1.050]) Tj ET
+0.631 0.361 0.027 rg BT /F2 8.2 Tf 483.77 285.96 Td (indecision band) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 280.01 m 549.00 280.01 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 267.81 Td (Percentile of the observed drawdown among order permutations) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 301.54 267.81 Td (87.970) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 337.79 267.81 Td (< 5.000) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 414.07 267.81 Td ([3.000 ; 8.000]) Tj ET
+0.086 0.400 0.204 rg BT /F2 8.2 Tf 483.77 267.81 Td (passed) Tj ET
+0.984 0.980 0.969 rg 46.00 243.70 503.00 18.15 re f
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 261.86 m 549.00 261.86 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 249.66 Td (p-value against the no-edge null) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 301.54 249.66 Td (0.048) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 337.79 249.66 Td (>= 0.050) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 414.07 249.66 Td ([0.030 ; 0.080]) Tj ET
+0.631 0.361 0.027 rg BT /F2 8.2 Tf 483.77 249.66 Td (indecision band) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 243.70 m 549.00 243.70 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 231.50 Td (Out-of-sample walk-forward efficiency) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 301.54 231.50 Td (n/a) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 337.79 231.50 Td (< 0.400) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 414.07 231.50 Td ([0.350 ; 0.500]) Tj ET
+0.278 0.333 0.412 rg BT /F2 8.2 Tf 483.77 231.50 Td (not evaluated) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 225.55 m 549.00 225.55 l S [] 0 d
+0.722 0.525 0.043 rg 46.00 200.39 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 197.39 Td (Critical findings) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 190.39 m 549.00 190.39 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 133.14 503.00 53.25 re f
+0.722 0.525 0.043 rg 46.00 133.14 2.40 53.25 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 175.19 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 164.04 Td (The flaws serious enough to weigh on the verdict, with the figure that establishes them. One blocking finding is enough for a NO-GO;) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 152.89 Td (several major findings lead at best to a GO CONDITIONAL. These findings appear in every version of the report, whatever the) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 141.74 Td (service ordered.) Tj ET
+0.992 0.925 0.925 rg 46.00 93.21 503.00 33.94 re f
+0.600 0.106 0.106 rg 46.00 93.21 2.60 33.94 re f
+0.600 0.106 0.106 rg BT /F2 7.2 Tf 58.00 114.94 Td (BLOCKING) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 105.44 114.94 Td (martingale) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 102.16 Td (Martingale: after a loss, volume is multiplied by >= 1.5 in 96% of cases \(after a win: 1%\), over 135 post-loss trades.) Tj ET
+0.894 0.875 0.831 RG 0.6 w 46.00 70.00 m 549.00 70.00 l S
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 46.00 60.00 Td (qaudit  |  martingale  |  Audit complet) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 534.99 60.00 Td (3 / 7) Tj ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 18 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 8 0 R >>
+endobj
+10 0 obj
+<< /Length 7438 >>
+stream
+1.000 0.941 0.902 rg 46.00 762.06 503.00 33.94 re f
+0.761 0.255 0.047 rg 46.00 762.06 2.60 33.94 re f
+0.761 0.255 0.047 rg BT /F2 7.2 Tf 58.00 783.80 Td (MAJOR) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 92.71 783.80 Td (no_stop) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 771.02 Td (No stop: 100% of trades have no stop-loss.) Tj ET
+0.722 0.525 0.043 rg 46.00 740.90 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 737.90 Td (All findings) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 730.90 m 549.00 730.90 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 684.81 503.00 42.10 re f
+0.722 0.525 0.043 rg 46.00 684.81 2.40 42.10 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 715.70 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 704.55 Td (Everything the auditor noted, including minor remarks and information items \(for instance a test that could not run\). An "info" line is) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 693.40 Td (not a flaw: it says what was done, or what could not be done and why.) Tj ET
+0.992 0.925 0.925 rg 46.00 644.87 503.00 33.94 re f
+0.600 0.106 0.106 rg 46.00 644.87 2.60 33.94 re f
+0.600 0.106 0.106 rg BT /F2 7.2 Tf 58.00 666.61 Td (BLOCKING) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 105.44 666.61 Td (martingale) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 653.82 Td (Martingale: after a loss, volume is multiplied by >= 1.5 in 96% of cases \(after a win: 1%\), over 135 post-loss trades.) Tj ET
+1.000 0.941 0.902 rg 46.00 606.94 503.00 33.94 re f
+0.761 0.255 0.047 rg 46.00 606.94 2.60 33.94 re f
+0.761 0.255 0.047 rg BT /F2 7.2 Tf 58.00 628.67 Td (MAJOR) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 92.71 628.67 Td (no_stop) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 615.89 Td (No stop: 100% of trades have no stop-loss.) Tj ET
+0.933 0.949 0.969 rg 46.00 556.22 503.00 46.72 re f
+0.278 0.333 0.412 rg 46.00 556.22 2.60 46.72 re f
+0.278 0.333 0.412 rg BT /F2 7.2 Tf 58.00 590.74 Td (INFO) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 84.23 590.74 Td (dsr_lo_variance) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 577.95 Td (Variance of Sharpe ratios across variants unknown: Lo approximation \(V = 0.0017\) for N = 10 trials. Conservative) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 565.17 Td (correction: the true DSR is probably lower.) Tj ET
+0.933 0.949 0.969 rg 46.00 518.28 503.00 33.94 re f
+0.278 0.333 0.412 rg 46.00 518.28 2.60 33.94 re f
+0.278 0.333 0.412 rg BT /F2 7.2 Tf 58.00 540.02 Td (INFO) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 84.23 540.02 Td (execution_realism_skipped) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 527.23 Td (Detector "execution_realism" not run: no price series provided.) Tj ET
+0.933 0.949 0.969 rg 46.00 480.34 503.00 33.94 re f
+0.278 0.333 0.412 rg 46.00 480.34 2.60 33.94 re f
+0.278 0.333 0.412 rg BT /F2 7.2 Tf 58.00 502.08 Td (INFO) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 84.23 502.08 Td (lookahead_skipped) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 489.30 Td (Detector "lookahead" not run: no price series provided.) Tj ET
+0.933 0.949 0.969 rg 46.00 429.62 503.00 46.72 re f
+0.278 0.333 0.412 rg 46.00 429.62 2.60 46.72 re f
+0.278 0.333 0.412 rg BT /F2 7.2 Tf 58.00 464.14 Td (INFO) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 84.23 464.14 Td (missing_optional) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 451.36 Td (Fields absent from the source: commission, swap. Analyses that depend on them are disabled and reported as) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 438.58 Td (such.) Tj ET
+0.933 0.949 0.969 rg 46.00 366.12 503.00 59.50 re f
+0.278 0.333 0.412 rg 46.00 366.12 2.60 59.50 re f
+0.278 0.333 0.412 rg BT /F2 7.2 Tf 58.00 413.42 Td (INFO) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 84.23 413.42 Td (null_empirical) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 400.64 Td (The "no-edge" null keeps the empirical distributions of gains and losses and only neutralises their frequency \(p0 =) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 387.86 Td (0.7321\). It answers: "is the observed hit rate explainable by luck, given this gain/loss profile?" - it is not an) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 375.07 Td (efficient-market null.) Tj ET
+0.933 0.949 0.969 rg 46.00 328.18 503.00 33.94 re f
+0.278 0.333 0.412 rg 46.00 328.18 2.60 33.94 re f
+0.278 0.333 0.412 rg BT /F2 7.2 Tf 58.00 349.92 Td (INFO) Tj ET
+0.373 0.420 0.478 rg BT /F3 7.6 Tf 84.23 349.92 Td (stop_geometry_skipped) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 337.14 Td (Detector "stop_geometry" not run: no price series provided.) Tj ET
+0.722 0.525 0.043 rg 46.00 307.02 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 304.02 Td (Probabilistic and deflated Sharpe) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 297.02 m 549.00 297.02 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 239.78 503.00 53.25 re f
+0.722 0.525 0.043 rg 46.00 239.78 2.40 53.25 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 281.82 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 270.67 Td (The Sharpe ratio measures the steadiness of gains. The PSR is the probability that the true Sharpe is positive given the number of) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 259.52 Td (trades and the shape of the results. The DSR answers the harder question: does this performance exceed what chance would have) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 248.37 Td (given to the best of N attempts? If the requester tried more variants than declared, the true DSR is lower than the one shown.) Tj ET
+0.373 0.420 0.478 rg BT /F1 9.4 Tf 46.00 220.99 Td (PSR: probability that the true Sharpe is positive, corrected for skewness and fat tails. DSR: the same probability) Tj ET
+0.373 0.420 0.478 rg BT /F1 9.4 Tf 46.00 208.21 Td (evaluated against the best Sharpe expected by chance after N trials.) Tj ET
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 192.01 Td (Probabilistic Sharpe ratio \(PSR\)) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 192.01 Td (0.9315) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 184.51 m 549.00 184.51 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 172.31 Td (Deflated Sharpe ratio \(DSR\)) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 172.31 Td (0.5401) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 164.82 m 549.00 164.82 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 152.62 Td (Expected maximum Sharpe under the null \(SR0\)) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 152.62 Td (0.0644) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 145.12 m 549.00 145.12 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 132.92 Td (Number of trials used \(N\)) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 132.92 Td (10) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 125.42 m 549.00 125.42 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 113.22 Td (Variance of Sharpe ratios across variants \(V\)) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 113.22 Td (0.001671) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 105.73 m 549.00 105.73 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 93.53 Td (Source of V) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 93.53 Td (Lo approximation \(conservative: the true DSR is probably lower\)) Tj ET
+0.894 0.875 0.831 RG 0.6 w 46.00 70.00 m 549.00 70.00 l S
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 46.00 60.00 Td (qaudit  |  martingale  |  Audit complet) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 534.99 60.00 Td (4 / 7) Tj ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 18 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 10 0 R >>
+endobj
+12 0 obj
+<< /Length 7713 >>
+stream
+0.722 0.525 0.043 rg 46.00 772.84 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 769.84 Td (Sensitivity to the number of trials) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 762.84 m 549.00 762.84 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 705.59 503.00 53.25 re f
+0.722 0.525 0.043 rg 46.00 705.59 2.40 53.25 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 747.64 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 736.49 Td (The same DSR recomputed for different numbers of variants tried. Read the row that matches your actual practice: if you tested 50) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 725.34 Td (settings before keeping this one, the N = 50 row is the one that counts. The chart shows from which number of attempts the) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 714.18 Td (performance stops being distinguishable from chance \(red line\).) Tj ET
+0.373 0.420 0.478 rg BT /F1 9.4 Tf 46.00 686.81 Td (This system stops being significant \(DSR < 0.50\) beyond 12 tested variants.) Tj ET
+0.933 0.945 0.965 RG 0.50 w [] 0 d 80.00 580.81 m 541.00 580.81 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 59.99 578.31 Td (0.25) Tj ET
+0.933 0.945 0.965 RG 0.50 w [] 0 d 80.00 608.81 m 541.00 608.81 l S [] 0 d
+0.933 0.945 0.965 RG 0.50 w [] 0 d 80.00 636.81 m 541.00 636.81 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 59.99 634.31 Td (0.75) Tj ET
+0.933 0.945 0.965 RG 0.50 w [] 0 d 80.00 664.81 m 541.00 664.81 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 59.99 662.31 Td (1.00) Tj ET
+0.894 0.875 0.831 RG 0.80 w [] 0 d 80.00 552.81 m 541.00 552.81 l S [] 0 d
+0.090 0.200 0.365 rg 97.42 552.81 42.00 104.32 re f
+0.122 0.161 0.200 rg BT /F1 7.2 Tf 109.41 660.13 Td (0.931) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 109.71 542.81 Td (N = 1) Tj ET
+0.090 0.200 0.365 rg 174.25 552.81 42.00 60.50 re f
+0.122 0.161 0.200 rg BT /F1 7.2 Tf 186.24 616.30 Td (0.540) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 184.54 542.81 Td (N = 10) Tj ET
+0.600 0.106 0.106 rg 251.08 552.81 42.00 33.89 re f
+0.122 0.161 0.200 rg BT /F1 7.2 Tf 263.08 589.70 Td (0.303) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 261.38 542.81 Td (N = 50) Tj ET
+0.600 0.106 0.106 rg 327.92 552.81 42.00 25.70 re f
+0.122 0.161 0.200 rg BT /F1 7.2 Tf 339.91 581.51 Td (0.229) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 336.21 542.81 Td (N = 100) Tj ET
+0.600 0.106 0.106 rg 404.75 552.81 42.00 16.14 re f
+0.122 0.161 0.200 rg BT /F1 7.2 Tf 416.74 571.95 Td (0.144) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 413.04 542.81 Td (N = 300) Tj ET
+0.600 0.106 0.106 rg 481.58 552.81 42.00 9.41 re f
+0.122 0.161 0.200 rg BT /F1 7.2 Tf 493.58 565.22 Td (0.084) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 486.87 542.81 Td (N = 1 000) Tj ET
+0.600 0.106 0.106 RG 0.90 w [4 3] 0 d 80.00 608.81 m 541.00 608.81 l S [] 0 d
+0.600 0.106 0.106 rg BT /F2 7.2 Tf 40.92 606.31 Td (DSR 0.50) Tj ET
+0.933 0.945 0.965 rg 46.00 506.02 503.00 16.79 re f
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 260.70 511.61 Td (N TRIALS) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 528.89 511.61 Td (DSR) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 506.02 m 549.00 506.02 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 290.49 493.82 Td (1) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 519.92 493.82 Td (0.9315) Tj ET
+0.984 0.980 0.969 rg 46.00 469.71 503.00 18.15 re f
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 487.86 m 549.00 487.86 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 285.93 475.66 Td (10) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 519.92 475.66 Td (0.5401) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 469.71 m 549.00 469.71 l S [] 0 d
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 285.93 457.51 Td (50) Tj ET
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 519.92 457.51 Td (0.3026) Tj ET
+0.984 0.980 0.969 rg 46.00 433.41 503.00 18.15 re f
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 451.56 m 549.00 451.56 l S [] 0 d
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 281.37 439.36 Td (100) Tj ET
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 519.92 439.36 Td (0.2294) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 433.41 m 549.00 433.41 l S [] 0 d
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 281.37 421.21 Td (300) Tj ET
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 519.92 421.21 Td (0.1441) Tj ET
+0.984 0.980 0.969 rg 46.00 397.10 503.00 18.15 re f
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 415.26 m 549.00 415.26 l S [] 0 d
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 274.53 403.06 Td (1 000) Tj ET
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 519.92 403.06 Td (0.0840) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 397.10 m 549.00 397.10 l S [] 0 d
+0.722 0.525 0.043 rg 46.00 371.94 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 368.94 Td (Resampling) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 361.94 m 549.00 361.94 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 304.70 503.00 53.25 re f
+0.722 0.525 0.043 rg 46.00 304.70 2.40 53.25 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 346.74 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 335.59 Td (Three simulations on the same trades, for three questions. Bootstrap: with less luck, what profit and what drawdown? \(the p05 / p50) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 324.44 Td (/ p95 ranges bracket 90 % of scenarios\). Permutation: is the observed drawdown due to the order of the trades? No-edge null: how) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 313.29 Td (many systems with no edge at all, but the same sizes of gains and losses, would do as well?) Tj ET
+0.373 0.420 0.478 rg BT /F1 9.4 Tf 46.00 285.91 Td (Three simulations, three questions: the bootstrap measures how unlucky the same edge can get; the permutation tests) Tj ET
+0.373 0.420 0.478 rg BT /F1 9.4 Tf 46.00 273.13 Td (whether performance owes to trade order; the null counts edge-less systems that would do as well.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 258.34 Td (The "no-edge" null keeps the empirical distributions of gains and losses and only neutralises their frequency \(p0 =) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 245.56 Td (0.7321\). It answers: "is the observed hit rate explainable by luck, given this gain/loss profile?" - it is not an) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 232.78 Td (efficient-market null.) Tj ET
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 216.58 Td (Bootstrap method) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 216.58 Td (stationary blocks \(Politis-Romano\), automatic length) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 209.08 m 549.00 209.08 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 196.88 Td (Mean block length) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 196.88 Td (15.21) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 189.38 m 549.00 189.38 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 177.18 Td (Profit factor p05 / p50 / p95) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 177.18 Td (1.027 / 1.277 / 1.593) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 169.69 m 549.00 169.69 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 157.49 Td (Net profit p05 / p50 / p95) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 157.49 Td (280.00 / 2 145.00 / 3 535.00) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 149.99 m 549.00 149.99 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 137.79 Td (Drawdown p50 / p95 / p99) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 137.79 Td (805.00 / 1 625.00 / 2 140.00) Tj ET
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 110.10 Td (Observed drawdown) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 110.10 Td (1 155.00) Tj ET
+0.894 0.875 0.831 RG 0.6 w 46.00 70.00 m 549.00 70.00 l S
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 46.00 60.00 Td (qaudit  |  martingale  |  Audit complet) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 534.99 60.00 Td (5 / 7) Tj ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 18 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 12 0 R >>
+endobj
+14 0 obj
+<< /Length 9415 >>
+stream
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 796.00 m 549.00 796.00 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 783.80 Td (Percentile of the observed drawdown among) Tj ET
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 772.65 Td (permutations) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 783.80 Td (88.0) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 765.70 m 549.00 765.70 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 753.50 Td (Permutation drawdown p50 / p95) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 753.50 Td (875.00 / 1 300.00) Tj ET
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 725.80 Td (Equilibrium hit rate p0) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 725.80 Td (73.2 %) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 718.30 m 549.00 718.30 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 706.10 Td (p-value \(net profit >= observed\)) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 706.10 Td (0.0479) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 698.61 m 549.00 698.61 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 686.41 Td (Net profit of null systems p50 / p95) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 686.41 Td (10.00 / 2 025.00) Tj ET
+0.722 0.525 0.043 rg 46.00 655.75 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 652.75 Td (Regimes and periods) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 645.75 m 549.00 645.75 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 588.50 503.00 53.25 re f
+0.722 0.525 0.043 rg 46.00 588.50 2.40 53.25 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 630.55 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 619.40 Td (Trades are sorted into three tiers according to how agitated the market was when they took place \(low, medium, high volatility\), then) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 608.25 Td (by quarter. A healthy strategy earns across several regimes and several quarters; if all the profit comes from a single tier or a single) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 597.10 Td (period, the overall result is misleading. Rows in red are losing.) Tj ET
+0.373 0.420 0.478 rg BT /F1 9.4 Tf 46.00 569.72 Td (Classifier used: volatility terciles \(rolling standard deviation of P&L, no prices\); unclassified trades: 2.) Tj ET
+0.933 0.945 0.965 rg 46.00 548.93 503.00 16.79 re f
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 50.00 554.52 Td (REGIME) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 205.50 554.52 Td (TRADES) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 270.38 554.52 Td (NET PROFIT) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 368.30 554.52 Td (PF) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 410.04 554.52 Td (HIT RATE) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 488.60 554.52 Td (SHARE OF NET) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 548.93 m 549.00 548.93 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 536.73 Td (low volatility) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 222.78 536.73 Td (218) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 290.67 536.73 Td (975.00) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 357.54 536.73 Td (1.508) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 419.28 536.73 Td (80.3 %) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 519.47 536.73 Td (47.6 %) Tj ET
+0.984 0.980 0.969 rg 46.00 512.62 503.00 18.15 re f
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 530.78 m 549.00 530.78 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 518.58 Td (medium volatility) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 222.78 518.58 Td (188) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 290.67 518.58 Td (575.00) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 357.54 518.58 Td (1.236) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 419.28 518.58 Td (75.5 %) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 519.47 518.58 Td (28.0 %) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 512.62 m 549.00 512.62 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 500.42 Td (high volatility) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 222.78 500.42 Td (192) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 290.67 500.42 Td (470.00) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 357.54 500.42 Td (1.134) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 419.28 500.42 Td (76.0 %) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 519.47 500.42 Td (22.9 %) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 494.47 m 549.00 494.47 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 467.68 503.00 16.79 re f
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 50.00 473.27 Td (QUARTER) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 262.80 473.27 Td (TRADES) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 389.07 473.27 Td (NET PROFIT) Tj ET
+0.043 0.122 0.227 rg BT /F2 7.2 Tf 535.25 473.27 Td (PF) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 467.68 m 549.00 467.68 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 455.48 Td (2021-Q1) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 280.08 455.48 Td (118) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 409.37 455.48 Td (895.00) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 524.48 455.48 Td (1.973) Tj ET
+0.984 0.980 0.969 rg 46.00 431.38 503.00 18.15 re f
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 449.53 m 549.00 449.53 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 437.33 Td (2021-Q2) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 280.08 437.33 Td (120) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 409.37 437.33 Td (690.00) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 524.48 437.33 Td (1.575) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 431.38 m 549.00 431.38 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 419.18 Td (2021-Q3) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 280.08 419.18 Td (116) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 409.37 419.18 Td (720.00) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 524.48 419.18 Td (1.667) Tj ET
+0.984 0.980 0.969 rg 46.00 395.07 503.00 18.15 re f
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 413.22 m 549.00 413.22 l S [] 0 d
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 50.00 401.02 Td (2021-Q4) Tj ET
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 280.08 401.02 Td (128) Tj ET
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 406.64 401.02 Td (-585.00) Tj ET
+0.600 0.106 0.106 rg BT /F1 8.2 Tf 524.48 401.02 Td (0.805) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 395.07 m 549.00 395.07 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 382.87 Td (2022-Q1) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 280.08 382.87 Td (114) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 409.37 382.87 Td (320.00) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 524.48 382.87 Td (1.200) Tj ET
+0.984 0.980 0.969 rg 46.00 358.77 503.00 18.15 re f
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 376.92 m 549.00 376.92 l S [] 0 d
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 50.00 364.72 Td (2022-Q2) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 289.20 364.72 Td (4) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 413.93 364.72 Td (10.00) Tj ET
+0.122 0.161 0.200 rg BT /F1 8.2 Tf 524.48 364.72 Td (1.125) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 358.77 m 549.00 358.77 l S [] 0 d
+0.722 0.525 0.043 rg 46.00 333.61 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 330.61 Td (Drawdown markers) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 323.61 m 549.00 323.61 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 277.51 503.00 42.10 re f
+0.722 0.525 0.043 rg 46.00 277.51 2.40 42.10 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 308.41 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 297.26 Td (Benchmarks from the simulations: the drawdown exceeded in only 5 % \(p95\) and 1 % \(p99\) of scenarios. They serve to know what) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 286.10 Td (to expect, and to recognise the day the system no longer behaves as in its history. They are not recommended settings.) Tj ET
+0.373 0.420 0.478 rg BT /F1 9.4 Tf 46.00 258.73 Td (Statistical drawdown markers from the block bootstrap, to compare with the live drawdown. They are not strategy) Tj ET
+0.373 0.420 0.478 rg BT /F1 9.4 Tf 46.00 245.94 Td (settings.) Tj ET
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 229.74 Td (Observed maximum drawdown) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 229.74 Td (1 155.00) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 222.25 m 549.00 222.25 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 210.05 Td (Bootstrap drawdown, 95th percentile) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 210.05 Td (1 625.00) Tj ET
+0.933 0.945 0.965 RG 0.60 w [] 0 d 46.00 202.55 m 549.00 202.55 l S [] 0 d
+0.373 0.420 0.478 rg BT /F1 8.2 Tf 54.00 190.35 Td (Bootstrap drawdown, 99th percentile) Tj ET
+0.122 0.161 0.200 rg BT /F2 8.6 Tf 257.26 190.35 Td (2 140.00) Tj ET
+0.722 0.525 0.043 rg 46.00 159.70 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 156.70 Td (Conditions for production) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 149.70 m 549.00 149.70 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 103.60 503.00 42.10 re f
+0.722 0.525 0.043 rg 46.00 103.60 2.40 42.10 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 134.50 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 123.34 Td (What would have to be provided or fixed for the audit to be complete. Each condition points to a precise test that could not be run or) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 112.19 Td (that stayed in its uncertainty zone.) Tj ET
+0.894 0.875 0.831 RG 0.6 w 46.00 70.00 m 549.00 70.00 l S
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 46.00 60.00 Td (qaudit  |  martingale  |  Audit complet) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 534.99 60.00 Td (6 / 7) Tj ET
+endstream
+endobj
+15 0 obj
+<< /Type /Page /Parent 18 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 14 0 R >>
+endobj
+16 0 obj
+<< /Length 4082 >>
+stream
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 783.22 Td (Barrier "dsr" is 0.5401, inside its indecision band [0.45; 0.55]: human review required.) Tj ET
+0.043 0.122 0.227 rg 48.50 785.82 3.20 3.20 re f
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 770.43 Td (Barrier "pf_p05" is 1.0274, inside its indecision band [0.95; 1.05]: human review required.) Tj ET
+0.043 0.122 0.227 rg 48.50 773.03 3.20 3.20 re f
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 757.65 Td (Barrier "null_pvalue" is 0.0479, inside its indecision band [0.03; 0.08]: human review required.) Tj ET
+0.043 0.122 0.227 rg 48.50 760.25 3.20 3.20 re f
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 744.86 Td (Barrier "wf_efficiency" could not be evaluated: provide the required data before any production deployment.) Tj ET
+0.043 0.122 0.227 rg 48.50 747.46 3.20 3.20 re f
+0.722 0.525 0.043 rg 46.00 724.70 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 721.70 Td (Scope and limits) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 714.70 m 549.00 714.70 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 668.61 503.00 42.10 re f
+0.722 0.525 0.043 rg 46.00 668.61 2.40 42.10 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 699.50 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 688.35 Td (What the audit could not see, and what it does not claim to do. These limits are part of the result: a report that did not state them) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 677.20 Td (would be misleading.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 649.82 Td (Only closed trades are analysed: floating P&L and open positions are unknown.) Tj ET
+0.043 0.122 0.227 rg 48.50 652.42 3.20 3.20 re f
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 637.04 Td (No price series: stop sensitivity, look-ahead and execution realism untested.) Tj ET
+0.043 0.122 0.227 rg 48.50 639.64 3.20 3.20 re f
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 624.26 Td (No walk-forward supplied: out-of-sample robustness is not established.) Tj ET
+0.043 0.122 0.227 rg 48.50 626.86 3.20 3.20 re f
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 611.47 Td (No prop-firm ruleset: no replay.) Tj ET
+0.043 0.122 0.227 rg 48.50 614.07 3.20 3.20 re f
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 598.69 Td (The "no-edge" null keeps the empirical distributions: it is not an efficient-market null.) Tj ET
+0.043 0.122 0.227 rg 48.50 601.29 3.20 3.20 re f
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 585.90 Td (The auditor observes; it recommends no parameter setting.) Tj ET
+0.043 0.122 0.227 rg 48.50 588.50 3.20 3.20 re f
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 573.12 Td (The variance of Sharpe ratios across variants is unknown: Lo correction, conservative.) Tj ET
+0.043 0.122 0.227 rg 48.50 575.72 3.20 3.20 re f
+0.722 0.525 0.043 rg 46.00 552.96 10.00 2.20 re f
+0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 549.96 Td (Footer) Tj ET
+0.894 0.875 0.831 RG 0.60 w [] 0 d 46.00 542.96 m 549.00 542.96 l S [] 0 d
+0.933 0.945 0.965 rg 46.00 496.86 503.00 42.10 re f
+0.722 0.525 0.043 rg 46.00 496.86 2.40 42.10 re f
+0.373 0.420 0.478 rg BT /F2 6.6 Tf 58.00 527.76 Td (HOW TO READ THIS SECTION) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 516.61 Td (The identifiers that make this report verifiable: engine version, method version \(the thresholds\), seed, file fingerprint, service. Anyone) Tj ET
+0.090 0.200 0.365 rg BT /F1 8.2 Tf 58.00 505.46 Td (holding the same file and the same version obtains the same report, byte for byte.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 478.08 Td (qaudit 1.0.0 - method 1.0 - schema 1.0 - seed 0 - fingerprint) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 465.30 Td (ae4badd1047e27534d61db5914dd8b7232470df67bdc4663c85783394ca19ef5 - service audit_complet.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 450.51 Td (Reproducible: same inputs + same version + same seed = same report, byte for byte.) Tj ET
+0.894 0.875 0.831 RG 0.6 w 46.00 70.00 m 549.00 70.00 l S
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 46.00 60.00 Td (qaudit  |  martingale  |  Audit complet) Tj ET
+0.373 0.420 0.478 rg BT /F1 7.2 Tf 534.99 60.00 Td (7 / 7) Tj ET
+endstream
+endobj
+17 0 obj
+<< /Type /Page /Parent 18 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 16 0 R >>
+endobj
+18 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R 9 0 R 11 0 R 13 0 R 15 0 R 17 0 R] /Count 7 >>
+endobj
+19 0 obj
+<< /Type /Catalog /Pages 18 0 R >>
+endobj
+xref
+0 20
+0000000000 65535 f 
+0000000015 00000 n 
+0000000112 00000 n 
+0000000214 00000 n 
+0000000309 00000 n 
+0000007736 00000 n 
+0000007883 00000 n 
+0000016072 00000 n 
+0000016219 00000 n 
+0000025551 00000 n 
+0000025698 00000 n 
+0000033189 00000 n 
+0000033338 00000 n 
+0000041104 00000 n 
+0000041253 00000 n 
+0000050721 00000 n 
+0000050870 00000 n 
+0000055005 00000 n 
+0000055154 00000 n 
+0000055252 00000 n 
+trailer
+<< /Size 20 /Root 19 0 R /ID [<0000000000000000> <0000000000000000>] >>
+startxref
+55303
+%%EOF

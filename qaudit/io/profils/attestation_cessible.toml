@@ -1,0 +1,20 @@
+# Attestation cessible : mention des tiers acquéreurs autorisés.
+[offre]
+code = "attestation_cessible"
+libelle = "Attestation cessible"
+
+[entrees]
+requis = ["trades"]
+optionnel = ["reglement", "taille_compte", "frais_challenge", "walkforward"]
+
+[rapport]
+sections = ["entete", "verdict", "en_clair", "kpi", "barrieres", "constats_critiques", "constats_complets",
+            "sharpe_degonfle", "sensibilite_essais", "monte_carlo", "regimes", "seuil_arret",
+            "conditions", "portee_et_limites", "pied"]
+
+[livrables]
+html = true
+pdf = true
+json = true
+attestation = true
+attestation_cessible = true

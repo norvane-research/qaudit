@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Audit de systèmes de trading — qaudit</title>
+<style>
+:root{--ink:#0b1f3a;--ink-2:#17335d;--gold:#b8860b;--paper:#f6f4ef;--card:#fff;--text:#1f2933;
+--muted:#5f6b7a;--rule:#e4dfd4;--rule-2:#eef1f6;--go:#166534;--go-bg:#e8f5ec;--cond:#a15c07;
+--cond-bg:#fdf3e1;--nogo:#991b1b;--nogo-bg:#fdecec;
+--serif:Georgia,"Palatino Linotype","Book Antiqua",Cambria,serif;
+--sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+--mono:Consolas,"Cascadia Mono","Courier New",monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--text);
+font-family:var(--sans);font-size:16px;line-height:1.6}
+a{color:var(--ink-2)}a:hover{color:var(--gold)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+header.top{background:var(--ink);color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
+padding:16px 24px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.3rem;
+letter-spacing:.06em;color:#fff;text-decoration:none}
+.brand i{width:22px;height:22px;border:2px solid var(--gold);border-radius:50%;position:relative;
+display:inline-block}.brand i:after{content:"";position:absolute;inset:5px;background:var(--gold);
+border-radius:50%}
+nav a{color:#c8d0dc;text-decoration:none;margin-left:18px;font-size:.92rem}nav a:hover{color:#fff}
+nav a.lang{border:1px solid #3b4d6b;border-radius:6px;padding:2px 8px}
+.hero{padding:64px 0 40px;border-bottom:1px solid var(--rule)}
+.hero h1{font-family:var(--serif);font-weight:normal;font-size:2.6rem;line-height:1.15;color:var(--ink);
+margin:0 0 14px;max-width:22ch}
+.hero p.lead{font-size:1.15rem;color:var(--muted);max-width:60ch;margin:0 0 26px}
+.cta{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;padding:12px 22px;
+border-radius:10px;font-weight:600}.cta:hover{background:var(--ink-2);color:#fff}
+.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule);margin-left:10px}
+.cta.small{padding:7px 12px;font-size:.85rem;border-radius:8px}
+section{padding:44px 0}section+section{border-top:1px solid var(--rule)}
+h2{font-family:var(--serif);font-weight:normal;font-size:1.7rem;color:var(--ink);margin:0 0 18px;
+display:flex;align-items:center;gap:12px}
+h2:before{content:"";width:18px;height:3px;background:var(--gold);border-radius:2px}
+h3{font-family:var(--serif);font-weight:normal;font-size:1.2rem;color:var(--ink);margin:22px 0 8px}
+.grid{display:grid;gap:16px}.grid.c3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.grid.c2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:20px 22px}
+.card h3{margin-top:0}.card p{margin:.4rem 0;color:var(--text)}
+.card .k{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.q{font-family:var(--serif);font-size:1.15rem;color:var(--ink);margin:0 0 6px}
+.steps{counter-reset:s}.steps .card{position:relative;padding-left:64px}
+.steps .card:before{counter-increment:s;content:counter(s,decimal-leading-zero);position:absolute;
+left:20px;top:18px;font-family:var(--serif);font-size:1.6rem;color:var(--gold)}
+table{border-collapse:separate;border-spacing:0;width:100%;background:var(--card);
+border:1px solid var(--rule);border-radius:12px;overflow:hidden;font-size:.95rem;margin:14px 0}
+th,td{padding:.65rem .8rem;text-align:left;vertical-align:top;border-top:1px solid var(--rule-2)}
+tr:first-child>*{border-top:none}
+th{background:var(--rule-2);color:var(--ink);font-size:.76rem;text-transform:uppercase;
+letter-spacing:.06em}
+td.price{white-space:nowrap;font-family:var(--serif);font-size:1.1rem;color:var(--ink)}
+.chip{display:inline-block;border-radius:999px;padding:.12rem .62rem;font-size:.76rem;font-weight:600}
+.chip.go{background:var(--go-bg);color:var(--go)}.chip.nogo{background:var(--nogo-bg);color:var(--nogo)}
+.chip.cond{background:var(--cond-bg);color:var(--cond)}
+.rules .card{border-left:4px solid var(--gold)}
+blockquote{margin:0;padding:12px 18px;background:var(--cond-bg);border-left:4px solid var(--cond);
+border-radius:8px;color:var(--text)}
+code{font-family:var(--mono);font-size:.9em;background:var(--rule-2);padding:.1em .35em;border-radius:4px}
+.doc{max-width:820px}.doc h1{font-family:var(--serif);font-weight:normal;color:var(--ink);font-size:2.1rem;
+margin:36px 0 16px}.doc h2{margin-top:36px}.doc p{margin:.7rem 0}.doc ul{padding-left:1.2rem}
+.doc li{margin:.3rem 0}.doc table{font-size:.9rem}
+footer{background:var(--ink);color:#c8d0dc;padding:28px 0;font-size:.9rem;margin-top:40px}
+footer a{color:#fff;text-decoration:none;margin-right:16px}footer .wrap{display:flex;flex-wrap:wrap;
+gap:12px;justify-content:space-between}
+.search{display:flex;gap:10px;margin:14px 0 6px}.search input{flex:1;padding:10px 12px;
+border:1px solid var(--rule);border-radius:10px;font:inherit}
+.muted{color:var(--muted)}.small{font-size:.9rem}.note{font-size:.9rem;color:var(--muted);margin-top:8px}
+@media (max-width:640px){.hero h1{font-size:2rem}.cta.ghost{margin-left:0;margin-top:10px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="index.html"><i></i>qaudit</a><nav><a href="index.html">Offre</a><a href="preparer.html">Préparer votre audit</a><a href="methode.html">Méthode</a><a href="verification.html">Vérifier une attestation</a><a href="exemples/index.html">Exemples</a><a class="lang" href="en/index.html">English</a></nav></div></header>
+<main class="wrap">
+
+<section class="hero">
+  <h1>Un verdict sur votre système de trading que vous pouvez montrer.</h1>
+  <p class="lead">Audit statistique indépendant d&#x27;un historique de trades : moteur open source, méthode publiée, seuils fixés à l&#x27;avance, rapport reproductible à l&#x27;octet près, attestation vérifiable par n&#x27;importe qui. Le moteur constate ; il ne conseille rien et ne prédit rien.</p>
+  <a class="cta" href="mailto:contact@exemple.com?subject=Pré-vérification%20gratuite">Commencer par la pré-vérification gratuite</a>
+  <a class="cta ghost" href="exemples/index.html">Voir un rapport</a>
+</section>
+<section><h2>Pourquoi ce verdict vaut quelque chose</h2><div class="grid c3"><div class="card"><div class="k">Méthode publique</div><h3>Les seuils sont écrits avant votre dossier</h3><p>Cinq barrières éliminatoires, onze détecteurs, leurs paramètres : tout est <a href="methode.html">publié</a>. Un NO-GO se discute sur des faits, pas sur une opinion.</p></div><div class="card"><div class="k">Reproductible</div><h3>Même fichier, même rapport, à l&#x27;octet près</h3><p>Chaque rapport imprime l'empreinte SHA-256 de vos données, la version de la méthode et la graine. Le moteur est open source : quiconque détient le fichier peut refaire le calcul.</p></div><div class="card"><div class="k">Vérifiable</div><h3>Une attestation numérotée, un registre public</h3><p>Émise uniquement sur GO, inscrite au <a href="verification.html">registre</a> avec l'empreinte du fichier. Vos clients la vérifient sans vous croire sur parole.</p></div></div></section>
+<section><h2>Les cinq questions posées à vos résultats</h2><div class="grid c2"><div class="card"><p class="q">Le hasard est-il écarté ?</p><p>Sharpe dégonflé : la performance survit-elle au nombre de variantes que vous avez essayées avant de garder celle-ci ?</p></div><div class="card"><p class="q">Et avec de la malchance ?</p><p>10 000 rejeux des mêmes trades par blocs : dans les 5 % de scénarios les plus défavorables, gagnez-vous encore ?</p></div><div class="card"><p class="q">Les pertes arrivent-elles groupées ?</p><p>Votre drawdown comparé à celui de milliers de réordonnancements des mêmes trades.</p></div><div class="card"><p class="q">Un système sans avantage ferait-il aussi bien ?</p><p>Des systèmes sans aucun edge, aux gains et pertes de même taille : combien font mieux que vous ?</p></div><div class="card"><p class="q">Tient-il hors des périodes où il a été réglé ?</p><p>Walk-forward sur vos jeux de paramètres : ce qui reste de la performance hors échantillon.</p></div></div>
+  <p class="muted small">S&#x27;y ajoutent onze détecteurs de la façon de trader : martingale, grille, absence de stop, concentration du profit, courbe trop lisse, asymétrie, dépendance à une période, durées irréalistes et, avec les cotations, look-ahead, prix impossibles, stop trop sensible.</p></section>
+<section><h2>Comment ça se passe</h2><div class="grid c3 steps"><div class="card"><h3>Vous envoyez l&#x27;export brut</h3><p>Rapport MetaTrader 4 ou 5 (compte ou Strategy Tester), export Deriv, ou CSV une ligne par trade. Jamais votre code : l'audit porte sur vos trades. <a href="preparer.html">Comment l'exporter</a>.</p></div><div class="card"><h3>Pré-vérification gratuite</h3><p>En quinze minutes : fichier lisible, champs présents, échantillon suffisant. Si les données ne tiennent pas, vous le savez avant que l'argent change de main.</p></div><div class="card"><h3>Audit refait sous 72 heures</h3><p>Nous relançons le moteur sur votre fichier : verdict en première page, section « En clair » qui se lit sans nous, barrières, constats, simulations, repères. Attestation inscrite au registre si GO. Appel de restitution de 45 minutes.</p></div></div></section>
+<section id="offres"><h2>Offres</h2>
+  <table><thead><tr><th>Prestation</th><th>Prix</th><th>Attestation</th><th></th></tr></thead><tbody><tr><td><b>Moteur open source</b><br><span class='muted small'>Le moteur complet — ligne de commande, fenêtre, bibliothèque — et tous les rapports, à lancer vous-même. Licence AGPL-3.0.</span></td><td class='price'>gratuit</td><td>—</td><td></td></tr><tr><td><b>Pré-vérification</b><br><span class='muted small'>Votre fichier est-il exploitable ? Réponse en quinze minutes, avant tout paiement.</span></td><td class='price'>gratuit</td><td>—</td><td><a class="cta small" href="mailto:contact@exemple.com?subject=Pré-vérification%20gratuite">Envoyer un fichier</a></td></tr><tr><td><b>Attestation cessible</b><br><span class='muted small'>Nous refaisons l&#x27;audit sur votre fichier ; si GO, une attestation numérotée au registre public, que vos acquéreurs vérifient eux-mêmes. Due quel que soit le verdict.</span></td><td class='price'>390 €</td><td>attestation cessible</td><td><a class="cta small" href="mailto:contact@exemple.com?subject=Commande%20d&#x27;audit">Commander</a></td></tr><tr><td><b>Portefeuille de systèmes</b><br><span class='muted small'>Plusieurs systèmes audités ensemble, avec la correction statistique de sélection multiple.</span></td><td class='price'>sur devis</td><td>attestation si GO</td><td><a class="cta small ghost" href="mailto:contact@exemple.com?subject=Commande%20d&#x27;audit">Demander un devis</a></td></tr><tr><td><b>Due diligence</b><br><span class='muted small'>Tout, plus une note de comité d&#x27;investissement ; périmètre et prix définis sur devis.</span></td><td class='price'>sur devis</td><td>attestation cessible</td><td><a class="cta small ghost" href="mailto:contact@exemple.com?subject=Commande%20d&#x27;audit">Demander un devis</a></td></tr><tr><td><b>Licence commerciale</b><br><span class='muted small'>Intégrer le moteur dans un produit ou un service fermé, sans les obligations de l&#x27;AGPL.</span></td><td class='price'>sur devis</td><td>—</td><td><a class="cta small ghost" href="mailto:contact@exemple.com?subject=Commande%20d&#x27;audit">Demander un devis</a></td></tr></tbody></table>
+  <p class="muted small">Le moteur est le même pour tous et son code est public : le verdict ne dépend ni de l&#x27;offre ni de celui qui le lance. Ce que vous payez, c&#x27;est un audit refait par un tiers et inscrit à un registre public.</p></section>
+<section class="rules"><h2>Les règles</h2><div class="grid c3"><div class="card"><h3>Un NO-GO reste un NO-GO</h3><p>Le rapport est dû et payé quel que soit le verdict. Aucune conclusion n'est modifiée parce qu'elle déplaît — c'est ce qui rend l'attestation crédible quand elle est favorable.</p></div><div class="card"><h3>Données inexploitables : remboursé</h3><p>La pré-vérification gratuite rend le cas rare. S'il survient malgré tout après paiement, remboursement intégral.</p></div><div class="card"><h3>Ce que l&#x27;audit ne fait pas</h3><p>Il ne prédit aucune performance, ne constitue pas un conseil en investissement, ne répare pas votre système et ne recommande aucun réglage. Il n'analyse que les données fournies.</p></div></div></section>
+<section><h2>Questions fréquentes</h2><h3>Pourquoi payer si le moteur est gratuit ?</h3><p>Lancer le moteur vous-même vous donne le verdict. Une attestation vaut autre chose : un tiers a refait le calcul sur votre fichier et l'a inscrite à un registre public, que vos acheteurs consultent sans vous croire sur parole.</p><h3>Mon code source reste-t-il confidentiel ?</h3><p>Nous n'en avons pas besoin. L'audit porte sur vos trades, pas sur votre code : vous ne transmettez jamais votre stratégie.</p><h3>Pourquoi tant insister sur le nombre de variantes testées ?</h3><p>Parce que c'est la question que personne ne pose et qui élimine la majorité des systèmes. Un résultat obtenu après trois cents essais n'a pas la valeur du même résultat obtenu du premier coup. Le rapport montre à partir de combien d'essais votre résultat cesse d'être significatif.</p><h3>Et si mon système est bon ?</h3><p>Vous recevez l'attestation numérotée, inscrite au registre, et les repères de drawdown : le niveau de perte au-delà duquel votre système ne se comporte plus comme dans son historique. Souvent l'élément le plus utile du rapport, même pour un système sain.</p><h3>Que deviennent mes données ?</h3><p>Le fichier source est supprimé 30 jours après livraison ; l'archive conservée ne contient ni nom, ni numéro de compte, ni trade individuel. <a href="donnees.html">Politique de données</a>.</p></section>
+
+</main>
+<footer><div class="wrap"><div><a href="methode.html">Méthode</a><a href="donnees.html">Données</a><a href="cgv.html">CGV</a><a href="verification.html">Vérification</a></div><div>qaudit — audit statistique de systèmes de trading · <a href="mailto:contact@exemple.com">contact@exemple.com</a></div></div></footer>
+</body>
+</html>

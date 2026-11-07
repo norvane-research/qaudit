@@ -1,0 +1,18 @@
+[offre]
+code = "portefeuille"
+libelle = "Portefeuille de systèmes"
+
+[entrees]
+requis = ["portefeuille"]
+optionnel = ["reglement", "taille_compte", "prix", "walkforward"]
+
+[rapport]
+sections = ["entete", "verdict", "en_clair", "kpi", "barrieres", "constats_critiques", "constats_complets",
+            "sharpe_degonfle", "sensibilite_essais", "monte_carlo", "regimes", "seuil_arret",
+            "conditions", "portefeuille", "portee_et_limites", "pied"]
+
+[livrables]
+html = true
+pdf = true
+json = true
+attestation = true
