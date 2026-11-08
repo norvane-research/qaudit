@@ -36,6 +36,21 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/cgv"/>
   </url>
   <url>
+    <loc>https://norvane-research.pages.dev/etudes/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://norvane-research.pages.dev/etudes/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/etudes/"/>
+  </url>
+  <url>
+    <loc>https://norvane-research.pages.dev/etudes/marteau-englobante</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://norvane-research.pages.dev/etudes/marteau-englobante"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/etudes/marteau-englobante"/>
+  </url>
+  <url>
+    <loc>https://norvane-research.pages.dev/etudes/smc</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://norvane-research.pages.dev/etudes/smc"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/etudes/smc"/>
+  </url>
+  <url>
     <loc>https://norvane-research.pages.dev/en/</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://norvane-research.pages.dev/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/"/>
@@ -69,5 +84,20 @@
     <loc>https://norvane-research.pages.dev/en/cgv</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://norvane-research.pages.dev/cgv"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/cgv"/>
+  </url>
+  <url>
+    <loc>https://norvane-research.pages.dev/en/etudes/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://norvane-research.pages.dev/etudes/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/etudes/"/>
+  </url>
+  <url>
+    <loc>https://norvane-research.pages.dev/en/etudes/marteau-englobante</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://norvane-research.pages.dev/etudes/marteau-englobante"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/etudes/marteau-englobante"/>
+  </url>
+  <url>
+    <loc>https://norvane-research.pages.dev/en/etudes/smc</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://norvane-research.pages.dev/etudes/smc"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/etudes/smc"/>
   </url>
 </urlset>

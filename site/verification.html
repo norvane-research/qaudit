@@ -79,21 +79,37 @@ footer a{color:#fff;text-decoration:none;margin-right:16px}footer .wrap{display:
 gap:12px;justify-content:space-between}
 .search{display:flex;gap:10px;margin:14px 0 6px}.search input{flex:1;padding:10px 12px;
 border:1px solid var(--rule);border-radius:10px;font:inherit}
+.refcheck{padding:12px 16px;border-radius:10px;font-weight:600;margin:14px 0 4px}
+.refcheck.ok{background:var(--go-bg);color:var(--go)}.refcheck.ko{background:var(--nogo-bg);color:var(--nogo)}
+tr.hit>td{background:var(--go-bg)}
+.badge-demo{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin:4px 0 20px}
+.badge-demo img{display:block;max-width:100%;height:auto}
+.card ul{margin:.4rem 0;padding-left:1.1rem}.card li{margin:.25rem 0}
 .muted{color:var(--muted)}.small{font-size:.9rem}.note{font-size:.9rem;color:var(--muted);margin-top:8px}
 @media (max-width:640px){.hero h1{font-size:2rem}.cta.ghost{margin-left:0;margin-top:10px}}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap"><a class="brand" href="index.html"><i></i>qaudit</a><nav><a href="index.html">Offre</a><a href="preparer.html">Préparer votre audit</a><a href="methode.html">Méthode</a><a href="verification.html">Vérifier une attestation</a><a href="exemples/index.html">Exemples</a><a class="lang" href="en/index.html">English</a></nav></div></header>
+<header class="top"><div class="wrap"><a class="brand" href="index.html"><i></i>qaudit</a><nav><a href="index.html">Offre</a><a href="preparer.html">Préparer votre audit</a><a href="methode.html">Méthode</a><a href="verification.html">Vérifier une attestation</a><a href="exemples/index.html">Exemples</a><a href="etudes/index.html">Études</a><a class="lang" href="en/index.html">English</a></nav></div></header>
 <main class="wrap">
 
 <section class="hero"><h1>Vérifier une attestation</h1><p class="lead">Chaque attestation émise est inscrite ici avec l&#x27;empreinte SHA-256 du fichier de trades audité. Saisissez la référence (AUD-AAAA-NNN) ; si vous détenez le fichier d&#x27;origine, son empreinte doit correspondre exactement. Aucune donnée personnelle n&#x27;est publiée.</p>
   <div class="search"><input id="q" placeholder="AUD-2026-001 ou empreinte" autocomplete="off"></div>
+  <p id="refcheck" class="refcheck" hidden data-ok="✓ {ref} est inscrite au registre : verdict GO, émise le {date}, système « {system} ». Si vous détenez le fichier audité, son empreinte doit être exactement celle de la ligne surlignée." data-ko="✗ Aucune attestation ne porte la référence {ref}. Un badge qui mène ici avec cette référence n&#x27;est pas authentique, ou la référence est mal recopiée."></p>
   <p class="muted small">Calculer l'empreinte d'un fichier : <code>certutil -hashfile fichier.html SHA256</code> (Windows) · <code>shasum -a 256 fichier.html</code> (macOS/Linux).</p></section>
 <section id="registre"><p class='muted'>Aucune attestation émise pour l&#x27;instant.</p></section>
 <script>
-(function(){var q=document.getElementById('q');var rows=[].slice.call(document.querySelectorAll('#registre tbody tr'));
-q.addEventListener('input',function(){var v=q.value.trim().toLowerCase();rows.forEach(function(r){r.style.display=!v||r.textContent.toLowerCase().indexOf(v)>=0?'':'none';});});})();
+(function(){var q=document.getElementById('q'),out=document.getElementById('refcheck');
+var rows=[].slice.call(document.querySelectorAll('#registre tbody tr'));
+function filter(){var v=q.value.trim().toLowerCase();rows.forEach(function(r){r.style.display=!v||r.textContent.toLowerCase().indexOf(v)>=0?'':'none';});}
+function check(){var v=q.value.trim().toUpperCase();rows.forEach(function(r){r.classList.remove('hit');});
+if(!/^AUD-[0-9]{4}-[0-9]{3,}$/.test(v)){out.hidden=true;return;}
+var hit=null;rows.forEach(function(r){if(r.cells[0].textContent.trim().toUpperCase()===v)hit=r;});
+var msg=hit?out.getAttribute('data-ok').replace('{date}',hit.cells[1].textContent.trim()).replace('{system}',hit.cells[2].textContent.trim()):out.getAttribute('data-ko');
+out.textContent=msg.replace('{ref}',v);out.className='refcheck '+(hit?'ok':'ko');out.hidden=false;if(hit)hit.classList.add('hit');}
+q.addEventListener('input',function(){filter();check();});
+var ref=(location.search.match(/[?&]ref=([^&#]*)/)||[])[1];
+if(ref){try{ref=decodeURIComponent(ref.replace(/[+]/g,' '));}catch(e){}q.value=ref.slice(0,64);filter();check();}})();
 </script>
 
 </main>

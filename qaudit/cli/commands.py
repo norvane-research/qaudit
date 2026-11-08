@@ -16,6 +16,7 @@ from pathlib import Path
 from qaudit.cli.exitcodes import DECISION_EXIT, ExitCode
 from qaudit.core.audit import AuditOptions, AuditResult, run_audit
 from qaudit.core.config import MethodConfig
+from qaudit.core.errors import DataError
 from qaudit.core.models import Decision, PriceSeries
 from qaudit.core.propfirm import Ruleset
 from qaudit.core.validate import ValidationResult, validate
@@ -40,6 +41,7 @@ from qaudit.io.registry import Registry
 from qaudit.io.ruleset import builtin_names, load_ruleset
 from qaudit.io.ruleset import skeleton as ruleset_skeleton
 from qaudit.io.writers.attestation import registry_page
+from qaudit.io.writers.badge import REFERENCE, badge_kit, badge_links, badge_svg
 from qaudit.io.writers.methode import render_methode
 from qaudit.io.writers.render import Fmt
 
@@ -299,6 +301,37 @@ def cmd_verify(args: argparse.Namespace, catalog: Catalog) -> int:
             fingerprint=entry.fingerprint,
         )
     )
+    return int(ExitCode.GO)
+
+
+def cmd_badge(args: argparse.Namespace, catalog: Catalog) -> int:
+    """Badge d'une attestation inscrite au registre : ``<réf>-badge.svg`` et, avec
+    ``--site``, la page ``<réf>-badge.html`` (extraits HTML et Markdown à coller,
+    remise avec l'attestation). Référence inconnue : code 20, aucun fichier.
+    ``--example`` : badge d'exemple à la référence générique, sans registre."""
+    if args.example:
+        reference, issuer = catalog.text("badge.example_reference"), args.issuer
+    else:
+        wanted = (args.reference or "").strip().upper()
+        if not REFERENCE.match(wanted):
+            raise DataError("badge.bad_reference", reference=args.reference or "")
+        entry = Registry(args.registry).lookup(wanted)
+        reference, issuer = entry.reference, entry.issuer or args.issuer
+    svg = badge_svg(reference, catalog, issuer)
+    args.out.mkdir(parents=True, exist_ok=True)
+    written = [args.out / f"{reference}-badge.svg"]
+    written[0].write_text(svg, encoding="utf-8", newline="\n")
+    if args.site and not args.example:
+        links = badge_links(reference, args.site, catalog, issuer)
+        kit = args.out / f"{reference}-badge.html"
+        kit.write_text(badge_kit(reference, svg, links, catalog), encoding="utf-8", newline="\n")
+        written.append(kit)
+        _say(catalog.text("badge.snippet_html", snippet=links.html()))
+        _say(catalog.text("badge.snippet_md", snippet=links.markdown()))
+    elif not args.example:
+        _say(catalog.text("badge.no_site"))
+    for path in written:
+        _say(catalog.text("cli.written", path=str(path)))
     return int(ExitCode.GO)
 
 

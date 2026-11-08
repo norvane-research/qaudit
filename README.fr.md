@@ -212,6 +212,7 @@ dit pas, et comment la vérifier.
 qaudit audit dossier.html --offre attestation_cessible --holder "Studio X" --issuer "Nom"
 qaudit attest --from qaudit-out/archive/dossier.json --offre audit_complet   # ré-émission
 qaudit verify AUD-2026-001                  # l'entrée du registre, code 20 si inconnue
+qaudit badge AUD-2026-001 --site https://exemple.org   # badge SVG + extraits HTML/Markdown à coller
 qaudit registre --html site/verification.html   # page publique : jamais le titulaire
 qaudit methode --write docs/methode-1.0.md  # méthode publiée, générée depuis la configuration
 ```

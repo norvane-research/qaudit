@@ -133,6 +133,15 @@ def build_parser(catalog: Catalog | None = None) -> argparse.ArgumentParser:
     _common(verify)
     verify.set_defaults(func=commands.cmd_verify)
 
+    badge = sub.add_parser("badge")
+    badge.add_argument("reference", nargs="?", default=None)
+    badge.add_argument("--registry", type=Path, default=None)
+    badge.add_argument("--site", default=None)  # racine d'une langue du site de vérification
+    badge.add_argument("--issuer", default=None)  # si le registre n'en porte pas
+    badge.add_argument("--example", action="store_true")  # référence générique, sans registre
+    _common(badge)
+    badge.set_defaults(func=commands.cmd_badge)
+
     registre = sub.add_parser("registre")
     registre.add_argument("--registry", type=Path, default=None)
     registre.add_argument("--html", type=Path, default=None)

@@ -62,8 +62,53 @@ def test_site_builds_with_examples_and_public_pages(tmp_path: Path) -> None:
     assert "Les cinq barrières" in methode
     assert "<table>" in methode
     assert "GO" in (out / "exemples" / "temoin-sain.html").read_text(encoding="utf-8")
+    _assert_badge_is_shown_and_checked(out)
     _assert_links_stay_in_their_language(out)
     _assert_search_engines_get_one_address_per_page(out)
+
+
+def _assert_badge_is_shown_and_checked(out: Path) -> None:
+    """Le badge d'exemple (généré par le moteur) est présenté sur la page de vente ;
+    la page de vérification lit ``?ref=`` et contrôle la référence au chargement.
+    Registre vide : aucun autre badge n'est publié."""
+    for root, ref in ((out, "AUD-AAAA-NNN"), (out / "en", "AUD-YYYY-NNN")):
+        assert ref in (root / "badge" / "exemple.svg").read_text(encoding="utf-8")
+        assert sorted(p.name for p in (root / "badge").iterdir()) == ["exemple.svg"]
+        index = (root / "index.html").read_text(encoding="utf-8")
+        assert '<section id="badge">' in index
+        assert '<img src="badge/exemple.svg"' in index
+        assert 'href="verification.html?ref=AUD-2000-001"' in index
+        verification = (root / "verification.html").read_text(encoding="utf-8")
+        assert 'id="refcheck"' in verification
+        assert "data-ko=" in verification
+        assert "ref=([^&amp;#]*)" not in verification  # le script n'est pas échappé
+        assert "[?&]ref=([^&#]*)" in verification
+    assert "Ce qu&#x27;il ne prouve pas" in (out / "index.html").read_text(encoding="utf-8")
+
+
+def test_badges_follow_the_published_registry(tmp_path: Path) -> None:
+    """Un badge par attestation du registre publié, aucun pour une référence qui
+    n'y figure plus (le dossier est refait)."""
+    import json
+    from datetime import date
+
+    from qaudit.io.registry import Registry
+
+    build_site = _module()
+    document = json.loads((ROOT / "tests" / "fixtures" / "golden" / "healthy_witness.json")
+                          .read_text(encoding="utf-8"))
+    document["verdict"]["decision"] = "GO"
+    registry = tmp_path / "registre.jsonl"
+    Registry(registry).issue(document, system_name="w", profile="audit_complet", transferable=True,
+                             issued_on=date(2026, 11, 8), issuer="Norvane Research")
+    root = tmp_path / "en"
+    (root / "badge").mkdir(parents=True)
+    (root / "badge" / "AUD-1999-001.svg").write_text("<svg/>", encoding="utf-8")
+    cfg = build_site.SiteConfig(issuer="Norvane Research")  # type: ignore[attr-defined]
+    build_site._badges(cfg, "en", root, ["--registry", str(registry)], ["AUD-2026-001"])  # type: ignore[attr-defined]
+    assert sorted(p.name for p in (root / "badge").iterdir()) == ["AUD-2026-001.svg", "exemple.svg"]
+    svg = (root / "badge" / "AUD-2026-001.svg").read_text(encoding="utf-8")
+    assert "Audited by Norvane Research" in svg
 
 
 def _assert_search_engines_get_one_address_per_page(out: Path) -> None:
@@ -97,6 +142,30 @@ def test_no_public_address_means_no_canonical_and_no_sitemap(tmp_path: Path) -> 
     assert list(tmp_path.iterdir()) == []
 
 
+def test_studies_flag_adds_menu_entry_and_lists_study_pages_in_sitemap(tmp_path: Path) -> None:
+    build_site = _module()
+    cfg = build_site.SiteConfig(site_url="https://exemple.org", studies=True)  # type: ignore[attr-defined]
+    fr = build_site.shell(cfg, "fr", "T", "<p>x</p>", path="index.html")  # type: ignore[attr-defined]
+    assert '<a href="etudes/index.html">Études</a>' in fr
+    en = build_site.shell(cfg, "en", "T", "<p>x</p>", depth=1, path="exemples/index.html")  # type: ignore[attr-defined]
+    assert '<a href="../etudes/index.html">Research</a>' in en
+    plain = build_site.shell(build_site.SiteConfig(), "fr", "T", "<p>x</p>")  # type: ignore[attr-defined]
+    assert "etudes/" not in plain
+    for folder in (tmp_path / "etudes", tmp_path / "en" / "etudes"):
+        folder.mkdir(parents=True)
+        (folder / "index.html").write_text("x", encoding="utf-8")
+    # version française seulement
+    (tmp_path / "etudes" / "smc.html").write_text("x", encoding="utf-8")
+    build_site.write_crawler_files(cfg, tmp_path)  # type: ignore[attr-defined]
+    sitemap = (tmp_path / "sitemap.xml").read_text(encoding="utf-8")
+    assert "<loc>https://exemple.org/etudes/</loc>" in sitemap
+    assert "<loc>https://exemple.org/en/etudes/</loc>" in sitemap
+    assert "<loc>https://exemple.org/etudes/smc</loc>" in sitemap
+    assert "en/etudes/smc" not in sitemap  # ni page anglaise, ni version alternative inventée
+    build_site.write_crawler_files(build_site.SiteConfig(site_url="https://exemple.org"), tmp_path)  # type: ignore[attr-defined]
+    assert "etudes" not in (tmp_path / "sitemap.xml").read_text(encoding="utf-8")
+
+
 def _assert_links_stay_in_their_language(out: Path) -> None:
     """Chaque lien interne mène à un fichier existant de la même langue ; seul le
     sélecteur de langue (class="lang") change de langue. Régression : les pages
@@ -110,7 +179,7 @@ def _assert_links_stay_in_their_language(out: Path) -> None:
         for klass, href in re.findall(r'<a(?: class="([^"]*)")? href="([^"#]+)"', html):
             if href.startswith(("http://", "https://", "mailto:")):
                 continue
-            target = (page.parent / href).resolve()
+            target = (page.parent / href.split("?")[0]).resolve()
             assert target.exists(), f"{page.relative_to(out)} → {href}"
             if klass != "lang":
                 same = target.is_relative_to(english) == page.resolve().is_relative_to(english)

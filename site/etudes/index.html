@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Études — Norvane Research</title>
+<meta name="description" content="Études Norvane Research : des stratégies de trading très enseignées, codées règle par règle et comparées à un témoin simple, avec des chiffres que chacun peut recalculer.">
+<style>
+:root{--paper:#f6f4ef;--card:#ffffff;--ink:#0b1f3a;--ink-2:#17335d;--text:#1f2933;--text-2:#3d4756;
+--muted:#5f6b7a;--rule:#e4dfd4;--gold:#b8860b;--series:#2a78d6;--temoin:#566170;--band:#eef1f6;--grid:#eef1f6;--axis:#9aa5b4;
+--go:#166534;--go-bg:#e8f5ec;--nogo:#991b1b;--nogo-bg:#fdecec;
+--serif:Georgia,"Palatino Linotype","Book Antiqua",Cambria,serif;
+--sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0e141d;--card:#141b26;--ink:#e8edf5;
+--ink-2:#c9d6ea;--text:#e3e8ef;--text-2:#c4ccd8;--muted:#9aa5b4;--rule:#263142;--gold:#d4a73a;--series:#3987e5;--temoin:#a3acb9;
+--band:#1b2433;--grid:#1f2937;--axis:#5b6778;--go:#6fcf8e;--go-bg:#12271b;--nogo:#f08a8a;--nogo-bg:#2a1414;
+color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#0e141d;--card:#141b26;--ink:#e8edf5;--ink-2:#c9d6ea;--text:#e3e8ef;
+--text-2:#c4ccd8;--muted:#9aa5b4;--rule:#263142;--gold:#d4a73a;--series:#3987e5;--temoin:#a3acb9;--band:#1b2433;--grid:#1f2937;
+--axis:#5b6778;--go:#6fcf8e;--go-bg:#12271b;--nogo:#f08a8a;--nogo-bg:#2a1414;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.65}
+a{color:var(--ink-2)}a:hover{color:var(--gold)}
+.wrap{max-width:780px;margin:0 auto;padding:0 16px}
+header.top{background:#0b1f3a;color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;flex-wrap:wrap}
+.marque{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.2rem;letter-spacing:.05em;color:#fff;text-decoration:none}
+.marque i{width:20px;height:20px;border:2px solid #b8860b;border-radius:50%;position:relative;display:inline-block}
+.marque i:after{content:"";position:absolute;inset:4px;background:#b8860b;border-radius:50%}
+.marque small{font-family:var(--sans);font-size:.78rem;letter-spacing:0;color:#c8d0dc;margin-left:4px}
+header.top a.langue{color:#c8d0dc;border:1px solid #3b4d6b;border-radius:6px;padding:2px 8px;text-decoration:none;font-size:.85rem}
+article{padding:40px 0 24px}
+.kicker{color:var(--gold);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+h1{font-family:var(--serif);font-weight:normal;font-size:2.3rem;line-height:1.15;color:var(--ink);margin:8px 0 14px}
+h2{font-family:var(--serif);font-weight:normal;font-size:1.55rem;color:var(--ink);margin:44px 0 10px;
+padding-top:18px;border-top:1px solid var(--rule)}
+p.lead{font-size:1.15rem;color:var(--text-2);margin:0 0 26px}
+.tuiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+.tuile{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:14px 16px}
+.tuile .libelle{font-size:.85rem;color:var(--muted)}
+.tuile .valeur{font-size:1.9rem;font-weight:600;color:var(--ink);line-height:1.2;margin:4px 0}
+.tuile .detail{font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.tuile.non{border-color:var(--nogo)}.tuile.non .valeur{color:var(--nogo)}
+figure{margin:24px 0;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px 16px 10px}
+figure .titre-graphique{font-weight:600;color:var(--ink);margin:0 0 2px}
+figure .sous-titre{font-size:.88rem;color:var(--muted);margin:0 0 8px}
+svg.graphique{width:100%;height:auto;display:block;font-family:var(--sans)}
+.defile{overflow-x:auto}
+@media (max-width:640px){svg.graphique{min-width:560px}}
+svg .bande{fill:var(--band)}svg .grille{stroke:var(--grid);stroke-width:1}
+svg .zero,svg .frontiere{stroke:var(--axis);stroke-width:1}
+svg .serie{fill:none;stroke:var(--series);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+svg .moustache{stroke:var(--series);stroke-width:2;stroke-linecap:round}
+svg .point{fill:var(--series);stroke:var(--card);stroke-width:2}
+svg .axe{fill:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+svg .etiquette{fill:var(--text-2);font-size:13px}
+svg .valeur{fill:var(--text);font-size:13px;font-weight:600}
+svg .survol,svg .cible-zone{fill:transparent;pointer-events:all;cursor:crosshair}
+svg .curseur{stroke:var(--axis);stroke-width:1}
+details{margin:8px 0 2px;font-size:.9rem}summary{cursor:pointer;color:var(--ink-2)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;margin:10px 0}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.82rem}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.oui{color:var(--go);font-weight:600}td.non{color:var(--nogo);font-weight:600}
+ul{padding-left:1.2em}li{margin:4px 0}
+.note{font-size:.88rem;color:var(--muted)}
+.encadre{background:var(--card);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 10px 10px 0;margin:18px 0}
+code{font-family:Consolas,"Cascadia Mono","Courier New",monospace;font-size:.88em;background:var(--band);padding:1px 5px;border-radius:4px}
+footer{border-top:1px solid var(--rule);margin-top:40px;padding:22px 0 40px;font-size:.88rem;color:var(--muted)}
+.infobulle{position:fixed;z-index:10;background:var(--card);color:var(--text);border:1px solid var(--rule);
+border-radius:8px;padding:8px 10px;font-size:.82rem;line-height:1.45;box-shadow:0 4px 16px rgba(0,0,0,.12);
+pointer-events:none;max-width:280px;font-variant-numeric:tabular-nums}
+.infobulle b{color:var(--ink)}
+@media (max-width:640px){h1{font-size:1.75rem}.tuiles{grid-template-columns:1fr}body{font-size:16px}}
+svg .liaison{stroke:var(--axis);stroke-width:1.5;opacity:.6}
+svg .anneau{fill:var(--card);stroke:var(--temoin);stroke-width:2.5}
+.legende{display:flex;flex-wrap:wrap;gap:18px;font-size:.85rem;color:var(--text-2);margin:2px 0 8px}
+.legende span{display:inline-flex;align-items:center;gap:6px}
+.cle-point,.cle-anneau{display:inline-block;width:11px;height:11px;border-radius:50%}
+.cle-point{background:var(--series)}.cle-anneau{border:2.5px solid var(--temoin)}
+svg .halo{paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
+header.top nav{display:flex;align-items:center;gap:14px}header.top nav a:not(.langue){color:#c8d0dc;text-decoration:none;font-size:.9rem}header.top nav a:not(.langue):hover{color:#fff}
+ul.etudes{list-style:none;padding:0;margin:28px 0}ul.etudes li{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:18px 20px;margin:0 0 16px}ul.etudes h2{margin:4px 0 8px;font-size:1.3rem}ul.etudes h2 a{text-decoration:none;color:var(--ink)}ul.etudes h2 a:hover{color:var(--gold)}ul.etudes p{margin:0 0 10px;color:var(--text-2)}ul.etudes a.lire{font-weight:600}
+@media (max-width:560px){.marque small{display:none}}
+
+</style>
+<link rel="canonical" href="https://norvane-research.pages.dev/etudes/">
+<link rel="alternate" hreflang="fr" href="https://norvane-research.pages.dev/etudes/">
+<link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/etudes/">
+<link rel="alternate" hreflang="x-default" href="https://norvane-research.pages.dev/etudes/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Norvane Research">
+<meta property="og:url" content="https://norvane-research.pages.dev/etudes/">
+<meta property="og:title" content="Études — Norvane Research">
+<meta property="og:description" content="Études Norvane Research : des stratégies de trading très enseignées, codées règle par règle et comparées à un témoin simple, avec des chiffres que chacun peut recalculer.">
+<meta property="og:locale" content="fr_FR">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="marque" href="index.html"><i></i>Norvane Research<small>des chiffres testés hors échantillon</small></a>
+  <nav><a href="../index.html">qaudit</a><a class="langue" href="../en/etudes/index.html" hreflang="en">English</a></nav>
+</div></header>
+<main class="wrap"><article>
+<h1>Études</h1>
+<p class="lead">Des stratégies de trading très enseignées, codées règle par règle, comparées à un témoin simple et, quand c'est possible, rejouées sur des données que personne n'avait regardées. Chaque chiffre vient d'un fichier de résultats et peut être recalculé.</p>
+<ul class="etudes">
+<li><div class="kicker">Étude n° 2 · 8 novembre 2026</div><h2><a href="smc.html">Cinq stratégies SMC. Aucune ne fait mieux qu'acheter un repli.</a></h2>
+<p>Cinq setups SMC/ICT codés règle par règle et testés sur deux ans d'or en M1, le V75 et cinq indices synthétiques : aucun ne fait mieux qu'un simple achat de repli dans la tendance (p de 0,41 à 0,998).</p><a class="lire" href="smc.html">Lire l'étude →</a></li>
+<li><div class="kicker">Étude n° 1 · 8 novembre 2026</div><h2><a href="marteau-englobante.html">Tous nos contrôles ont dit oui. Les données fraîches ont dit non.</a></h2>
+<p>Un setup de chandeliers passe tous les contrôles sur les données où on l'a trouvé (+11,30 points par trade), puis perd sur 374 jours jamais regardés (−4,89 points par trade).</p><a class="lire" href="marteau-englobante.html">Lire l'étude →</a></li>
+</ul>
+</article></main>
+<footer><div class="wrap">
+<p><b>Norvane Research</b> — on teste ce qu'on vend aux traders, et on publie ce qui survit. Notre outil d'audit de systèmes de trading : <a href="../index.html">qaudit</a>, open source.</p>
+<p>Pas un conseil en investissement. Ces études décrivent des données passées ; elles ne prédisent rien et ne recommandent aucune action.</p>
+</div></footer>
+</body>
+</html>

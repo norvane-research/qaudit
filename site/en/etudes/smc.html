@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Five SMC strategies — Norvane Research</title>
+<meta name="description" content="Five SMC/ICT setups coded rule by rule and tested on two years of gold M1, V75 and five synthetic indices: none does better than simply buying a pullback in the trend (p from 0.41 to 0.998).">
+<style>
+:root{--paper:#f6f4ef;--card:#ffffff;--ink:#0b1f3a;--ink-2:#17335d;--text:#1f2933;--text-2:#3d4756;
+--muted:#5f6b7a;--rule:#e4dfd4;--gold:#b8860b;--series:#2a78d6;--temoin:#566170;--band:#eef1f6;--grid:#eef1f6;--axis:#9aa5b4;
+--go:#166534;--go-bg:#e8f5ec;--nogo:#991b1b;--nogo-bg:#fdecec;
+--serif:Georgia,"Palatino Linotype","Book Antiqua",Cambria,serif;
+--sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0e141d;--card:#141b26;--ink:#e8edf5;
+--ink-2:#c9d6ea;--text:#e3e8ef;--text-2:#c4ccd8;--muted:#9aa5b4;--rule:#263142;--gold:#d4a73a;--series:#3987e5;--temoin:#a3acb9;
+--band:#1b2433;--grid:#1f2937;--axis:#5b6778;--go:#6fcf8e;--go-bg:#12271b;--nogo:#f08a8a;--nogo-bg:#2a1414;
+color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#0e141d;--card:#141b26;--ink:#e8edf5;--ink-2:#c9d6ea;--text:#e3e8ef;
+--text-2:#c4ccd8;--muted:#9aa5b4;--rule:#263142;--gold:#d4a73a;--series:#3987e5;--temoin:#a3acb9;--band:#1b2433;--grid:#1f2937;
+--axis:#5b6778;--go:#6fcf8e;--go-bg:#12271b;--nogo:#f08a8a;--nogo-bg:#2a1414;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.65}
+a{color:var(--ink-2)}a:hover{color:var(--gold)}
+.wrap{max-width:780px;margin:0 auto;padding:0 16px}
+header.top{background:#0b1f3a;color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;flex-wrap:wrap}
+.marque{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.2rem;letter-spacing:.05em;color:#fff;text-decoration:none}
+.marque i{width:20px;height:20px;border:2px solid #b8860b;border-radius:50%;position:relative;display:inline-block}
+.marque i:after{content:"";position:absolute;inset:4px;background:#b8860b;border-radius:50%}
+.marque small{font-family:var(--sans);font-size:.78rem;letter-spacing:0;color:#c8d0dc;margin-left:4px}
+header.top a.langue{color:#c8d0dc;border:1px solid #3b4d6b;border-radius:6px;padding:2px 8px;text-decoration:none;font-size:.85rem}
+article{padding:40px 0 24px}
+.kicker{color:var(--gold);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+h1{font-family:var(--serif);font-weight:normal;font-size:2.3rem;line-height:1.15;color:var(--ink);margin:8px 0 14px}
+h2{font-family:var(--serif);font-weight:normal;font-size:1.55rem;color:var(--ink);margin:44px 0 10px;
+padding-top:18px;border-top:1px solid var(--rule)}
+p.lead{font-size:1.15rem;color:var(--text-2);margin:0 0 26px}
+.tuiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+.tuile{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:14px 16px}
+.tuile .libelle{font-size:.85rem;color:var(--muted)}
+.tuile .valeur{font-size:1.9rem;font-weight:600;color:var(--ink);line-height:1.2;margin:4px 0}
+.tuile .detail{font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.tuile.non{border-color:var(--nogo)}.tuile.non .valeur{color:var(--nogo)}
+figure{margin:24px 0;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px 16px 10px}
+figure .titre-graphique{font-weight:600;color:var(--ink);margin:0 0 2px}
+figure .sous-titre{font-size:.88rem;color:var(--muted);margin:0 0 8px}
+svg.graphique{width:100%;height:auto;display:block;font-family:var(--sans)}
+.defile{overflow-x:auto}
+@media (max-width:640px){svg.graphique{min-width:560px}}
+svg .bande{fill:var(--band)}svg .grille{stroke:var(--grid);stroke-width:1}
+svg .zero,svg .frontiere{stroke:var(--axis);stroke-width:1}
+svg .serie{fill:none;stroke:var(--series);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+svg .moustache{stroke:var(--series);stroke-width:2;stroke-linecap:round}
+svg .point{fill:var(--series);stroke:var(--card);stroke-width:2}
+svg .axe{fill:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+svg .etiquette{fill:var(--text-2);font-size:13px}
+svg .valeur{fill:var(--text);font-size:13px;font-weight:600}
+svg .survol,svg .cible-zone{fill:transparent;pointer-events:all;cursor:crosshair}
+svg .curseur{stroke:var(--axis);stroke-width:1}
+details{margin:8px 0 2px;font-size:.9rem}summary{cursor:pointer;color:var(--ink-2)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;margin:10px 0}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.82rem}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.oui{color:var(--go);font-weight:600}td.non{color:var(--nogo);font-weight:600}
+ul{padding-left:1.2em}li{margin:4px 0}
+.note{font-size:.88rem;color:var(--muted)}
+.encadre{background:var(--card);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 10px 10px 0;margin:18px 0}
+code{font-family:Consolas,"Cascadia Mono","Courier New",monospace;font-size:.88em;background:var(--band);padding:1px 5px;border-radius:4px}
+footer{border-top:1px solid var(--rule);margin-top:40px;padding:22px 0 40px;font-size:.88rem;color:var(--muted)}
+.infobulle{position:fixed;z-index:10;background:var(--card);color:var(--text);border:1px solid var(--rule);
+border-radius:8px;padding:8px 10px;font-size:.82rem;line-height:1.45;box-shadow:0 4px 16px rgba(0,0,0,.12);
+pointer-events:none;max-width:280px;font-variant-numeric:tabular-nums}
+.infobulle b{color:var(--ink)}
+@media (max-width:640px){h1{font-size:1.75rem}.tuiles{grid-template-columns:1fr}body{font-size:16px}}
+svg .liaison{stroke:var(--axis);stroke-width:1.5;opacity:.6}
+svg .anneau{fill:var(--card);stroke:var(--temoin);stroke-width:2.5}
+.legende{display:flex;flex-wrap:wrap;gap:18px;font-size:.85rem;color:var(--text-2);margin:2px 0 8px}
+.legende span{display:inline-flex;align-items:center;gap:6px}
+.cle-point,.cle-anneau{display:inline-block;width:11px;height:11px;border-radius:50%}
+.cle-point{background:var(--series)}.cle-anneau{border:2.5px solid var(--temoin)}
+svg .halo{paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
+header.top nav{display:flex;align-items:center;gap:14px}header.top nav a:not(.langue){color:#c8d0dc;text-decoration:none;font-size:.9rem}header.top nav a:not(.langue):hover{color:#fff}
+ul.etudes{list-style:none;padding:0;margin:28px 0}ul.etudes li{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:18px 20px;margin:0 0 16px}ul.etudes h2{margin:4px 0 8px;font-size:1.3rem}ul.etudes h2 a{text-decoration:none;color:var(--ink)}ul.etudes h2 a:hover{color:var(--gold)}ul.etudes p{margin:0 0 10px;color:var(--text-2)}ul.etudes a.lire{font-weight:600}
+@media (max-width:560px){.marque small{display:none}}
+
+</style>
+<link rel="canonical" href="https://norvane-research.pages.dev/en/etudes/smc">
+<link rel="alternate" hreflang="fr" href="https://norvane-research.pages.dev/etudes/smc">
+<link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/etudes/smc">
+<link rel="alternate" hreflang="x-default" href="https://norvane-research.pages.dev/etudes/smc">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Norvane Research">
+<meta property="og:url" content="https://norvane-research.pages.dev/en/etudes/smc">
+<meta property="og:title" content="Five SMC strategies — Norvane Research">
+<meta property="og:description" content="Five SMC/ICT setups coded rule by rule and tested on two years of gold M1, V75 and five synthetic indices: none does better than simply buying a pullback in the trend (p from 0.41 to 0.998).">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://norvane-research.pages.dev/etudes/img/smc-en.png">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="900">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="marque" href="index.html"><i></i>Norvane Research<small>numbers tested out of sample</small></a>
+  <nav><a href="../index.html">qaudit</a><a class="langue" href="../../etudes/smc.html" hreflang="fr">Français</a></nav>
+</div></header>
+
+<main class="wrap"><article>
+<div class="kicker">Study no. 2 · November 8, 2026</div>
+<h1>Five SMC strategies. None beats buying a pullback.</h1>
+<p class="lead">We coded five widely taught SMC/ICT setups rule by rule, then tested them on two years of gold in
+one-minute candles, on V75 and on five synthetic indices. On gold, some of them make money. But a control with no
+concepts at all, which simply buys a pullback in the trend with the same risk and the same costs, makes as much.
+What pays is the gold trend (+76% over the period), not the concepts.</p>
+
+<div class="tuiles">
+  <div class="tuile"><div class="libelle">Setups tested on gold</div><div class="valeur">5</div>
+    <div class="detail">531 trades · July 1, 2024 → June 26, 2026</div></div>
+  <div class="tuile non"><div class="libelle">Beat the control</div><div class="valeur">0</div>
+    <div class="detail">p from 0.41 to 0.998 (threshold: 0.05)</div></div>
+  <div class="tuile"><div class="libelle">Most frequent, Sweep + BPR</div><div class="valeur">−0.01 R</div>
+    <div class="detail">per trade · 357 trades · control +0.34 R</div></div>
+</div>
+
+<h2>The five setups</h2>
+<div class="tableau"><table>
+  <thead><tr><th>Setup</th><th>What it looks for</th></tr></thead>
+  <tbody>
+    <tr><td>Sweep + MSS + FVG</td><td>a liquidity sweep, then a market structure shift, then an entry on the fair value gap (FVG) left by the impulse</td></tr>
+    <tr><td>Sweep + BPR</td><td>a sweep, then an entry on the zone where a bullish and a bearish FVG overlap (BPR)</td></tr>
+    <tr><td>SMT + MSS + IFVG</td><td>a gold/silver divergence (gold sweeps its low, silver does not), a structure shift, then an inverted FVG</td></tr>
+    <tr><td>SMT + MSS + breaker</td><td>the same divergence, a structure shift, then a return to the breaker block (the last opposite candle before the impulse)</td></tr>
+    <tr><td>Sweep + MSS + breaker + FVG</td><td>a sweep, a structure shift, and the confluence of a breaker block and an FVG</td></tr>
+  </tbody>
+</table></div>
+
+<h2>The rules, the same for all</h2>
+<ul>
+  <li><b>Bias</b>: on H4, a close above a 50-candle exponential moving average whose 6-candle slope is positive (long bias),
+    or the reverse. Trades are only taken with the bias.</li>
+  <li><b>Sweep</b>: on M15, the wick goes beyond the low (or high) of the previous 20 candles and the close comes back
+    across.</li>
+  <li><b>Structure shift</b>: within the next 4 candles, a close beyond the extreme of the 10 candles before the sweep.
+    <b>FVG</b>: a gap between candle k − 2 and candle k, after an impulse candle of at least 1.5 ATR.</li>
+  <li><b>Entry</b>: a limit order on the zone, placed only <em>after</em> the confirmation candle, valid for 20 candles.</li>
+  <li><b>Stop</b> behind the swept extreme (plus 0.1 ATR); <b>target</b> at twice the risk. Gains are counted in
+    <b>R</b>: +1 R means winning once what was risked.</li>
+  <li><b>Resolved minute by minute</b>; if stop and target fall in the same minute, the stop counts. A trade neither stopped
+    nor won after 3 days counts as 0 R.</li>
+  <li><b>Costs</b>: $0.30 per round trip on gold, 2.0 points on V75, the real spread of every minute on the
+    FX Vol indices.</li>
+</ul>
+
+<h2>The control: the question that matters</h2>
+<p>Gold moved +76% between July 1, 2024 and June 26, 2026. In a market like that, almost any buy ends up a
+winner. Asking whether a setup "makes money" therefore says nothing. The real question is: <b>does it do better than
+any pullback buy in the same trend?</b></p>
+<p>The control picks a random candle while the H4 bias is active, places a limit order a little below the price (1, 1.5
+or 2 ATR), with stops drawn from the setup's own stop distribution, the same target, the same costs and the same
+resolution. It is replayed 400 times per setting. <b>p</b> is the share of those controls that do at least as well
+as the setup; of the three settings, we keep the one that favours the setup.</p>
+
+<h2>Results on gold</h2>
+<p>July 1, 2024 → June 26, 2026, 705,436 one-minute candles, silver as the divergence partner (correlation of hourly
+returns: 0.76).</p>
+<figure>
+  <p class="titre-graphique">Mean gain per trade: each setup and its control</p>
+  <p class="sous-titre">R per trade, costs deducted · hover a row</p>
+  <div class="legende"><span><i class="cle-point"></i>SMC strategy</span><span><i class="cle-anneau"></i>Control: buy the pullback</span></div>
+  <div class="defile"><svg class="graphique" viewBox="0 0 720 304" role="img" aria-labelledby="g-or">
+<title id="g-or">SMC strategy / Control: buy the pullback</title>
+<line class="grille" x1="230.0" x2="230.0" y1="10" y2="260"/>
+<text class="axe" x="230.0" y="278" text-anchor="middle">−0.2</text>
+<line class="grille" x1="294.3" x2="294.3" y1="10" y2="260"/>
+<text class="axe" x="294.3" y="278" text-anchor="middle">−0.1</text>
+<line class="grille" x1="358.6" x2="358.6" y1="10" y2="260"/>
+<text class="axe" x="358.6" y="278" text-anchor="middle">0.0</text>
+<line class="grille" x1="422.9" x2="422.9" y1="10" y2="260"/>
+<text class="axe" x="422.9" y="278" text-anchor="middle">+0.1</text>
+<line class="grille" x1="487.1" x2="487.1" y1="10" y2="260"/>
+<text class="axe" x="487.1" y="278" text-anchor="middle">+0.2</text>
+<line class="grille" x1="551.4" x2="551.4" y1="10" y2="260"/>
+<text class="axe" x="551.4" y="278" text-anchor="middle">+0.3</text>
+<line class="grille" x1="615.7" x2="615.7" y1="10" y2="260"/>
+<text class="axe" x="615.7" y="278" text-anchor="middle">+0.4</text>
+<line class="grille" x1="680.0" x2="680.0" y1="10" y2="260"/>
+<text class="axe" x="680.0" y="278" text-anchor="middle">+0.5</text>
+<line class="zero" x1="358.6" x2="358.6" y1="10" y2="260"/>
+<text class="axe" x="455.0" y="298" text-anchor="middle">Mean gain per trade (R, costs deducted)</text>
+<text class="etiquette" x="216" y="33.0" text-anchor="end">Sweep + MSS + FVG</text>
+<text class="axe" x="216" y="49.0" text-anchor="end">n = 66 · p = 0.41</text>
+<line class="liaison" x1="498.7" x2="521.9" y1="35.0" y2="35.0"/>
+<circle class="anneau" cx="498.7" cy="35.0" r="5.5"/>
+<circle class="point" cx="521.9" cy="35.0" r="5.5"/>
+<text class="valeur halo" x="533.9" y="39.0" text-anchor="start">+0.25 R</text>
+<rect class="cible-zone" x="230" y="10.0" width="450" height="50" data-info="Sweep + MSS + FVG · SMC strategy: +0.25 R · Control: +0.22 R · n = 66 · p = 0.41"/>
+<text class="etiquette" x="216" y="83.0" text-anchor="end">Sweep + BPR</text>
+<text class="axe" x="216" y="99.0" text-anchor="end">n = 357 · p &gt; 0.99</text>
+<line class="liaison" x1="579.7" x2="355.4" y1="85.0" y2="85.0"/>
+<circle class="anneau" cx="579.7" cy="85.0" r="5.5"/>
+<circle class="point" cx="355.4" cy="85.0" r="5.5"/>
+<text class="valeur halo" x="343.4" y="89.0" text-anchor="end">−0.01 R</text>
+<rect class="cible-zone" x="230" y="60.0" width="450" height="50" data-info="Sweep + BPR · SMC strategy: −0.01 R · Control: +0.34 R · n = 357 · p &gt; 0.99"/>
+<text class="etiquette" x="216" y="133.0" text-anchor="end">SMT + MSS + IFVG</text>
+<text class="axe" x="216" y="149.0" text-anchor="end">n = 28 · p = 0.57</text>
+<line class="liaison" x1="549.5" x2="510.9" y1="135.0" y2="135.0"/>
+<circle class="anneau" cx="549.5" cy="135.0" r="5.5"/>
+<circle class="point" cx="510.9" cy="135.0" r="5.5"/>
+<text class="valeur halo" x="498.9" y="139.0" text-anchor="end">+0.24 R</text>
+<rect class="cible-zone" x="230" y="110.0" width="450" height="50" data-info="SMT + MSS + IFVG · SMC strategy: +0.24 R · Control: +0.30 R · n = 28 · p = 0.57"/>
+<text class="etiquette" x="216" y="183.0" text-anchor="end">SMT + MSS + breaker</text>
+<text class="axe" x="216" y="199.0" text-anchor="end">n = 41 · p = 0.85</text>
+<line class="liaison" x1="615.1" x2="397.8" y1="185.0" y2="185.0"/>
+<circle class="anneau" cx="615.1" cy="185.0" r="5.5"/>
+<circle class="point" cx="397.8" cy="185.0" r="5.5"/>
+<text class="valeur halo" x="385.8" y="189.0" text-anchor="end">+0.06 R</text>
+<rect class="cible-zone" x="230" y="160.0" width="450" height="50" data-info="SMT + MSS + breaker · SMC strategy: +0.06 R · Control: +0.40 R · n = 41 · p = 0.85"/>
+<text class="etiquette" x="216" y="233.0" text-anchor="end">Sweep + MSS + breaker + FVG</text>
+<text class="axe" x="216" y="249.0" text-anchor="end">n = 39 · p = 0.49</text>
+<line class="liaison" x1="503.9" x2="500.6" y1="235.0" y2="235.0"/>
+<circle class="anneau" cx="503.9" cy="235.0" r="5.5"/>
+<circle class="point" cx="500.6" cy="235.0" r="5.5"/>
+<text class="valeur halo" x="488.6" y="239.0" text-anchor="end">+0.22 R</text>
+<rect class="cible-zone" x="230" y="210.0" width="450" height="50" data-info="Sweep + MSS + breaker + FVG · SMC strategy: +0.22 R · Control: +0.23 R · n = 39 · p = 0.49"/>
+</svg></div>
+  <details><summary>See the full table</summary><div class="tableau"><table><thead><tr><th>Strategy</th><th>Trades</th><th>Mean gain</th><th>Control</th><th>p</th><th>Out of sample (30%)</th><th>Verdict</th></tr></thead><tbody><tr><td>Sweep + MSS + FVG</td><td class='num'>66</td><td class='num'>+0.254 R</td><td class='num'>+0.218 R</td><td class='num'>0.41</td><td class='num'>+0.635 R (n = 20)</td><td class='non'>does not beat the control</td></tr><tr><td>Sweep + BPR</td><td class='num'>357</td><td class='num'>−0.005 R</td><td class='num'>+0.344 R</td><td class='num'>> 0.99</td><td class='num'>−0.006 R (n = 107)</td><td class='non'>does not beat the control</td></tr><tr><td>SMT + MSS + IFVG</td><td class='num'>28</td><td class='num'>+0.237 R</td><td class='num'>+0.297 R</td><td class='num'>0.57</td><td class='num'>+0.311 R (n = 9)</td><td class='non'>does not beat the control</td></tr><tr><td>SMT + MSS + breaker</td><td class='num'>41</td><td class='num'>+0.061 R</td><td class='num'>+0.399 R</td><td class='num'>0.85</td><td class='num'>−0.027 R (n = 12)</td><td class='non'>does not beat the control</td></tr><tr><td>Sweep + MSS + breaker + FVG</td><td class='num'>39</td><td class='num'>+0.221 R</td><td class='num'>+0.226 R</td><td class='num'>0.49</td><td class='num'>+0.484 R (n = 12)</td><td class='non'>does not beat the control</td></tr></tbody></table></div></details>
+</figure>
+<ul>
+  <li>The three "positive" setups (+0.25, +0.24 and +0.22 R per trade) earn what their control earns
+    (+0.22, +0.30 and +0.23 R). They capture the trend, nothing more.</li>
+  <li>The most frequent one, Sweep + BPR (357 trades), earns nothing: −0.005 R per trade, while the control makes
+    +0.34 R. Stacking opposite FVGs creates no edge.</li>
+  <li>The gold/silver divergence adds nothing despite a real correlation: p&nbsp;=&nbsp;0.57 and 0.85, on only 28 and
+    41 trades.</li>
+</ul>
+
+<h2>On markets without a trend, it gets worse</h2>
+<p>The FX Vol 20 to 99 synthetic indices have almost no trend: even the control has nothing to harvest there. We replayed
+the same rules over five months (January 10 to June 11, 2026), with the real spread of every minute, then on a locked
+month never looked at (June 12 to July 12, 2026). Only Sweep + BPR fires often enough to conclude; the other two setups
+make 3 to 13 trades in five months.</p>
+<figure>
+  <p class="titre-graphique">Sweep + BPR on five synthetic indices</p>
+  <p class="sous-titre">R per trade, real spread deducted · n: trades in test / in the locked month · hover a row</p>
+  <div class="legende"><span><i class="cle-point"></i>Locked month</span><span><i class="cle-anneau"></i>Test period</span></div>
+  <div class="defile"><svg class="graphique" viewBox="0 0 720 304" role="img" aria-labelledby="g-fx">
+<title id="g-fx">Locked month / Test period</title>
+<line class="grille" x1="230.0" x2="230.0" y1="10" y2="260"/>
+<text class="axe" x="230.0" y="278" text-anchor="middle">−0.7</text>
+<line class="grille" x1="280.0" x2="280.0" y1="10" y2="260"/>
+<text class="axe" x="280.0" y="278" text-anchor="middle">−0.6</text>
+<line class="grille" x1="330.0" x2="330.0" y1="10" y2="260"/>
+<text class="axe" x="330.0" y="278" text-anchor="middle">−0.5</text>
+<line class="grille" x1="380.0" x2="380.0" y1="10" y2="260"/>
+<text class="axe" x="380.0" y="278" text-anchor="middle">−0.4</text>
+<line class="grille" x1="430.0" x2="430.0" y1="10" y2="260"/>
+<text class="axe" x="430.0" y="278" text-anchor="middle">−0.3</text>
+<line class="grille" x1="480.0" x2="480.0" y1="10" y2="260"/>
+<text class="axe" x="480.0" y="278" text-anchor="middle">−0.2</text>
+<line class="grille" x1="530.0" x2="530.0" y1="10" y2="260"/>
+<text class="axe" x="530.0" y="278" text-anchor="middle">−0.1</text>
+<line class="grille" x1="580.0" x2="580.0" y1="10" y2="260"/>
+<text class="axe" x="580.0" y="278" text-anchor="middle">0.0</text>
+<line class="grille" x1="630.0" x2="630.0" y1="10" y2="260"/>
+<text class="axe" x="630.0" y="278" text-anchor="middle">+0.1</text>
+<line class="grille" x1="680.0" x2="680.0" y1="10" y2="260"/>
+<text class="axe" x="680.0" y="278" text-anchor="middle">+0.2</text>
+<line class="zero" x1="580.0" x2="580.0" y1="10" y2="260"/>
+<text class="axe" x="455.0" y="298" text-anchor="middle">Mean gain per trade (R, costs deducted)</text>
+<text class="etiquette" x="216" y="33.0" text-anchor="end">FX Vol 20</text>
+<text class="axe" x="216" y="49.0" text-anchor="end">n = 148 / 31</text>
+<line class="liaison" x1="594.0" x2="313.5" y1="35.0" y2="35.0"/>
+<circle class="anneau" cx="594.0" cy="35.0" r="5.5"/>
+<circle class="point" cx="313.5" cy="35.0" r="5.5"/>
+<text class="valeur halo" x="301.5" y="39.0" text-anchor="end">−0.53 R</text>
+<rect class="cible-zone" x="230" y="10.0" width="450" height="50" data-info="FX Vol 20 · Locked month: −0.53 R · Test period: +0.03 R · n = 148 / 31"/>
+<text class="etiquette" x="216" y="83.0" text-anchor="end">FX Vol 40</text>
+<text class="axe" x="216" y="99.0" text-anchor="end">n = 136 / 28</text>
+<line class="liaison" x1="547.5" x2="603.5" y1="85.0" y2="85.0"/>
+<circle class="anneau" cx="547.5" cy="85.0" r="5.5"/>
+<circle class="point" cx="603.5" cy="85.0" r="5.5"/>
+<text class="valeur halo" x="615.5" y="89.0" text-anchor="start">+0.05 R</text>
+<rect class="cible-zone" x="230" y="60.0" width="450" height="50" data-info="FX Vol 40 · Locked month: +0.05 R · Test period: −0.07 R · n = 136 / 28"/>
+<text class="etiquette" x="216" y="133.0" text-anchor="end">FX Vol 60</text>
+<text class="axe" x="216" y="149.0" text-anchor="end">n = 127 / 31</text>
+<line class="liaison" x1="548.0" x2="561.5" y1="135.0" y2="135.0"/>
+<circle class="anneau" cx="548.0" cy="135.0" r="5.5"/>
+<circle class="point" cx="561.5" cy="135.0" r="5.5"/>
+<text class="valeur halo" x="573.5" y="139.0" text-anchor="start">−0.04 R</text>
+<rect class="cible-zone" x="230" y="110.0" width="450" height="50" data-info="FX Vol 60 · Locked month: −0.04 R · Test period: −0.06 R · n = 127 / 31"/>
+<text class="etiquette" x="216" y="183.0" text-anchor="end">FX Vol 80</text>
+<text class="axe" x="216" y="199.0" text-anchor="end">n = 137 / 23</text>
+<line class="liaison" x1="480.0" x2="369.5" y1="185.0" y2="185.0"/>
+<circle class="anneau" cx="480.0" cy="185.0" r="5.5"/>
+<circle class="point" cx="369.5" cy="185.0" r="5.5"/>
+<text class="valeur halo" x="357.5" y="189.0" text-anchor="end">−0.42 R</text>
+<rect class="cible-zone" x="230" y="160.0" width="450" height="50" data-info="FX Vol 80 · Locked month: −0.42 R · Test period: −0.20 R · n = 137 / 23"/>
+<text class="etiquette" x="216" y="233.0" text-anchor="end">FX Vol 99</text>
+<text class="axe" x="216" y="249.0" text-anchor="end">n = 146 / 20</text>
+<line class="liaison" x1="535.5" x2="372.5" y1="235.0" y2="235.0"/>
+<circle class="anneau" cx="535.5" cy="235.0" r="5.5"/>
+<circle class="point" cx="372.5" cy="235.0" r="5.5"/>
+<text class="valeur halo" x="360.5" y="239.0" text-anchor="end">−0.41 R</text>
+<rect class="cible-zone" x="230" y="210.0" width="450" height="50" data-info="FX Vol 99 · Locked month: −0.41 R · Test period: −0.09 R · n = 146 / 20"/>
+</svg></div>
+  <details><summary>See the table</summary><div class="tableau"><table><thead><tr><th>Index</th><th>Test: trades</th><th>Test: mean gain</th><th>p vs control</th><th>Locked month: trades</th><th>Locked month: mean gain</th><th>t</th></tr></thead><tbody><tr><td>FX Vol 20</td><td class='num'>148</td><td class='num'>+0.028 R</td><td class='num'>0.71</td><td class='num'>31</td><td class='num'>−0.533 R</td><td class='num'>−2.64</td></tr><tr><td>FX Vol 40</td><td class='num'>136</td><td class='num'>−0.065 R</td><td class='num'>0.75</td><td class='num'>28</td><td class='num'>+0.047 R</td><td class='num'>+0.17</td></tr><tr><td>FX Vol 60</td><td class='num'>127</td><td class='num'>−0.064 R</td><td class='num'>0.87</td><td class='num'>31</td><td class='num'>−0.037 R</td><td class='num'>−0.15</td></tr><tr><td>FX Vol 80</td><td class='num'>137</td><td class='num'>−0.200 R</td><td class='num'>> 0.99</td><td class='num'>23</td><td class='num'>−0.421 R</td><td class='num'>−0.62</td></tr><tr><td>FX Vol 99</td><td class='num'>146</td><td class='num'>−0.089 R</td><td class='num'>0.84</td><td class='num'>20</td><td class='num'>−0.415 R</td><td class='num'>−1.51</td></tr></tbody></table></div></details>
+</figure>
+<p>In test, it never beats the control (p from 0.71 to 0.997, 300 controls per setting). On the
+locked month, it loses on 4 indices out of 5, down to −0.53 R per trade on FX Vol 20
+(t&nbsp;=&nbsp;−2.64). Divergence is impossible there by construction: these indices are independent (maximum hourly
+correlation between them: 0.02).</p>
+
+<h2>And on V75, with new data</h2>
+<p>On V75, the original study only had June 5 to July 10, 2026. Sweep + BPR made +0.27 R per trade there over
+33 trades, as much as its control (+0.27 R, p&nbsp;=&nbsp;0.51). The other two setups made only
+2 and 1 trades.</p>
+<div class="encadre">The file has since been extended to September 3, 2026. On those never-tested days, with the same rules:
+Sweep + BPR makes <b>+0.11 R per trade</b> over 32 trades (37.5% winners, t&nbsp;=&nbsp;+0.42),
+indistinguishable from zero. The other two setups make 2 and 1 trades, all stopped out.</div>
+
+<h2>Why</h2>
+<p>SMC concepts describe a chart very well after the fact: there is always a sweep before a reversal and an FVG in an
+impulse. Coded in advance, with costs, they predict nothing beyond the trend itself. What pays on gold is buying a
+pullback when the market is rising, and that needs none of these words.</p>
+
+<h2>Limits</h2>
+<ul>
+  <li>SMC concepts have no official definition. Ours is public and mechanical; another one would give other numbers, and
+    would need the same control.</li>
+  <li>Two years of gold in a strong rise (+76%): the pullback-buy effect itself has never been checked on a
+    falling or trendless gold.</li>
+  <li>Discretionary trading "in context" cannot be tested this way. But what cannot be tested cannot be proven either.</li>
+  <li>The control was not replayed on the new V75 data; there, the setup is only compared with zero.</li>
+  <li>With a target at three times the risk, the positive setups earn more (raw outputs); but the control was only replayed
+    with the 2R target, and the 3R comparison remains to be done.</li>
+</ul>
+
+<h2>What would change our mind</h2>
+<p>A mechanical definition of an SMC setup (entry, stop, target) that beats this control with p &lt; 0.05, then holds on
+data nobody has looked at. Send us yours: we will test it in this same frame and publish the result, whatever it is.</p>
+
+<h2>Redo the computation</h2>
+<ul>
+  <li><b>Code</b>: the original scripts (<code>smc_lab.py</code>, <code>fxvol_lab.py</code>) re-run unchanged; their gold and FX Vol
+    outputs are identical, line for line, to the August 2026 ones (<code>sortie_or.txt</code>, <code>sortie_fxvol.txt</code>,
+    <code>sortie_v75.txt</code>).</li>
+  <li><b>Seed</b>: 11; 400 controls per setting (300 on FX Vol). Every number on this page is in
+    <code>resultats.json</code>. The code will be published with the Norvane Research studies repository.</li>
+</ul>
+</article></main>
+
+<footer><div class="wrap">
+<p><b>Norvane Research</b> — we test what traders are sold, and publish what survives.
+<a href="index.html">All our studies</a> · our audit tool for trading systems:
+<a href="../index.html">qaudit</a>, open source.</p>
+<p>Not financial advice. This study describes past data; it predicts nothing and recommends no action. Page built on
+November 8, 2026 from <code>resultats.json</code>.</p>
+</div></footer>
+<script>
+(function () {
+  "use strict";
+  var fr = (document.documentElement.lang || "fr") === "fr";
+  var locale = fr ? "fr-FR" : "en-US";
+  var intl = new Intl.NumberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2, signDisplay: "exceptZero" });
+  var nf = { format: function (v) { return intl.format(v).replace("-", "−"); } };
+  var bulle = document.createElement("div");
+  bulle.className = "infobulle";
+  bulle.hidden = true;
+  document.body.appendChild(bulle);
+
+  function montrer(lignes, x, y) {
+    bulle.textContent = "";
+    lignes.forEach(function (l, i) {
+      var el = document.createElement(i === 0 ? "b" : "div");
+      el.textContent = l;
+      bulle.appendChild(el);
+    });
+    bulle.hidden = false;
+    var r = bulle.getBoundingClientRect();
+    var gauche = x + 14, haut = y + 14;
+    if (gauche + r.width > window.innerWidth - 8) gauche = x - r.width - 14;
+    if (haut + r.height > window.innerHeight - 8) haut = y - r.height - 14;
+    bulle.style.left = Math.max(8, gauche) + "px";
+    bulle.style.top = Math.max(8, haut) + "px";
+  }
+  function cacher() { bulle.hidden = true; }
+
+  document.querySelectorAll("rect.survol").forEach(function (zone) {
+    var svg = zone.ownerSVGElement, d = zone.dataset, pts = JSON.parse(d.points);
+    var lib = JSON.parse(svg.closest("figure").dataset.libelles || "{}");
+    var x0 = +d.x0, x1 = +d.x1, ml = +d.ml, mr = +d.mr, W = +d.w, y0 = +d.y0, y1 = +d.y1, mt = +d.mt, mb = +d.mb, H = +d.h;
+    var X = function (t) { return ml + (t - x0) / (x1 - x0) * (W - ml - mr); };
+    var Y = function (v) { return mt + (y1 - v) / (y1 - y0) * (H - mt - mb); };
+    var ligne = svg.querySelector(".curseur"), point = svg.querySelector(".curseur-point");
+    zone.addEventListener("pointermove", function (e) {
+      var p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+      var loc = p.matrixTransform(svg.getScreenCTM().inverse());
+      var t = x0 + (loc.x - ml) / (W - ml - mr) * (x1 - x0);
+      var lo = 0, hi = pts.length - 1;
+      while (hi - lo > 1) { var m = (lo + hi) >> 1; if (pts[m][0] < t) lo = m; else hi = m; }
+      var i = Math.abs(pts[lo][0] - t) < Math.abs(pts[hi][0] - t) ? lo : hi;
+      var cx = X(pts[i][0]), cy = Y(pts[i][2]);
+      ligne.setAttribute("x1", cx); ligne.setAttribute("x2", cx); ligne.setAttribute("visibility", "visible");
+      point.setAttribute("cx", cx); point.setAttribute("cy", cy); point.setAttribute("visibility", "visible");
+      var date = new Date(pts[i][0] * 1000).toLocaleString(locale, { day: "numeric", month: "short", year: "numeric",
+        hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC";
+      montrer([date, lib.trade + " " + nf.format(pts[i][1]) + " pt", lib.cumul + " " + nf.format(pts[i][2]) + " pt"],
+        e.clientX, e.clientY);
+    });
+    zone.addEventListener("pointerleave", function () {
+      cacher(); ligne.setAttribute("visibility", "hidden"); point.setAttribute("visibility", "hidden");
+    });
+  });
+
+  document.querySelectorAll("[data-info]").forEach(function (zone) {
+    var f = function (e) { montrer(zone.dataset.info.split(" · "), e.clientX, e.clientY); };
+    zone.addEventListener("pointerenter", f);
+    zone.addEventListener("pointermove", f);
+    zone.addEventListener("pointerleave", cacher);
+  });
+})();
+
+</script>
+</body>
+</html>

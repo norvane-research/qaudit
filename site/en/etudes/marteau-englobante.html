@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Out of sample — Norvane Research</title>
+<meta name="description" content="A candlestick setup passes every check on the data where it was found (+11.30 points per trade), then loses on 374 never-seen days (−4.89 points per trade).">
+<style>
+:root{--paper:#f6f4ef;--card:#ffffff;--ink:#0b1f3a;--ink-2:#17335d;--text:#1f2933;--text-2:#3d4756;
+--muted:#5f6b7a;--rule:#e4dfd4;--gold:#b8860b;--series:#2a78d6;--band:#eef1f6;--grid:#eef1f6;--axis:#9aa5b4;
+--go:#166534;--go-bg:#e8f5ec;--nogo:#991b1b;--nogo-bg:#fdecec;
+--serif:Georgia,"Palatino Linotype","Book Antiqua",Cambria,serif;
+--sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#0e141d;--card:#141b26;--ink:#e8edf5;
+--ink-2:#c9d6ea;--text:#e3e8ef;--text-2:#c4ccd8;--muted:#9aa5b4;--rule:#263142;--gold:#d4a73a;--series:#3987e5;
+--band:#1b2433;--grid:#1f2937;--axis:#5b6778;--go:#6fcf8e;--go-bg:#12271b;--nogo:#f08a8a;--nogo-bg:#2a1414;
+color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#0e141d;--card:#141b26;--ink:#e8edf5;--ink-2:#c9d6ea;--text:#e3e8ef;
+--text-2:#c4ccd8;--muted:#9aa5b4;--rule:#263142;--gold:#d4a73a;--series:#3987e5;--band:#1b2433;--grid:#1f2937;
+--axis:#5b6778;--go:#6fcf8e;--go-bg:#12271b;--nogo:#f08a8a;--nogo-bg:#2a1414;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);font-size:17px;line-height:1.65}
+a{color:var(--ink-2)}a:hover{color:var(--gold)}
+.wrap{max-width:780px;margin:0 auto;padding:0 16px}
+header.top{background:#0b1f3a;color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;flex-wrap:wrap}
+.marque{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.2rem;letter-spacing:.05em;color:#fff;text-decoration:none}
+.marque i{width:20px;height:20px;border:2px solid #b8860b;border-radius:50%;position:relative;display:inline-block}
+.marque i:after{content:"";position:absolute;inset:4px;background:#b8860b;border-radius:50%}
+.marque small{font-family:var(--sans);font-size:.78rem;letter-spacing:0;color:#c8d0dc;margin-left:4px}
+header.top a.langue{color:#c8d0dc;border:1px solid #3b4d6b;border-radius:6px;padding:2px 8px;text-decoration:none;font-size:.85rem}
+article{padding:40px 0 24px}
+.kicker{color:var(--gold);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+h1{font-family:var(--serif);font-weight:normal;font-size:2.3rem;line-height:1.15;color:var(--ink);margin:8px 0 14px}
+h2{font-family:var(--serif);font-weight:normal;font-size:1.55rem;color:var(--ink);margin:44px 0 10px;
+padding-top:18px;border-top:1px solid var(--rule)}
+p.lead{font-size:1.15rem;color:var(--text-2);margin:0 0 26px}
+.tuiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:26px 0}
+.tuile{background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:14px 16px}
+.tuile .libelle{font-size:.85rem;color:var(--muted)}
+.tuile .valeur{font-size:1.9rem;font-weight:600;color:var(--ink);line-height:1.2;margin:4px 0}
+.tuile .detail{font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.tuile.non{border-color:var(--nogo)}.tuile.non .valeur{color:var(--nogo)}
+figure{margin:24px 0;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:16px 16px 10px}
+figure .titre-graphique{font-weight:600;color:var(--ink);margin:0 0 2px}
+figure .sous-titre{font-size:.88rem;color:var(--muted);margin:0 0 8px}
+svg.graphique{width:100%;height:auto;display:block;font-family:var(--sans)}
+.defile{overflow-x:auto}
+@media (max-width:640px){svg.graphique{min-width:560px}}
+svg .bande{fill:var(--band)}svg .grille{stroke:var(--grid);stroke-width:1}
+svg .zero,svg .frontiere{stroke:var(--axis);stroke-width:1}
+svg .serie{fill:none;stroke:var(--series);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+svg .moustache{stroke:var(--series);stroke-width:2;stroke-linecap:round}
+svg .point{fill:var(--series);stroke:var(--card);stroke-width:2}
+svg .axe{fill:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+svg .etiquette{fill:var(--text-2);font-size:13px}
+svg .valeur{fill:var(--text);font-size:13px;font-weight:600}
+svg .survol,svg .cible-zone{fill:transparent;pointer-events:all;cursor:crosshair}
+svg .curseur{stroke:var(--axis);stroke-width:1}
+details{margin:8px 0 2px;font-size:.9rem}summary{cursor:pointer;color:var(--ink-2)}
+.tableau{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;margin:10px 0}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.82rem}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.oui{color:var(--go);font-weight:600}td.non{color:var(--nogo);font-weight:600}
+ul{padding-left:1.2em}li{margin:4px 0}
+.note{font-size:.88rem;color:var(--muted)}
+.encadre{background:var(--card);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 10px 10px 0;margin:18px 0}
+code{font-family:Consolas,"Cascadia Mono","Courier New",monospace;font-size:.88em;background:var(--band);padding:1px 5px;border-radius:4px}
+footer{border-top:1px solid var(--rule);margin-top:40px;padding:22px 0 40px;font-size:.88rem;color:var(--muted)}
+.infobulle{position:fixed;z-index:10;background:var(--card);color:var(--text);border:1px solid var(--rule);
+border-radius:8px;padding:8px 10px;font-size:.82rem;line-height:1.45;box-shadow:0 4px 16px rgba(0,0,0,.12);
+pointer-events:none;max-width:280px;font-variant-numeric:tabular-nums}
+.infobulle b{color:var(--ink)}
+@media (max-width:640px){h1{font-size:1.75rem}.tuiles{grid-template-columns:1fr}body{font-size:16px}}
+header.top nav{display:flex;align-items:center;gap:14px}header.top nav a:not(.langue){color:#c8d0dc;text-decoration:none;font-size:.9rem}header.top nav a:not(.langue):hover{color:#fff}
+@media (max-width:560px){.marque small{display:none}}
+
+</style>
+<link rel="canonical" href="https://norvane-research.pages.dev/en/etudes/marteau-englobante">
+<link rel="alternate" hreflang="fr" href="https://norvane-research.pages.dev/etudes/marteau-englobante">
+<link rel="alternate" hreflang="en" href="https://norvane-research.pages.dev/en/etudes/marteau-englobante">
+<link rel="alternate" hreflang="x-default" href="https://norvane-research.pages.dev/etudes/marteau-englobante">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Norvane Research">
+<meta property="og:url" content="https://norvane-research.pages.dev/en/etudes/marteau-englobante">
+<meta property="og:title" content="Out of sample — Norvane Research">
+<meta property="og:description" content="A candlestick setup passes every check on the data where it was found (+11.30 points per trade), then loses on 374 never-seen days (−4.89 points per trade).">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://norvane-research.pages.dev/etudes/img/marteau-englobante-en.png">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="900">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="marque" href="index.html"><i></i>Norvane Research<small>numbers tested out of sample</small></a>
+  <nav><a href="../index.html">qaudit</a><a class="langue" href="../../etudes/marteau-englobante.html" hreflang="fr">Français</a></nav>
+</div></header>
+
+<main class="wrap"><article>
+<div class="kicker">Study no. 1 · November 8, 2026</div>
+<h1>Every internal check said yes. Fresh data said no.</h1>
+<p class="lead">A classic candlestick setup, tested on a synthetic index: everything you can check on the data where
+it was found says it works. On 374 days we had never looked at, it loses.</p>
+
+<div class="tuiles">
+  <div class="tuile"><div class="libelle">Explored period</div><div class="valeur">+11.30</div>
+    <div class="detail">points per trade · n = 69 · t = +2.42</div></div>
+  <div class="tuile non"><div class="libelle">Never-seen data</div><div class="valeur">−4.89</div>
+    <div class="detail">points per trade · n = 159 · t = −1.35</div></div>
+  <div class="tuile"><div class="libelle">Whole history</div><div class="valeur">+0.01</div>
+    <div class="detail">points per trade · n = 228 · t = 0.00</div></div>
+</div>
+
+<h2>The setup</h2>
+<ul>
+  <li><b>Instrument</b>: TrendX 1200, a synthetic index from the broker Weltrade, on one-hour candles (H1).</li>
+  <li><b>Signal</b>: a hammer or a doji, then an engulfing candle that goes <em>against</em> the trend of the previous
+    6 candles.</li>
+  <li><b>Trade</b>: follow the engulfing candle's direction for one candle, then exit.</li>
+  <li><b>Costs</b>: a 0.74-point spread deducted from every trade. Slippage is not counted.</li>
+</ul>
+<p>It is the kind of rule taught everywhere: a sign of indecision, then a strong candle that turns the trend. We
+spotted it by looking at the charts, and that is exactly the problem.</p>
+
+<h2>What we saw first</h2>
+<p>On the period where the pattern was spotted, from January 10, 2026 to August 1, 2026, the setup fired
+69 times. Mean gain: <b>+11.30 points per trade</b>, 58.0% winning trades,
+t = +2.42. We then ran every check that is usually recommended:</p>
+<div class="tableau"><table>
+  <thead><tr><th>Check</th><th>Result</th><th>Verdict</th></tr></thead>
+  <tbody>
+    <tr><td>95% confidence interval (bootstrap)</td><td class="num">[+2.33 ; +20.40]</td><td class="oui">above zero</td></tr>
+    <tr><td>Median versus mean</td><td class="num">+18.23 vs +11.30</td><td class="oui">not driven by a few big wins</td></tr>
+    <tr><td>Without the 3 best trades</td><td class="num">+8.57</td><td class="oui">still positive</td></tr>
+    <tr><td>Against the engulfing candle alone (no hammer or doji)</td><td class="num">+13.63 (t = +2.68)</td><td class="oui">the pattern adds something</td></tr>
+    <tr><td>69 random entries, 20,000 draws</td><td class="num">p = 0.012</td><td class="oui">chance rarely does as well</td></tr>
+    <tr><td>Trend measured on 12 or 24 candles instead of 6</td><td class="num">t = +2.26 ; +2.40</td><td class="oui">not a tuning artefact</td></tr>
+    <tr><td>Sister indices TrendX 600 and TrendX 1800</td><td class="num">+18.24 (t = +1.71) ; +3.96 (t = +1.29)</td><td class="oui">same sign</td></tr>
+    <tr><td>First out-of-sample check, 30 locked days</td><td class="num">+15.72, 70.0% winners, n = 10</td><td class="oui">positive</td></tr>
+  </tbody>
+</table></div>
+<p class="note">The last three rows were computed at the time on the original working set (broker quotes from
+January 10 to July 12, 2026, grouped into H1 candles); the others on H1 candles from the MT5 terminal. Gains are in
+price points, spread deducted.</p>
+<p>Everything said yes. Even the first out-of-sample check, but on 10 trades, which proves nothing. We
+needed far more data that nobody had seen.</p>
+
+<h2>The test that decides</h2>
+<p>The broker's MT5 terminal goes back further than our working set: to January 1, 2025. The slice from
+January 1, 2025 to January 9, 2026, that is <b>374 days</b>, had never been opened: no exploration, no
+tuning, not a glance. The rules were frozen before reading it, exactly as above.</p>
+<div class="encadre">Result on this never-seen data: <b>−4.89 points per trade</b> over 159 trades,
+50.3% winners, t = −1.35, confidence interval [−11.79 ; +2.06]. The sign
+flips. The interval contains zero: the setup is not proven to lose, it simply has no edge left. Over the whole history (577 days, 228 trades): +0.01 point per trade.
+Nothing.</div>
+
+<figure data-libelles='{"trade":"Trade:","cumul":"Cumulative:"}'>
+  <p class="titre-graphique">Cumulative gain of the setup, trade after trade</p>
+  <p class="sous-titre">Price points, spread deducted · shaded: the explored period · hover the line</p>
+  <div class="defile"><svg class="graphique" viewBox="0 0 720 330" role="img" aria-labelledby="g1t">
+<title id="g1t">Cumulative gain of the setup, trade after trade</title>
+<rect class="bande" x="470.4" y="30" width="221.6" height="260"/>
+<line class="grille" x1="64" x2="692" y1="290.0" y2="290.0"/>
+<text class="axe" x="56" y="294.0" text-anchor="end">−1,000</text>
+<line class="grille" x1="64" x2="692" y1="246.7" y2="246.7"/>
+<text class="axe" x="56" y="250.7" text-anchor="end">−800</text>
+<line class="grille" x1="64" x2="692" y1="203.3" y2="203.3"/>
+<text class="axe" x="56" y="207.3" text-anchor="end">−600</text>
+<line class="grille" x1="64" x2="692" y1="160.0" y2="160.0"/>
+<text class="axe" x="56" y="164.0" text-anchor="end">−400</text>
+<line class="grille" x1="64" x2="692" y1="116.7" y2="116.7"/>
+<text class="axe" x="56" y="120.7" text-anchor="end">−200</text>
+<line class="grille" x1="64" x2="692" y1="73.3" y2="73.3"/>
+<text class="axe" x="56" y="77.3" text-anchor="end">0</text>
+<line class="grille" x1="64" x2="692" y1="30.0" y2="30.0"/>
+<text class="axe" x="56" y="34.0" text-anchor="end">+200</text>
+<line class="zero" x1="64" x2="692" y1="73.3" y2="73.3"/>
+<text class="axe" x="64.0" y="308" text-anchor="middle">Jan 2025</text>
+<text class="axe" x="161.8" y="308" text-anchor="middle">Apr</text>
+<text class="axe" x="260.7" y="308" text-anchor="middle">Jul</text>
+<text class="axe" x="360.6" y="308" text-anchor="middle">Oct</text>
+<text class="axe" x="460.6" y="308" text-anchor="middle">Jan 2026</text>
+<text class="axe" x="558.4" y="308" text-anchor="middle">Apr</text>
+<text class="axe" x="657.2" y="308" text-anchor="middle">Jul</text>
+<line class="frontiere" x1="470.4" x2="470.4" y1="30" y2="290"/>
+<text class="etiquette" x="72" y="20">Never looked at · 374 days</text>
+<text class="etiquette" x="478.4" y="20">Explored period</text>
+<polyline class="serie" points="64.0,73.3 65.4,80.5 65.8,70.8 66.3,78.2 73.0,85.8 78.3,64.6 79.5,76.1 80.0,78.4 81.1,84.8 85.1,82.2 86.0,73.8 87.0,68.0 88.4,59.4 88.9,75.2 94.7,66.9 96.5,69.7 98.0,77.3 100.6,72.8 102.0,62.7 106.6,57.4 109.0,72.3 109.5,61.7 110.6,72.4 113.2,79.9 114.2,76.0 115.8,93.2 121.7,105.4 128.0,121.2 128.7,120.9 132.9,143.5 133.5,149.9 135.3,153.3 136.5,152.8 138.6,157.2 142.7,175.3 143.3,181.1 144.5,194.0 146.4,180.4 147.1,169.9 148.7,180.9 151.1,193.6 154.1,195.9 162.6,197.1 166.6,194.7 168.1,211.7 168.6,200.5 169.3,194.8 170.2,183.9 176.6,189.8 179.2,186.1 179.6,189.7 181.7,196.6 183.2,205.9 184.2,204.9 185.6,182.7 193.7,197.9 195.9,194.1 196.9,191.3 205.6,189.8 216.6,186.9 221.0,184.9 233.2,179.6 233.9,164.2 237.3,155.0 237.8,152.6 238.2,167.7 241.6,181.6 246.7,182.1 250.9,191.9 251.4,212.2 254.0,201.2 255.4,213.7 255.9,198.3 259.6,213.3 260.2,226.3 261.6,217.5 261.7,215.6 261.9,204.1 264.7,215.6 265.7,225.9 267.5,236.4 268.4,244.8 284.4,243.9 284.5,245.9 285.2,247.0 287.8,269.8 289.1,254.4 289.4,246.1 289.7,249.8 291.8,244.5 292.3,252.8 293.6,252.1 293.7,239.2 295.2,249.3 297.3,244.2 298.6,228.7 299.0,216.5 301.2,230.5 304.6,226.1 311.2,217.4 313.8,219.8 314.5,220.0 314.6,215.6 318.0,221.6 321.3,214.3 325.0,207.0 330.2,200.2 332.2,199.1 332.9,192.7 336.6,189.1 337.0,208.7 339.0,197.3 342.9,190.3 348.4,180.8 356.4,185.4 361.1,189.0 362.6,176.9 362.9,183.6 363.2,192.7 365.1,191.9 367.5,181.2 369.4,189.5 372.3,185.0 373.2,173.8 375.7,171.4 376.0,170.3 384.5,166.0 386.1,182.4 387.6,177.8 388.1,165.5 389.0,178.5 389.9,169.3 392.3,169.4 393.4,157.7 400.2,148.2 402.1,146.3 403.8,153.0 405.4,165.9 406.5,172.3 407.7,183.2 410.1,195.8 413.4,195.9 415.7,192.4 433.8,201.0 436.2,217.4 438.2,225.8 442.2,213.6 446.4,225.8 450.2,228.0 450.7,219.8 453.9,209.4 454.4,208.4 454.6,213.1 455.5,222.7 456.4,231.6 457.8,237.3 459.7,234.7 465.7,226.4 468.6,249.1 470.3,241.7 471.2,229.1 473.4,236.0 476.1,228.3 486.0,215.9 490.8,214.1 493.0,226.3 497.5,229.9 499.0,214.4 505.8,215.3 505.8,204.8 506.8,201.1 507.4,197.1 509.9,204.7 515.7,189.3 519.7,198.2 521.1,189.3 521.7,180.1 522.7,175.2 526.4,159.8 526.6,165.8 531.7,167.2 533.4,167.4 536.4,161.2 540.0,155.5 548.1,142.7 549.2,132.4 549.8,135.3 555.4,126.6 555.8,130.8 556.7,131.2 560.4,124.6 565.0,133.2 572.9,128.5 575.7,148.9 581.2,154.1 585.7,155.8 592.4,145.4 593.3,149.9 596.3,138.1 599.2,131.8 601.5,137.1 612.7,137.8 614.3,139.0 615.0,127.5 616.0,116.0 617.5,112.4 621.9,100.5 623.0,97.3 624.1,104.0 626.6,96.1 637.1,80.7 638.7,72.2 640.1,75.5 651.6,71.2 660.1,60.3 660.4,51.3 661.8,57.4 664.0,75.3 667.0,67.4 667.9,62.1 672.3,53.3 673.3,48.9 674.4,40.0 680.2,38.1 680.4,42.4 683.8,50.0 686.3,51.4 687.0,57.9 688.6,72.7"/>
+<circle class="point" cx="470.3" cy="241.7" r="4.5"/>
+<text class="valeur" x="460.3" y="263.7" text-anchor="end">−777 pt</text>
+<circle class="point" cx="688.6" cy="72.7" r="4.5"/>
+<text class="valeur" x="678.6" y="94.7" text-anchor="end">+3 pt</text>
+<rect class="survol" x="64" y="30" width="628" height="260" data-x0="1735689600.0" data-x1="1785628800.0" data-ml="64" data-mr="28" data-w="720" data-y0="-1000.0" data-y1="200.0" data-mt="30" data-mb="40" data-h="330" data-points='[[1735801200, -32.98, -32.98], [1735833600, 44.46, 11.48], [1735869600, -34.14, -22.66], [1736402400, -34.94, -57.6], [1736823600, 97.75, 40.15], [1736920800, -52.8, -12.65], [1736964000, -10.57, -23.22], [1737050400, -29.86, -53.08], [1737370800, 12.36, -40.72], [1737439200, 38.57, -2.15], [1737522000, 26.74, 24.59], [1737630000, 39.71, 64.3], [1737669600, -72.74, -8.44], [1738130400, 38.18, 29.74], [1738274400, -12.97, 16.77], [1738393200, -35.09, -18.32], [1738598400, 20.99, 2.67], [1738710000, 46.46, 49.13], [1739073600, 24.51, 73.64], [1739268000, -68.78, 4.86], [1739311200, 48.97, 53.83], [1739397600, -49.72, 4.11], [1739602800, -34.45, -30.34], [1739678400, 18.01, -12.33], [1739811600, -79.23, -91.56], [1740276000, -56.58, -148.14], [1740780000, -72.74, -220.88], [1740837600, 1.44, -219.44], [1741172400, -104.23, -323.67], [1741215600, -29.86, -353.53], [1741359600, -15.75, -369.28], [1741456800, 2.32, -366.96], [1741618800, -19.9, -386.86], [1741950000, -83.65, -470.51], [1741993200, -26.98, -497.49], [1742094000, -59.41, -556.9], [1742241600, 62.85, -494.05], [1742295600, 48.19, -445.86], [1742425200, -50.77, -496.63], [1742612400, -58.63, -555.26], [1742857200, -10.37, -565.63], [1743530400, -5.6, -571.23], [1743847200, 11.13, -560.1], [1743966000, -78.66, -638.76], [1744009200, 51.7, -587.06], [1744059600, 26.53, -560.53], [1744135200, 50.34, -510.19], [1744646400, -27.38, -537.57], [1744848000, 17.16, -520.41], [1744884000, -16.62, -537.03], [1745046000, -31.69, -568.72], [1745172000, -43.17, -611.89], [1745251200, 4.6, -607.29], [1745355600, 102.38, -504.91], [1746000000, -69.97, -574.88], [1746176400, 17.64, -557.24], [1746259200, 12.64, -544.6], [1746946800, 7.0, -537.6], [1747825200, 13.26, -524.34], [1748174400, 9.37, -514.97], [1749146400, 24.45, -490.52], [1749196800, 71.26, -419.26], [1749466800, 42.56, -376.7], [1749510000, 11.04, -365.66], [1749542400, -69.9, -435.56], [1749816000, -64.17, -499.73], [1750219200, -2.29, -502.02], [1750550400, -45.04, -547.06], [1750593600, -94.01, -641.07], [1750798800, 50.82, -590.25], [1750910400, -57.79, -648.04], [1750946400, 71.26, -576.78], [1751245200, -69.04, -645.82], [1751295600, -60.15, -705.97], [1751400000, 40.45, -665.52], [1751410800, 8.71, -656.81], [1751428800, 53.38, -603.43], [1751648400, -53.21, -656.64], [1751731200, -47.55, -704.19], [1751875200, -48.33, -752.52], [1751940000, -38.68, -791.2], [1753218000, 3.95, -787.25], [1753225200, -9.04, -796.29], [1753279200, -5.08, -801.37], [1753484400, -105.53, -906.9], [1753588800, 71.26, -835.64], [1753614000, 38.2, -797.44], [1753635600, -16.84, -814.28], [1753808400, 24.13, -790.15], [1753840800, -38.1, -828.25], [1753945200, 3.23, -825.02], [1753952400, 59.36, -765.66], [1754078400, -46.37, -812.03], [1754240400, 23.63, -788.4], [1754344800, 71.26, -717.14], [1754377200, 56.44, -660.7], [1754550000, -64.68, -725.38], [1754820000, 20.09, -705.29], [1755345600, 40.37, -664.92], [1755554400, -11.08, -676.0], [1755612000, -0.72, -676.72], [1755619200, 19.88, -656.84], [1755889200, -27.51, -684.35], [1756148400, 33.79, -650.56], [1756443600, 33.72, -616.84], [1756857600, 31.51, -585.33], [1757019600, 4.7, -580.63], [1757070000, 29.77, -550.86], [1757368800, 16.72, -534.14], [1757401200, -90.73, -624.87], [1757559600, 52.52, -572.35], [1757865600, 32.34, -540.01], [1758304800, 43.78, -496.23], [1758938400, -21.11, -517.34], [1759312800, -16.62, -533.96], [1759435200, 56.07, -477.89], [1759456800, -31.11, -509.0], [1759485600, -41.89, -550.89], [1759629600, 3.87, -547.02], [1759824000, 49.32, -497.7], [1759978800, -38.58, -536.28], [1760202000, 20.84, -515.44], [1760281200, 51.56, -463.88], [1760475600, 11.29, -452.59], [1760500800, 4.84, -447.75], [1761174000, 19.95, -427.8], [1761303600, -75.43, -503.23], [1761426000, 20.88, -482.35], [1761465600, 57.19, -425.16], [1761530400, -60.01, -485.17], [1761602400, 42.33, -442.84], [1761793200, -0.36, -443.2], [1761886800, 54.02, -389.18], [1762426800, 43.42, -345.76], [1762574400, 9.12, -336.64], [1762707600, -31.27, -367.91], [1762840800, -59.46, -427.37], [1762927200, -29.31, -456.68], [1763017200, -50.32, -507.0], [1763215200, -58.37, -565.37], [1763478000, -0.2, -565.57], [1763658000, 16.2, -549.37], [1765094400, -39.85, -589.22], [1765285200, -75.93, -665.15], [1765443600, -38.77, -703.92], [1765764000, 56.34, -647.58], [1766095200, -56.06, -703.64], [1766401200, -10.17, -713.81], [1766440800, 37.92, -675.89], [1766696400, 48.07, -627.82], [1766732400, 4.64, -623.18], [1766754000, -22.07, -645.25], [1766822400, -44.27, -689.52], [1766890800, -41.08, -730.6], [1767002400, -26.35, -756.95], [1767157200, 12.05, -744.9], [1767636000, 38.43, -706.47], [1767862800, -104.84, -811.31], [1767996000, 34.34, -776.97], [1768068000, 58.18, -718.79], [1768248000, -32.12, -750.91], [1768456800, 35.88, -715.03], [1769248800, 57.16, -657.87], [1769626800, 8.01, -649.86], [1769806800, -56.21, -706.07], [1770163200, -16.33, -722.4], [1770282000, 71.26, -651.14], [1770818400, -4.18, -655.32], [1770825600, 48.51, -606.81], [1770897600, 17.12, -589.69], [1770951600, 18.23, -571.46], [1771146000, -34.93, -606.39], [1771606800, 71.26, -535.13], [1771930800, -41.06, -576.19], [1772038800, 41.12, -535.07], [1772085600, 42.35, -492.72], [1772164800, 22.45, -470.27], [1772463600, 71.26, -399.01], [1772474400, -27.79, -426.8], [1772884800, -6.49, -433.29], [1773014400, -0.95, -434.24], [1773252000, 28.57, -405.67], [1773540000, 26.45, -379.22], [1774188000, 59.05, -320.17], [1774274400, 47.54, -272.63], [1774324800, -13.45, -286.08], [1774764000, 40.14, -245.94], [1774800000, -19.26, -265.2], [1774872000, -2.03, -267.23], [1775160000, 30.73, -236.5], [1775527200, -39.65, -276.15], [1776157200, 21.63, -254.52], [1776384000, -94.46, -348.98], [1776816000, -23.66, -372.64], [1777179600, -7.9, -380.54], [1777708800, 48.11, -332.43], [1777777200, -21.06, -353.49], [1778018400, 54.37, -299.12], [1778252400, 29.07, -270.05], [1778436000, -24.08, -294.13], [1779325200, -3.53, -297.66], [1779447600, -5.24, -302.9], [1779508800, 52.78, -250.12], [1779588000, 53.35, -196.77], [1779703200, 16.37, -180.4], [1780052400, 54.81, -125.59], [1780142400, 15.12, -110.47], [1780228800, -30.91, -141.38], [1780430400, 36.13, -105.25], [1781265600, 71.26, -33.99], [1781391600, 39.21, 5.22], [1781499600, -15.01, -9.79], [1782414000, 19.51, 9.72], [1783090800, 50.58, 60.3], [1783116000, 41.61, 101.91], [1783231200, -28.28, 73.63], [1783400400, -82.85, -9.22], [1783641600, 36.48, 27.26], [1783710000, 24.71, 51.97], [1784062800, 40.53, 92.5], [1784145600, 20.3, 112.8], [1784232000, 40.98, 153.78], [1784692800, 8.64, 162.42], [1784703600, -19.78, 142.64], [1784977200, -34.9, 107.74], [1785175200, -6.51, 101.23], [1785232800, -29.82, 71.41], [1785355200, -68.69, 2.72]]'/>
+<line class="curseur" x1="0" x2="0" y1="30" y2="290" visibility="hidden"/>
+<circle class="point curseur-point" cx="0" cy="0" r="4.5" visibility="hidden"/>
+</svg></div>
+  <details><summary>See the numbers, month by month</summary><div class="tableau"><table><thead><tr><th>Month</th><th>Trades</th><th>Month gain</th><th>Cumulative</th></tr></thead><tbody><tr><td>Jan 2025</td><td class='num'>15</td><td class='num'>+16.8</td><td class='num'>+16.8</td></tr><tr><td>Feb 2025</td><td class='num'>12</td><td class='num'>−237.6</td><td class='num'>−220.9</td></tr><tr><td>Mar 2025</td><td class='num'>14</td><td class='num'>−344.7</td><td class='num'>−565.6</td></tr><tr><td>Apr 2025</td><td class='num'>14</td><td class='num'>−9.3</td><td class='num'>−574.9</td></tr><tr><td>May 2025</td><td class='num'>5</td><td class='num'>+59.9</td><td class='num'>−515.0</td></tr><tr><td>Jun 2025</td><td class='num'>14</td><td class='num'>−191.0</td><td class='num'>−706.0</td></tr><tr><td>Jul 2025</td><td class='num'>18</td><td class='num'>−59.7</td><td class='num'>−765.7</td></tr><tr><td>Aug 2025</td><td class='num'>13</td><td class='num'>+148.8</td><td class='num'>−616.8</td></tr><tr><td>Sep 2025</td><td class='num'>9</td><td class='num'>+99.5</td><td class='num'>−517.3</td></tr><tr><td>Oct 2025</td><td class='num'>19</td><td class='num'>+128.2</td><td class='num'>−389.2</td></tr><tr><td>Nov 2025</td><td class='num'>9</td><td class='num'>−160.2</td><td class='num'>−549.4</td></tr><tr><td>Dec 2025</td><td class='num'>14</td><td class='num'>−195.5</td><td class='num'>−744.9</td></tr><tr><td>Jan 2026</td><td class='num'>9</td><td class='num'>+38.8</td><td class='num'>−706.1</td></tr><tr><td>Feb 2026</td><td class='num'>12</td><td class='num'>+235.8</td><td class='num'>−470.3</td></tr><tr><td>Mar 2026</td><td class='num'>12</td><td class='num'>+203.0</td><td class='num'>−267.2</td></tr><tr><td>Apr 2026</td><td class='num'>6</td><td class='num'>−113.3</td><td class='num'>−380.5</td></tr><tr><td>May 2026</td><td class='num'>13</td><td class='num'>+239.2</td><td class='num'>−141.4</td></tr><tr><td>Jun 2026</td><td class='num'>5</td><td class='num'>+151.1</td><td class='num'>+9.7</td></tr><tr><td>Jul 2026</td><td class='num'>15</td><td class='num'>−7.0</td><td class='num'>+2.7</td></tr></tbody></table></div></details>
+</figure>
+
+<figure>
+  <p class="titre-graphique">Mean gain per trade with 95% confidence interval</p>
+  <p class="sous-titre">The dot is the mean; the line covers 95% of bootstrap resamples · hover a row</p>
+  <div class="defile"><svg class="graphique" viewBox="0 0 720 226" role="img" aria-labelledby="g2t">
+<title id="g2t">Mean gain per trade with 95% confidence interval</title>
+<line class="grille" x1="200.0" x2="200.0" y1="14" y2="182"/>
+<text class="axe" x="200.0" y="200" text-anchor="middle">−15</text>
+<line class="grille" x1="252.9" x2="252.9" y1="14" y2="182"/>
+<text class="axe" x="252.9" y="200" text-anchor="middle">−10</text>
+<line class="grille" x1="305.7" x2="305.7" y1="14" y2="182"/>
+<text class="axe" x="305.7" y="200" text-anchor="middle">−5</text>
+<line class="grille" x1="358.6" x2="358.6" y1="14" y2="182"/>
+<text class="axe" x="358.6" y="200" text-anchor="middle">0</text>
+<line class="grille" x1="411.4" x2="411.4" y1="14" y2="182"/>
+<text class="axe" x="411.4" y="200" text-anchor="middle">+5</text>
+<line class="grille" x1="464.3" x2="464.3" y1="14" y2="182"/>
+<text class="axe" x="464.3" y="200" text-anchor="middle">+10</text>
+<line class="grille" x1="517.1" x2="517.1" y1="14" y2="182"/>
+<text class="axe" x="517.1" y="200" text-anchor="middle">+15</text>
+<line class="grille" x1="570.0" x2="570.0" y1="14" y2="182"/>
+<text class="axe" x="570.0" y="200" text-anchor="middle">+20</text>
+<line class="zero" x1="358.6" x2="358.6" y1="14" y2="182"/>
+<text class="axe" x="385.0" y="220" text-anchor="middle">Mean gain per trade (points, spread deducted)</text>
+<text class="etiquette" x="186" y="40.0" text-anchor="end">Explored period</text>
+<text class="axe" x="186" y="56.0" text-anchor="end">n = 69</text>
+<line class="moustache" x1="383.2" x2="574.2" y1="42.0" y2="42.0"/>
+<line class="moustache" x1="383.2" x2="383.2" y1="36.0" y2="48.0"/>
+<line class="moustache" x1="574.2" x2="574.2" y1="36.0" y2="48.0"/>
+<circle class="point" cx="478.0" cy="42.0" r="5.5"/>
+<rect class="cible-zone" x="200" y="14.0" width="370" height="56" data-info="Explored period · +11.30 pt · 95% CI [+2.33 ; +20.40] · n = 69"/>
+<text class="valeur" x="586.2" y="46.0">+11.30 pt</text>
+<text class="etiquette" x="186" y="96.0" text-anchor="end">Never-seen data</text>
+<text class="axe" x="186" y="112.0" text-anchor="end">n = 159</text>
+<line class="moustache" x1="233.9" x2="380.4" y1="98.0" y2="98.0"/>
+<line class="moustache" x1="233.9" x2="233.9" y1="92.0" y2="104.0"/>
+<line class="moustache" x1="380.4" x2="380.4" y1="92.0" y2="104.0"/>
+<circle class="point" cx="306.9" cy="98.0" r="5.5"/>
+<rect class="cible-zone" x="200" y="70.0" width="370" height="56" data-info="Never-seen data · −4.89 pt · 95% CI [−11.79 ; +2.06] · n = 159"/>
+<text class="valeur" x="392.4" y="102.0">−4.89 pt</text>
+<text class="etiquette" x="186" y="152.0" text-anchor="end">Whole history</text>
+<text class="axe" x="186" y="168.0" text-anchor="end">n = 228</text>
+<line class="moustache" x1="298.2" x2="419.2" y1="154.0" y2="154.0"/>
+<line class="moustache" x1="298.2" x2="298.2" y1="148.0" y2="160.0"/>
+<line class="moustache" x1="419.2" x2="419.2" y1="148.0" y2="160.0"/>
+<circle class="point" cx="358.7" cy="154.0" r="5.5"/>
+<rect class="cible-zone" x="200" y="126.0" width="370" height="56" data-info="Whole history · +0.01 pt · 95% CI [−5.71 ; +5.74] · n = 228"/>
+<text class="valeur" x="431.2" y="158.0">+0.01 pt</text>
+</svg></div>
+  <details><summary>See the table</summary><div class="tableau"><table><thead><tr><th>Window</th><th>Period</th><th>Trades</th><th>Mean gain</th><th>95% CI</th><th>Win rate</th><th>t</th></tr></thead><tbody><tr><td>Explored period</td><td>January 10, 2026 → August 1, 2026</td><td class='num'>69</td><td class='num'>+11.30</td><td class='num'>[+2.33 ; +20.40]</td><td class='num'>58.0 %</td><td class='num'>+2.42</td></tr><tr><td>Never-seen data</td><td>January 1, 2025 → January 9, 2026</td><td class='num'>159</td><td class='num'>−4.89</td><td class='num'>[−11.79 ; +2.06]</td><td class='num'>50.3 %</td><td class='num'>−1.35</td></tr><tr><td>Whole history</td><td>January 1, 2025 → August 1, 2026</td><td class='num'>228</td><td class='num'>+0.01</td><td class='num'>[−5.71 ; +5.74]</td><td class='num'>52.6 %</td><td class='num'>0.00</td></tr></tbody></table></div></details>
+</figure>
+
+<h2>Why every check was wrong</h2>
+<p>Almost all of them ran on the window where the pattern was found; the only one that did not covered
+10 trades. A pattern spotted by eye is, by construction, spotted where it works. Bootstrap, permutation,
+the median, dropping the best trades: they all measure luck <em>inside</em> that sample. None measures the luck of
+having picked that sample, and that pattern, among all the ones we looked at before.</p>
+<p>The sister indices do not rescue anything either: they come from the same generator, over the same period. They
+are three looks at the same weeks.</p>
+<p><b>The only check that counts is the simplest one: data you have never seen, with rules written in advance.</b>
+That is what our name means.</p>
+
+<h2>Limits</h2>
+<ul>
+  <li>One synthetic instrument, on H1, with a one-candle exit. Exits after 3 and 5 candles are also negative on the
+    never-seen data (full output in <code>sortie_oos.txt</code>).</li>
+  <li>On H4, the setup does not beat the engulfing candle alone; on D1, too few signals to conclude.</li>
+  <li>Our fresh data is <em>older</em> than the explored period, not newer: a change in the index's behaviour in 2026
+    cannot be ruled out.</li>
+  <li>Fixed 0.74-point spread; slippage and financing costs are not counted, which could only make the result
+    worse.</li>
+  <li>A different definition of the hammer or the engulfing candle would give different numbers, and would need its
+    own never-seen data.</li>
+</ul>
+
+<h2>What would change our mind</h2>
+<p>The same setup, with the same frozen rules, on data after August 1, 2026, with a confidence interval entirely
+above zero. We will run that test and publish the result, whatever it is.</p>
+
+<h2>Redo the computation</h2>
+<ul>
+  <li><b>Data</b>: TrendX 1200 on H1 from the broker's MT5 terminal, January 1, 2025 to August 1, 2026
+    (13,845 candles); the boundary between the two periods is January 10, 2026.</li>
+  <li><b>Method</b>: 20,000 draws for the random-entry test and 4,000 bootstrap resamples for the
+    intervals; seeds fixed and published with the results.</li>
+  <li><b>Files</b>: <code>construire.py</code> recomputes everything from the data; <code>resultats.json</code> holds
+    every number on this page; <code>sortie_oos.txt</code> is the raw output of the original test, re-run unchanged. The
+    code will be published with the Norvane Research studies repository.</li>
+</ul>
+</article></main>
+
+<footer><div class="wrap">
+<p><b>Norvane Research</b> — we test what traders are sold, and publish what survives.
+<a href="index.html">All our studies</a> · our audit tool for trading systems:
+<a href="../index.html">qaudit</a>, open source.</p>
+<p>Not financial advice. This study describes past data; it predicts nothing and recommends no action. Page built on
+November 8, 2026 from <code>resultats.json</code>.</p>
+</div></footer>
+<script>
+(function () {
+  "use strict";
+  var fr = (document.documentElement.lang || "fr") === "fr";
+  var locale = fr ? "fr-FR" : "en-US";
+  var intl = new Intl.NumberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2, signDisplay: "exceptZero" });
+  var nf = { format: function (v) { return intl.format(v).replace("-", "−"); } };
+  var bulle = document.createElement("div");
+  bulle.className = "infobulle";
+  bulle.hidden = true;
+  document.body.appendChild(bulle);
+
+  function montrer(lignes, x, y) {
+    bulle.textContent = "";
+    lignes.forEach(function (l, i) {
+      var el = document.createElement(i === 0 ? "b" : "div");
+      el.textContent = l;
+      bulle.appendChild(el);
+    });
+    bulle.hidden = false;
+    var r = bulle.getBoundingClientRect();
+    var gauche = x + 14, haut = y + 14;
+    if (gauche + r.width > window.innerWidth - 8) gauche = x - r.width - 14;
+    if (haut + r.height > window.innerHeight - 8) haut = y - r.height - 14;
+    bulle.style.left = Math.max(8, gauche) + "px";
+    bulle.style.top = Math.max(8, haut) + "px";
+  }
+  function cacher() { bulle.hidden = true; }
+
+  document.querySelectorAll("rect.survol").forEach(function (zone) {
+    var svg = zone.ownerSVGElement, d = zone.dataset, pts = JSON.parse(d.points);
+    var lib = JSON.parse(svg.closest("figure").dataset.libelles || "{}");
+    var x0 = +d.x0, x1 = +d.x1, ml = +d.ml, mr = +d.mr, W = +d.w, y0 = +d.y0, y1 = +d.y1, mt = +d.mt, mb = +d.mb, H = +d.h;
+    var X = function (t) { return ml + (t - x0) / (x1 - x0) * (W - ml - mr); };
+    var Y = function (v) { return mt + (y1 - v) / (y1 - y0) * (H - mt - mb); };
+    var ligne = svg.querySelector(".curseur"), point = svg.querySelector(".curseur-point");
+    zone.addEventListener("pointermove", function (e) {
+      var p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+      var loc = p.matrixTransform(svg.getScreenCTM().inverse());
+      var t = x0 + (loc.x - ml) / (W - ml - mr) * (x1 - x0);
+      var lo = 0, hi = pts.length - 1;
+      while (hi - lo > 1) { var m = (lo + hi) >> 1; if (pts[m][0] < t) lo = m; else hi = m; }
+      var i = Math.abs(pts[lo][0] - t) < Math.abs(pts[hi][0] - t) ? lo : hi;
+      var cx = X(pts[i][0]), cy = Y(pts[i][2]);
+      ligne.setAttribute("x1", cx); ligne.setAttribute("x2", cx); ligne.setAttribute("visibility", "visible");
+      point.setAttribute("cx", cx); point.setAttribute("cy", cy); point.setAttribute("visibility", "visible");
+      var date = new Date(pts[i][0] * 1000).toLocaleString(locale, { day: "numeric", month: "short", year: "numeric",
+        hour: "2-digit", minute: "2-digit", timeZone: "UTC" }) + " UTC";
+      montrer([date, lib.trade + " " + nf.format(pts[i][1]) + " pt", lib.cumul + " " + nf.format(pts[i][2]) + " pt"],
+        e.clientX, e.clientY);
+    });
+    zone.addEventListener("pointerleave", function () {
+      cacher(); ligne.setAttribute("visibility", "hidden"); point.setAttribute("visibility", "hidden");
+    });
+  });
+
+  document.querySelectorAll("[data-info]").forEach(function (zone) {
+    var f = function (e) { montrer(zone.dataset.info.split(" · "), e.clientX, e.clientY); };
+    zone.addEventListener("pointerenter", f);
+    zone.addEventListener("pointermove", f);
+    zone.addEventListener("pointerleave", cacher);
+  });
+})();
+
+</script>
+</body>
+</html>

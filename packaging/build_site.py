@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Assemble le site statique de l'offre dans ``site/`` (français à la racine,
 anglais sous ``en/``) : page de vente, « Préparer votre audit », méthode
-publiée, politique de données, CGV, page de vérification (registre public) et
+publiée, politique de données, CGV, page de vérification (registre public, qui
+contrôle la référence passée en ``?ref=``), badges des attestations publiées
+(``badge/<réf>.svg``, plus ``badge/exemple.svg``) et
 deux rapports d'exemple rendus par le moteur (témoin sain GO, martingale NO-GO,
 données synthétiques de démonstration).
 
@@ -11,6 +13,11 @@ viennent de ``site.toml`` — le moteur, lui, ne connaît aucun prix ; la métho
 vient de ``qaudit methode``.
 
     python packaging/build_site.py [--out site] [--registry chemin] [--config site.toml]
+    python packaging/build_site.py --crawler-only   # robots.txt et sitemap.xml seulement
+
+Avec ``studies = true`` dans site.toml, le menu gagne « Études » (``etudes/index.html``)
+et sitemap.xml liste les pages trouvées dans ``etudes/`` : ces pages sont écrites
+par un autre outil, ce script ne les touche pas.
 """
 
 from __future__ import annotations
@@ -21,7 +28,7 @@ import shutil
 import subprocess
 import sys
 import tomllib
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from html import escape
 from pathlib import Path
 
@@ -120,6 +127,12 @@ footer a{color:#fff;text-decoration:none;margin-right:16px}footer .wrap{display:
 gap:12px;justify-content:space-between}
 .search{display:flex;gap:10px;margin:14px 0 6px}.search input{flex:1;padding:10px 12px;
 border:1px solid var(--rule);border-radius:10px;font:inherit}
+.refcheck{padding:12px 16px;border-radius:10px;font-weight:600;margin:14px 0 4px}
+.refcheck.ok{background:var(--go-bg);color:var(--go)}.refcheck.ko{background:var(--nogo-bg);color:var(--nogo)}
+tr.hit>td{background:var(--go-bg)}
+.badge-demo{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;margin:4px 0 20px}
+.badge-demo img{display:block;max-width:100%;height:auto}
+.card ul{margin:.4rem 0;padding-left:1.1rem}.card li{margin:.25rem 0}
 .muted{color:var(--muted)}.small{font-size:.9rem}.note{font-size:.9rem;color:var(--muted);margin-top:8px}
 @media (max-width:640px){.hero h1{font-size:2rem}.cta.ghost{margin-left:0;margin-top:10px}}
 """
@@ -142,6 +155,7 @@ class SiteConfig:
     repo_url: str = ""
     site_url: str = ""
     offers: tuple[Offer, ...] = DEFAULT_OFFERS
+    studies: bool = False
 
     def page_url(self, lang: str, path: str) -> str:
         """Adresse publique d'une page (``path`` relatif à la racine de la langue),
@@ -180,6 +194,7 @@ def load_config(path: Path) -> SiteConfig:
         payment={k: str(v) for k, v in raw.get("payment", {}).items() if v},
         repo_url=str(site.get("repo_url", "")),
         site_url=str(site.get("site_url", "")).rstrip("/"),
+        studies=bool(site.get("studies", False)),
         offers=parse_offers(raw.get("offres", [])) or DEFAULT_OFFERS,
     )
 
@@ -217,6 +232,7 @@ T: dict[str, dict[str, object]] = {
         "nav": (("index.html", "Offre"), ("preparer.html", "Préparer votre audit"),
                 ("methode.html", "Méthode"), ("verification.html", "Vérifier une attestation"),
                 ("exemples/index.html", "Exemples")),
+        "nav_studies": "Études",
         "footer_links": (("methode.html", "Méthode"), ("donnees.html", "Données"),
                          ("cgv.html", "CGV"), ("verification.html", "Vérification")),
         "tagline": "audit statistique de systèmes de trading",
@@ -230,7 +246,7 @@ T: dict[str, dict[str, object]] = {
         "proofs": (
             ("Méthode publique", "Les seuils sont écrits avant votre dossier", "Cinq barrières éliminatoires, onze détecteurs, leurs paramètres : tout est <a href=\"methode.html\">publié</a>. Un NO-GO se discute sur des faits, pas sur une opinion."),
             ("Reproductible", "Même fichier, même rapport, à l'octet près", "Chaque rapport imprime l'empreinte SHA-256 de vos données, la version de la méthode et la graine. Le moteur est open source : quiconque détient le fichier peut refaire le calcul."),
-            ("Vérifiable", "Une attestation numérotée, un registre public", "Émise uniquement sur GO, inscrite au <a href=\"verification.html\">registre</a> avec l'empreinte du fichier. Vos clients la vérifient sans vous croire sur parole."),
+            ("Vérifiable", "Une attestation numérotée, un registre public", "Émise uniquement sur GO, inscrite au <a href=\"verification.html\">registre</a> avec l'empreinte du fichier. Vos clients la vérifient sans vous croire sur parole, d'un clic sur le <a href=\"#badge\">badge</a>."),
         ),
         "questions_h2": "Les cinq questions posées à vos résultats",
         "questions": (
@@ -260,7 +276,7 @@ T: dict[str, dict[str, object]] = {
         "offer_blurb": {
             "moteur": "Le moteur complet — ligne de commande, fenêtre, bibliothèque — et tous les rapports, à lancer vous-même. Licence AGPL-3.0.",
             "pre_verification": "Votre fichier est-il exploitable ? Réponse en quinze minutes, avant tout paiement.",
-            "attestation_cessible": "Nous refaisons l'audit sur votre fichier ; si GO, une attestation numérotée au registre public, que vos acquéreurs vérifient eux-mêmes. Due quel que soit le verdict.",
+            "attestation_cessible": "Nous refaisons l'audit sur votre fichier ; si GO, une attestation numérotée au registre public, que vos acquéreurs vérifient eux-mêmes, et le badge à afficher. Due quel que soit le verdict.",
             "portefeuille": "Plusieurs systèmes audités ensemble, avec la correction statistique de sélection multiple.",
             "due_diligence": "Tout, plus une note de comité d'investissement ; périmètre et prix définis sur devis.",
             "licence_commerciale": "Intégrer le moteur dans un produit ou un service fermé, sans les obligations de l'AGPL.",
@@ -316,7 +332,7 @@ T: dict[str, dict[str, object]] = {
         "prep_deliverables": (
             ("Le rapport", "HTML et PDF. Verdict en première page, puis « En clair : ce que dit ce rapport » — l'explication en langage courant, faite pour être lue sans nous —, barrières, constats, statistiques, simulations, régimes, repères de drawdown, conditions."),
             ("Les résultats bruts", "Un fichier JSON avec tous les chiffres, l'empreinte de vos données et la graine de calcul (selon l'offre). Tout est recalculable, y compris par quelqu'un d'autre que nous."),
-            ("L'attestation", "Datée, numérotée, inscrite au registre public avec l'empreinte des données. Délivrée uniquement si le système franchit les barrières. Cessible avec la licence développeur."),
+            ("L'attestation", "Datée, numérotée, inscrite au registre public avec l'empreinte des données. Délivrée uniquement si le système franchit les barrières, avec son badge cliquable à afficher. Cessible avec la licence développeur."),
             ("L'appel de restitution", "45 minutes pour parcourir le rapport ensemble et répondre à vos questions."),
             ("Le délai", "72 heures à compter de la réception d'un dossier complet et recevable."),
             ("La langue", "Rapport en français ou en anglais, au choix."),
@@ -335,6 +351,16 @@ T: dict[str, dict[str, object]] = {
         "verify_placeholder": "AUD-2026-001 ou empreinte",
         "verify_hash": "Calculer l'empreinte d'un fichier : <code>certutil -hashfile fichier.html SHA256</code> (Windows) · <code>shasum -a 256 fichier.html</code> (macOS/Linux).",
         "verify_empty": "Aucune attestation émise pour l'instant.",
+        "verify_ok": "✓ {ref} est inscrite au registre : verdict GO, émise le {date}, système « {system} ». Si vous détenez le fichier audité, son empreinte doit être exactement celle de la ligne surlignée.",
+        "verify_ko": "✗ Aucune attestation ne porte la référence {ref}. Un badge qui mène ici avec cette référence n'est pas authentique, ou la référence est mal recopiée.",
+        "badge_h2": "Un badge que vos acheteurs peuvent cliquer",
+        "badge_lead": "Remis avec chaque attestation : une image légère qui porte la référence AUD-AAAA-NNN, et le code HTML ou Markdown pour la poser sur votre page de vente, votre fiche de place de marché, votre description Myfxbook ou votre README. Un clic ouvre la page de vérification, la référence déjà saisie et contrôlée au registre public.",
+        "badge_alt": "Exemple de badge : Audité par {issuer} — attestation AUD-AAAA-NNN",
+        "badge_proves_h": "Ce qu'il prouve",
+        "badge_proves": ("La référence est inscrite au registre public avec un verdict GO, une date d'émission, la version de la méthode et l'empreinte SHA-256 du fichier audité.", "L'audit a été refait par un tiers avec la méthode publiée : le verdict n'a pas été choisi par le vendeur.", "Un badge recopié avec une référence inventée mène à une page qui répond « inconnue »."),
+        "badge_limits_h": "Ce qu'il ne prouve pas",
+        "badge_limits": ("Aucune performance future : il porte sur un fichier, une version de méthode, une date.", "Qu'un compte en réel est celui qui a été audité : l'acheteur qui veut en être sûr compare l'empreinte du fichier qu'on lui remet avec celle du registre."),
+        "badge_try": "Voir ce qu'affiche une référence inventée",
         # exemples
         "title_examples": "Deux rapports d'exemple",
         "examples_lead": "Données synthétiques de démonstration, rendues par le moteur exactement comme un dossier client. Le premier est un système sain audité avec ses jeux de paramètres walk-forward et son règlement propfirm ; le second est une martingale.",
@@ -350,6 +376,7 @@ T: dict[str, dict[str, object]] = {
         "nav": (("index.html", "Service"), ("preparer.html", "Prepare your audit"),
                 ("methode.html", "Method"), ("verification.html", "Verify an attestation"),
                 ("exemples/index.html", "Samples")),
+        "nav_studies": "Research",
         "footer_links": (("methode.html", "Method"), ("donnees.html", "Data"),
                          ("cgv.html", "Terms"), ("verification.html", "Verification")),
         "tagline": "statistical audit of trading systems",
@@ -363,7 +390,7 @@ T: dict[str, dict[str, object]] = {
         "proofs": (
             ("Public method", "The thresholds are written before your file", "Five eliminatory barriers, eleven detectors, their parameters: everything is <a href=\"methode.html\">published</a>. A NO-GO is argued on facts, not on an opinion."),
             ("Reproducible", "Same file, same report, byte for byte", "Every report prints the SHA-256 fingerprint of your data, the method version and the seed. The engine is open source: anyone holding the file can redo the computation."),
-            ("Verifiable", "A numbered attestation, a public registry", "Issued only on GO, recorded in the <a href=\"verification.html\">registry</a> with the file's fingerprint. Your clients verify it without taking your word."),
+            ("Verifiable", "A numbered attestation, a public registry", "Issued only on GO, recorded in the <a href=\"verification.html\">registry</a> with the file's fingerprint. Your clients verify it without taking your word, with one click on the <a href=\"#badge\">badge</a>."),
         ),
         "questions_h2": "The five questions put to your results",
         "questions": (
@@ -393,7 +420,7 @@ T: dict[str, dict[str, object]] = {
         "offer_blurb": {
             "moteur": "The whole engine — command line, desktop window, library — and every report, to run yourself. AGPL-3.0 licence.",
             "pre_verification": "Is your file usable? Answer within fifteen minutes, before any payment.",
-            "attestation_cessible": "We re-run the audit on your file; on GO, a numbered attestation in the public registry that your buyers verify themselves. Due whatever the verdict.",
+            "attestation_cessible": "We re-run the audit on your file; on GO, a numbered attestation in the public registry that your buyers verify themselves, plus the badge to display. Due whatever the verdict.",
             "portefeuille": "Several systems audited together, with the statistical correction for multiple selection.",
             "due_diligence": "Everything, plus an investment-committee note; scope and price on quote.",
             "licence_commerciale": "Embed the engine in a closed-source product or service, without the AGPL obligations.",
@@ -448,7 +475,7 @@ T: dict[str, dict[str, object]] = {
         "prep_deliverables": (
             ("The report", "HTML and PDF. Verdict on page one, then “In plain words: what this report says” — the everyday-language explanation, made to be read without us —, barriers, findings, statistics, simulations, regimes, drawdown benchmarks, conditions."),
             ("The raw results", "A JSON file with every figure, the fingerprint of your data and the computation seed (depending on the service). Everything is recomputable, including by someone other than us."),
-            ("The attestation", "Dated, numbered, recorded in the public registry with the data fingerprint. Issued only if the system passes the barriers. Transferable with the developer licence."),
+            ("The attestation", "Dated, numbered, recorded in the public registry with the data fingerprint. Issued only if the system passes the barriers, with a clickable badge to display. Transferable with the developer licence."),
             ("The debrief call", "45 minutes to go through the report together and answer your questions."),
             ("The deadline", "72 hours from receipt of a complete, admissible file."),
             ("The language", "Report in French or English, your choice."),
@@ -466,6 +493,16 @@ T: dict[str, dict[str, object]] = {
         "verify_placeholder": "AUD-2026-001 or fingerprint",
         "verify_hash": "Compute a file's fingerprint: <code>certutil -hashfile file.html SHA256</code> (Windows) · <code>shasum -a 256 file.html</code> (macOS/Linux).",
         "verify_empty": "No attestation issued yet.",
+        "verify_ok": "✓ {ref} is recorded in the registry: verdict GO, issued on {date}, system “{system}”. If you hold the audited file, its fingerprint must be exactly the one on the highlighted row.",
+        "verify_ko": "✗ No attestation carries the reference {ref}. A badge that leads here with this reference is not genuine, or the reference was mistyped.",
+        "badge_h2": "A badge your buyers can click",
+        "badge_lead": "Delivered with every attestation: a lightweight image carrying the reference AUD-YYYY-NNN, and the HTML or Markdown code to place it on your sales page, marketplace listing, Myfxbook description or README. One click opens the verification page with the reference filled in and checked against the public registry.",
+        "badge_alt": "Sample badge: Audited by {issuer} — attestation AUD-YYYY-NNN",
+        "badge_proves_h": "What it proves",
+        "badge_proves": ("The reference is recorded in the public registry with a GO verdict, an issue date, the method version and the SHA-256 fingerprint of the audited file.", "The audit was re-run by a third party with the published method: the verdict was not chosen by the seller.", "A badge copied with an invented reference leads to a page that answers “not found”."),
+        "badge_limits_h": "What it does not prove",
+        "badge_limits": ("Any future performance: it covers one file, one method version, one date.", "That a live account is the one that was audited: a buyer who wants to be sure compares the fingerprint of the file they are given with the registry."),
+        "badge_try": "See what an invented reference shows",
         "title_examples": "Two sample reports",
         "examples_lead": "Synthetic demonstration data, rendered by the engine exactly like a client file. The first is a sound system audited with its walk-forward parameter sets and a propfirm rulebook; the second is a martingale.",
         "example_go": ("Healthy witness", "600 trades over three years, five barriers passed, no critical finding, walk-forward supplied, two-step propfirm replay."),
@@ -514,6 +551,8 @@ def shell(cfg: SiteConfig, lang: str, title: str, body: str, *, depth: int = 0,
     nav_items = T[lang]["nav"]
     assert isinstance(nav_items, tuple)
     nav = "".join(f'<a href="{prefix}{href}">{escape(str(label))}</a>' for href, label in nav_items)
+    if cfg.studies:
+        nav += f'<a href="{prefix}etudes/index.html">{escape(t(lang, "nav_studies"))}</a>'
     switch = T[lang]["lang_switch"]
     assert isinstance(switch, tuple)
     if len(cfg.languages) > 1:
@@ -641,6 +680,26 @@ def _cards(items: object, *, kicker: bool = False) -> str:
     return "".join(out)
 
 
+# Référence d'exemple qui ne peut pas exister (avant qaudit) : montre ce qu'affiche un faux badge.
+INVENTED_REFERENCE = "AUD-2000-001"
+
+
+def _badge_section(cfg: SiteConfig, lang: str) -> str:
+    """Le badge remis avec chaque attestation : image d'exemple (``badge/exemple.svg``,
+    écrite par ``qaudit badge --example``), ce qu'il prouve et ne prouve pas."""
+    def items(key: str) -> str:
+        values = T[lang][key]
+        assert isinstance(values, tuple)
+        return "".join(f"<li>{escape(str(v))}</li>" for v in values)
+    alt = t(lang, "badge_alt").format(issuer=cfg.issuer or cfg.brand)
+    return f"""<section id="badge"><h2>{escape(t(lang, "badge_h2"))}</h2>
+  <p>{escape(t(lang, "badge_lead"))}</p>
+  <div class="badge-demo"><img src="badge/exemple.svg" alt="{escape(alt)}">
+    <a class="small" href="verification.html?ref={INVENTED_REFERENCE}">{escape(t(lang, "badge_try"))}</a></div>
+  <div class="grid c2"><div class="card"><h3>{escape(t(lang, "badge_proves_h"))}</h3><ul>{items("badge_proves")}</ul></div>
+  <div class="card"><h3>{escape(t(lang, "badge_limits_h"))}</h3><ul>{items("badge_limits")}</ul></div></div></section>"""
+
+
 def page_index(cfg: SiteConfig, lang: str) -> str:
     labels = T[lang]["offer_label"]
     blurbs = T[lang]["offer_blurb"]
@@ -678,6 +737,7 @@ def page_index(cfg: SiteConfig, lang: str) -> str:
 <section id="offres"><h2>{escape(t(lang, "offers_h2"))}</h2>
   <table><thead><tr>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table>
   <p class="muted small">{escape(t(lang, "offers_note"))}</p></section>
+{_badge_section(cfg, lang)}
 <section class="rules"><h2>{escape(t(lang, "rules_h2"))}</h2><div class="grid c3">{_cards(T[lang]["rules"])}</div></section>
 <section><h2>{escape(t(lang, "faq_h2"))}</h2>{faq_html}</section>
 """
@@ -715,11 +775,21 @@ def page_verification(lang: str, registry_html: str) -> str:
     return f"""
 <section class="hero"><h1>{escape(t(lang, "title_verify"))}</h1><p class="lead">{escape(t(lang, "verify_lead"))}</p>
   <div class="search"><input id="q" placeholder="{escape(t(lang, "verify_placeholder"))}" autocomplete="off"></div>
+  <p id="refcheck" class="refcheck" hidden data-ok="{escape(t(lang, "verify_ok"))}" data-ko="{escape(t(lang, "verify_ko"))}"></p>
   <p class="muted small">{t(lang, "verify_hash")}</p></section>
 <section id="registre">{body}</section>
 <script>
-(function(){{var q=document.getElementById('q');var rows=[].slice.call(document.querySelectorAll('#registre tbody tr'));
-q.addEventListener('input',function(){{var v=q.value.trim().toLowerCase();rows.forEach(function(r){{r.style.display=!v||r.textContent.toLowerCase().indexOf(v)>=0?'':'none';}});}});}})();
+(function(){{var q=document.getElementById('q'),out=document.getElementById('refcheck');
+var rows=[].slice.call(document.querySelectorAll('#registre tbody tr'));
+function filter(){{var v=q.value.trim().toLowerCase();rows.forEach(function(r){{r.style.display=!v||r.textContent.toLowerCase().indexOf(v)>=0?'':'none';}});}}
+function check(){{var v=q.value.trim().toUpperCase();rows.forEach(function(r){{r.classList.remove('hit');}});
+if(!/^AUD-[0-9]{{4}}-[0-9]{{3,}}$/.test(v)){{out.hidden=true;return;}}
+var hit=null;rows.forEach(function(r){{if(r.cells[0].textContent.trim().toUpperCase()===v)hit=r;}});
+var msg=hit?out.getAttribute('data-ok').replace('{{date}}',hit.cells[1].textContent.trim()).replace('{{system}}',hit.cells[2].textContent.trim()):out.getAttribute('data-ko');
+out.textContent=msg.replace('{{ref}}',v);out.className='refcheck '+(hit?'ok':'ko');out.hidden=false;if(hit)hit.classList.add('hit');}}
+q.addEventListener('input',function(){{filter();check();}});
+var ref=(location.search.match(/[?&]ref=([^&#]*)/)||[])[1];
+if(ref){{try{{ref=decodeURIComponent(ref.replace(/[+]/g,' '));}}catch(e){{}}q.value=ref.slice(0,64);filter();check();}}}})();
 </script>
 """
 
@@ -773,6 +843,26 @@ def _examples(root: Path, lang: str) -> None:
             shutil.copyfile(demo / "render" / f"{target}.{ext}", root / "exemples" / f"{target}.{ext}")
 
 
+def _badges(cfg: SiteConfig, lang: str, root: Path, reg_args: list[str], references: list[str]) -> None:
+    """``badge/<réf>.svg`` pour chaque attestation du registre publié (l'adresse que
+    portent les extraits remis aux clients) et ``badge/exemple.svg`` pour la page de
+    vente. Le dossier est refait à chaque fois : pas de badge pour une référence
+    absente du registre publié."""
+    folder = root / "badge"
+    tmp = ROOT / "build" / f"site-badges-{lang}"
+    for stale in (folder, tmp):
+        if stale.exists():
+            shutil.rmtree(stale)
+    folder.mkdir(parents=True)
+    issuer = ["--issuer", cfg.issuer] if cfg.issuer else []
+    _run("badge", "--example", "--lang", lang, "--out", str(tmp), *issuer)
+    (example,) = tmp.glob("*-badge.svg")
+    shutil.copyfile(example, folder / "exemple.svg")
+    for reference in references:
+        _run("badge", reference, "--lang", lang, "--out", str(tmp), *reg_args, *issuer)
+        shutil.copyfile(tmp / f"{reference}-badge.svg", folder / f"{reference}.svg")
+
+
 def build_lang(cfg: SiteConfig, lang: str, root: Path, registry: Path | None) -> None:
     # Les liens de navigation sont relatifs à la racine de la langue (``root``) :
     # 0 pour les pages de premier niveau, 1 pour exemples/. Compter depuis la
@@ -789,9 +879,10 @@ def build_lang(cfg: SiteConfig, lang: str, root: Path, registry: Path | None) ->
         _write(root / target, shell(cfg, lang, title, note + md_to_html(md), depth=depth, doc=True, path=target))
     reg_html = root / "_registre.html"
     reg_args = ["--registry", str(registry)] if registry else []
-    _run("registre", "--lang", lang, "--html", str(reg_html), *reg_args)
+    listing = _run("registre", "--lang", lang, "--html", str(reg_html), *reg_args)
     registry_html = reg_html.read_text(encoding="utf-8")
     reg_html.unlink()
+    _badges(cfg, lang, root, reg_args, re.findall(r"^(AUD-\d{4}-\d{3,})\s", listing, re.M))
     _write(root / "verification.html", shell(cfg, lang, t(lang, "title_verify"),
                                               page_verification(lang, registry_html), depth=depth,
                                               path="verification.html", description=t(lang, "verify_lead")))
@@ -815,12 +906,26 @@ def write_crawler_files(cfg: SiteConfig, out: Path) -> None:
     if not cfg.site_url:
         return
     _write(out / "robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {cfg.site_url}/sitemap.xml\n")
+
+    def root(lang: str) -> Path:
+        return out if lang == cfg.languages[0] else out / lang
+
+    def langs_of(path: str) -> list[str]:
+        if path in PAGES:
+            return list(cfg.languages)
+        return [lang for lang in cfg.languages if (root(lang) / path).is_file()]
+
+    studies = sorted({f"etudes/{p.name}" for lang in cfg.languages
+                      for p in (root(lang) / "etudes").glob("*.html")}) if cfg.studies else []
     urls = []
     for lang in cfg.languages:
-        for path in PAGES:
+        for path in (*PAGES, *studies):
+            present = langs_of(path)
+            if lang not in present:
+                continue
             alternates = "".join(
                 f'\n    <xhtml:link rel="alternate" hreflang="{other}" href="{cfg.page_url(other, path)}"/>'
-                for other in cfg.languages)
+                for other in present)
             urls.append(f"  <url>\n    <loc>{cfg.page_url(lang, path)}</loc>{alternates}\n  </url>")
     _write(out / "sitemap.xml",
            '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -831,6 +936,9 @@ def write_crawler_files(cfg: SiteConfig, out: Path) -> None:
 def build(out: Path, registry: Path | None, config: Path | None = None) -> None:
     cfg = load_config(config or ROOT / "site.toml")
     out.mkdir(parents=True, exist_ok=True)
+    # Menu « Études » seulement si la liste des études existe déjà dans chaque langue (sinon lien mort).
+    roots = [out if lang == cfg.languages[0] else out / lang for lang in cfg.languages]
+    cfg = replace(cfg, studies=cfg.studies and all((r / "etudes" / "index.html").is_file() for r in roots))
     for lang in cfg.languages:
         root = out if lang == cfg.languages[0] else out / lang
         build_lang(cfg, lang, root, registry)
@@ -843,7 +951,12 @@ def main() -> int:
     parser.add_argument("--out", type=Path, default=ROOT / "site")
     parser.add_argument("--registry", type=Path, default=None)
     parser.add_argument("--config", type=Path, default=None)
+    parser.add_argument("--crawler-only", action="store_true",
+                        help="réécrire seulement robots.txt et sitemap.xml (après l'ajout d'une étude)")
     args = parser.parse_args()
+    if args.crawler_only:
+        write_crawler_files(load_config(args.config or ROOT / "site.toml"), args.out)
+        return 0
     build(args.out, args.registry, args.config)
     return 0
 

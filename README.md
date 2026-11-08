@@ -201,6 +201,7 @@ the same bytes.
 qaudit audit file.html --offre attestation_cessible --holder "Studio X" --issuer "Name"
 qaudit attest --from qaudit-out/archive/file.json --offre audit_complet   # re-issue
 qaudit verify AUD-2026-001                    # registry entry, code 20 if unknown
+qaudit badge AUD-2026-001 --site https://example.org/en   # SVG badge + HTML/Markdown snippet kit
 qaudit registre --html site/verification.html # public page: never the holder
 ```
 
