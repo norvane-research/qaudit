@@ -15,6 +15,46 @@ séparément.
 > recommande aucun réglage. Logiciel libre sous licence AGPL-3.0-or-later
 > (voir « Licence » plus bas). *English version: [README.md](README.md).*
 
+**Vous vendez un EA ou des signaux ?** Le moteur est gratuit. Quand vos
+acheteurs ont besoin d'un résultat vérifiable, Norvane Research refait l'audit
+sur votre fichier et, sur GO, inscrit une attestation numérotée au registre
+public :
+[attestation cessible, 390 €](https://whop.com/lafabrique/qaudit-attestation),
+due quel que soit le verdict · [vérifier une attestation](https://norvane-research.pages.dev/verification.html)
+· la pré-vérification de votre fichier est gratuite.
+
+---
+
+## À quoi ressemble un rapport
+
+La démo fournie (`qaudit demo`) audite un système synthétique en martingale.
+En surface, tout va bien : +20,5 % en 15 mois, 77,5 % de trades gagnants,
+profit factor 1,26, Sharpe annualisé 1,52, drawdown maximal 9 %. Extrait
+condensé de son rapport :
+
+```text
+NO-GO                    méthode 1.0 · moteur 1.0.0 · graine 0 · 600 trades, USD
+SHA-256 des données      ae4badd1047e2753…83394ca19ef5
+
+Bloquant   martingale : après une perte, le volume est multiplié par ≥ 1,5
+           dans 96 % des cas (après un gain : 1 %), sur 135 trades post-perte
+Majeur     absence de stop : 100 % des trades n'ont aucun stop-loss renseigné
+
+Barrière                               valeur   NO-GO si   zone d'indécision
+Sharpe déflaté (10 variantes)          0,54     < 0,50     0,45 – 0,55   limite
+profit factor, 5e centile bootstrap    1,03     < 1,00     0,95 – 1,05   limite
+centile du drawdown (permutations)     88,0     < 5        3 – 8
+p-value, système sans avantage         0,048    ≥ 0,05     0,03 – 0,08   limite
+efficacité walk-forward                —        < 0,40     non évaluée (pas de walk-forward)
+
+Ce système cesse d'être significatif au-delà de 12 variantes testées.
+```
+
+Sur les seules statistiques, il obtiendrait au mieux un GO sous conditions ;
+c'est la gestion des volumes qui en fait un NO-GO. Rapports complets, HTML et
+PDF : [martingale → NO-GO](https://norvane-research.pages.dev/exemples/martingale.html)
+· [témoin sain → GO](https://norvane-research.pages.dev/exemples/temoin-sain.html).
+
 ---
 
 ## Produire un rapport client en dix minutes

@@ -18,6 +18,45 @@ composite score); every point can be challenged on its own.
 > qaudit states facts about a trade history. It is **not investment advice**,
 > it predicts no performance and it recommends no settings.
 
+**Selling an EA or signals?** The engine is free. When buyers need a result
+they can check, Norvane Research re-runs the audit on your file and, on GO,
+records a numbered attestation in a public registry:
+[transferable attestation, 390 €](https://whop.com/lafabrique/qaudit-attestation),
+due whatever the verdict · [check an attestation](https://norvane-research.pages.dev/en/verification.html)
+· the pre-check of your file is free.
+
+---
+
+## What a report looks like
+
+The bundled demo (`qaudit demo`) audits a synthetic martingale system. On the
+surface it looks fine: +20.5 % over 15 months, 77.5 % winning trades, profit
+factor 1.26, annualised Sharpe 1.52, maximum drawdown 9 %. Condensed from its
+report:
+
+```text
+NO-GO                    method 1.0 · engine 1.0.0 · seed 0 · 600 trades, USD
+data SHA-256             ae4badd1047e2753…83394ca19ef5
+
+Blocking   martingale: after a loss, volume is multiplied by ≥ 1.5 in 96 % of
+           cases (after a win: 1 %), over 135 post-loss trades
+Major      no stop: 100 % of trades have no stop-loss
+
+Barrier                               value   NO-GO if   indecision band
+deflated Sharpe (10 variants)         0.54    < 0.50     0.45 – 0.55   borderline
+profit factor, bootstrap 5th pct      1.03    < 1.00     0.95 – 1.05   borderline
+drawdown percentile (permutations)    88.0    < 5        3 – 8
+p-value against the no-edge null      0.048   ≥ 0.05     0.03 – 0.08   borderline
+walk-forward efficiency               —       < 0.40     not evaluated (no walk-forward data)
+
+This system stops being significant beyond 12 tested variants.
+```
+
+On statistics alone it would get a conditional GO at best; the position sizing
+is what makes it a NO-GO. Full reports, HTML and PDF:
+[martingale → NO-GO](https://norvane-research.pages.dev/en/exemples/martingale.html)
+· [healthy witness → GO](https://norvane-research.pages.dev/en/exemples/temoin-sain.html).
+
 ---
 
 ## Quick start
