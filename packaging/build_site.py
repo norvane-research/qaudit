@@ -23,6 +23,7 @@ par un autre outil, ce script ne les touche pas.
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import shutil
 import subprocess
@@ -63,70 +64,136 @@ DEFAULT_OFFERS = (
 )
 
 CSS = """
-:root{--ink:#0b1f3a;--ink-2:#17335d;--gold:#b8860b;--paper:#f6f4ef;--card:#fff;--text:#1f2933;
---muted:#5f6b7a;--rule:#e4dfd4;--rule-2:#eef1f6;--go:#166534;--go-bg:#e8f5ec;--cond:#a15c07;
---cond-bg:#fdf3e1;--nogo:#991b1b;--nogo-bg:#fdecec;
+:root{--paper:#f6f4ef;--card:#fff;--ink:#0b1f3a;--ink-2:#17335d;--text:#1f2933;--text-2:#3d4756;
+--muted:#5b6676;--rule:#e4dfd4;--band:#eef1f6;--gold:#b8860b;--gold-text:#8a6408;
+--go:#166534;--go-bg:#e8f5ec;--cond:#a15c07;--cond-bg:#fdf3e1;--nogo:#991b1b;--nogo-bg:#fdecec;
+--head:#0b1f3a;--head-text:#fff;--head-muted:#c8d0dc;--head-rule:#2a3f61;
+--btn:#0b1f3a;--btn-text:#fff;--btn-hover:#17335d;--focus:#2a78d6;
+--shadow:0 1px 2px rgba(11,31,58,.06),0 10px 28px rgba(11,31,58,.07);
 --serif:Georgia,"Palatino Linotype","Book Antiqua",Cambria,serif;
---sans:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
---mono:Consolas,"Cascadia Mono","Courier New",monospace}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--text);
-font-family:var(--sans);font-size:16px;line-height:1.6}
-a{color:var(--ink-2)}a:hover{color:var(--gold)}
-.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
-header.top{background:var(--ink);color:#fff}
-header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
-padding:16px 24px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-size:1.3rem;
-letter-spacing:.06em;color:#fff;text-decoration:none}
+--sans:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+--mono:"IBM Plex Mono",Consolas,"Cascadia Mono","Courier New",monospace;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--paper:#0e141d;--card:#141b26;--ink:#e8edf5;--ink-2:#c9d6ea;
+--text:#e3e8ef;--text-2:#c4ccd8;--muted:#9aa5b4;--rule:#263142;--band:#1b2433;--gold:#d4a73a;
+--gold-text:#d4a73a;--go:#6fcf8e;--go-bg:#12271b;--cond:#f0b45a;--cond-bg:#2a1f0e;--nogo:#f08a8a;
+--nogo-bg:#2a1414;--head:#0a1018;--head-text:#e8edf5;--head-muted:#9aa5b4;--head-rule:#263142;
+--btn:#d4a73a;--btn-text:#0e141d;--btn-hover:#e2bb5c;--focus:#7fb0f0;--shadow:none;color-scheme:dark}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--text);font-family:var(--sans);font-size:16px;
+line-height:1.6;overflow-wrap:break-word}
+img,svg{max-width:100%}
+a{color:var(--ink-2);text-underline-offset:3px;transition:color .2s}a:hover{color:var(--gold-text)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header.top{background:var(--head);color:var(--head-text);border-bottom:1px solid var(--head-rule)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:4px 20px;
+padding-top:10px;padding-bottom:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;min-height:44px;font-family:var(--serif);font-size:1.3rem;
+letter-spacing:.04em;color:var(--head-text);text-decoration:none}.brand:hover{color:var(--head-text)}
+.brand small{font-family:var(--sans);font-size:.78rem;letter-spacing:.02em;color:var(--head-muted)}
 .brand i{width:22px;height:22px;border:2px solid var(--gold);border-radius:50%;position:relative;
-display:inline-block}.brand i:after{content:"";position:absolute;inset:5px;background:var(--gold);
+display:inline-block;flex:none}.brand i:after{content:"";position:absolute;inset:5px;background:var(--gold);
 border-radius:50%}
-nav a{color:#c8d0dc;text-decoration:none;margin-left:18px;font-size:.92rem}nav a:hover{color:#fff}
-nav a.lang{border:1px solid #3b4d6b;border-radius:6px;padding:2px 8px}
-.hero{padding:64px 0 40px;border-bottom:1px solid var(--rule)}
-.hero h1{font-family:var(--serif);font-weight:normal;font-size:2.6rem;line-height:1.15;color:var(--ink);
-margin:0 0 14px;max-width:22ch}
-.hero p.lead{font-size:1.15rem;color:var(--muted);max-width:60ch;margin:0 0 26px}
-.cta{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;padding:12px 22px;
-border-radius:10px;font-weight:600}.cta:hover{background:var(--ink-2);color:#fff}
-.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule);margin-left:10px}
-.cta.small{padding:7px 12px;font-size:.85rem;border-radius:8px}
-section{padding:44px 0}section+section{border-top:1px solid var(--rule)}
-h2{font-family:var(--serif);font-weight:normal;font-size:1.7rem;color:var(--ink);margin:0 0 18px;
-display:flex;align-items:center;gap:12px}
-h2:before{content:"";width:18px;height:3px;background:var(--gold);border-radius:2px}
-h3{font-family:var(--serif);font-weight:normal;font-size:1.2rem;color:var(--ink);margin:22px 0 8px}
-.grid{display:grid;gap:16px}.grid.c3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
-.grid.c2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+nav{display:flex;align-items:center;gap:2px}
+nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 10px;border-radius:8px;
+color:var(--head-muted);text-decoration:none;font-size:.92rem;white-space:nowrap;transition:color .2s,background-color .2s}
+nav a:hover{color:var(--head-text);background:rgba(255,255,255,.07)}
+nav a.lang{min-height:44px;margin-left:6px;border:1px solid var(--head-rule)}
+@media (min-width:900px){header.top{position:sticky;top:0;z-index:10}}
+@media (max-width:899px){nav{width:100%;overflow-x:auto;scrollbar-width:none;margin:0 -10px;-webkit-mask-image:linear-gradient(90deg,#000 85%,transparent);mask-image:linear-gradient(90deg,#000 85%,transparent)}
+nav::-webkit-scrollbar{display:none}.brand small{display:none}}
+.hero{padding:56px 0 44px}
+.hero-grid{display:grid;gap:36px;align-items:center}
+@media (min-width:960px){.hero-grid{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}}
+.eyebrow{margin:0 0 12px;font-size:.76rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+color:var(--gold-text)}
+.hero h1{font-family:var(--serif);font-weight:normal;font-size:clamp(2rem,1.4rem + 2.4vw,2.9rem);
+line-height:1.12;color:var(--ink);margin:0 0 16px;max-width:21ch;text-wrap:balance}
+.hero p.lead{font-size:1.1rem;color:var(--text-2);max-width:60ch;margin:0 0 24px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.trust{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:8px 20px;font-size:.92rem;
+color:var(--text-2);grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.trust li{display:flex;gap:8px;align-items:flex-start}.trust svg{flex:none;margin-top:4px;color:var(--go)}
+.cta{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 20px;
+border:1px solid var(--btn);border-radius:10px;background:var(--btn);color:var(--btn-text);
+font-weight:600;text-decoration:none;text-align:center;transition:background-color .2s,border-color .2s,color .2s}
+.cta:hover{background:var(--btn-hover);border-color:var(--btn-hover);color:var(--btn-text)}
+.cta.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
+.cta.ghost:hover{border-color:var(--ink);color:var(--ink)}
+.cta.small{min-height:44px;padding:8px 14px;font-size:.88rem}
+section{padding:48px 0}section+section{border-top:1px solid var(--rule)}
+h2{font-family:var(--serif);font-weight:normal;font-size:clamp(1.45rem,1.2rem + 1vw,1.8rem);
+line-height:1.25;color:var(--ink);margin:0 0 20px;display:flex;align-items:center;gap:12px}
+h2:before{content:"";flex:none;width:18px;height:3px;background:var(--gold);border-radius:2px}
+h3{font-family:var(--serif);font-weight:normal;font-size:1.18rem;line-height:1.3;color:var(--ink);margin:22px 0 8px}
+.grid{display:grid;gap:16px}.grid.c3{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.grid.c2{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
 .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:20px 22px}
-.card h3{margin-top:0}.card p{margin:.4rem 0;color:var(--text)}
-.card .k{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.q{font-family:var(--serif);font-size:1.15rem;color:var(--ink);margin:0 0 6px}
+.card h3{margin-top:0}.card p{margin:.4rem 0;color:var(--text-2)}
+.k{font-size:.74rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.q{font-family:var(--serif);font-size:1.12rem;color:var(--ink);margin:0 0 6px}
 .steps{counter-reset:s}.steps .card{position:relative;padding-left:64px}
 .steps .card:before{counter-increment:s;content:counter(s,decimal-leading-zero);position:absolute;
-left:20px;top:18px;font-family:var(--serif);font-size:1.6rem;color:var(--gold)}
+left:20px;top:18px;font-family:var(--serif);font-size:1.6rem;color:var(--gold-text)}
+.specimen{background:var(--card);border:1px solid var(--rule);border-radius:16px;box-shadow:var(--shadow);
+padding:20px 22px;font-size:.92rem}
+.specimen .head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin:0 0 6px}
+.specimen .meta{font-family:var(--mono);font-size:.76rem;color:var(--muted)}
+.specimen h3{margin:4px 0 4px;font-size:1.1rem}
+.specimen .surface{margin:0 0 12px;color:var(--text-2)}
+.finding{margin:0 0 14px;padding:8px 12px;border-radius:10px;background:var(--nogo-bg);color:var(--nogo);font-weight:600}
+.bars{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.bars li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 12px;align-items:baseline}
+.bars .lab{color:var(--text)}.bars .val{font-family:var(--mono);font-size:.85rem;color:var(--ink)}
+.bars .st{grid-column:1/-1;font-size:.78rem;color:var(--muted)}
+.track{grid-column:1/-1;position:relative;height:8px;margin:6px 0 4px;border-radius:999px;background:var(--band)}
+.track .zone{position:absolute;top:0;bottom:0;border-radius:2px;background:var(--cond);opacity:.35}
+.track .thr{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:var(--ink)}
+.track .dot{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;
+background:var(--card);border:3px solid var(--cond)}
+.track .dot.ok{border-color:var(--go)}.track .dot.fail{border-color:var(--nogo)}
+.specimen .verdict-note{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--rule);color:var(--text-2)}
+.offers{list-style:none;padding:0;margin:0;display:grid;gap:16px;
+grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.offer{display:flex;flex-direction:column;gap:8px;background:var(--card);border:1px solid var(--rule);
+border-radius:14px;padding:20px 22px}
+.offer.featured{border:2px solid var(--gold);box-shadow:var(--shadow)}
+.offer h3{margin:0;font-size:1.15rem}
+.offer .price{font-family:var(--serif);font-size:1.7rem;line-height:1.2;color:var(--ink)}
+.offer .att{font-size:.82rem;color:var(--muted)}.offer p{margin:0;color:var(--text-2);font-size:.92rem}
+.offer .go-to{margin-top:auto;padding-top:10px}
+.tbl{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:12px;background:var(--card)}
+.tbl table{margin:0;border:0;border-radius:0}
 table{border-collapse:separate;border-spacing:0;width:100%;background:var(--card);
 border:1px solid var(--rule);border-radius:12px;overflow:hidden;font-size:.95rem;margin:14px 0}
-th,td{padding:.65rem .8rem;text-align:left;vertical-align:top;border-top:1px solid var(--rule-2)}
+th,td{padding:.65rem .8rem;text-align:left;vertical-align:top;border-top:1px solid var(--band)}
 tr:first-child>*{border-top:none}
-th{background:var(--rule-2);color:var(--ink);font-size:.76rem;text-transform:uppercase;
-letter-spacing:.06em}
-td.price{white-space:nowrap;font-family:var(--serif);font-size:1.1rem;color:var(--ink)}
+th{background:var(--band);color:var(--ink);font-size:.76rem;text-transform:uppercase;letter-spacing:.06em}
 .chip{display:inline-block;border-radius:999px;padding:.12rem .62rem;font-size:.76rem;font-weight:600}
 .chip.go{background:var(--go-bg);color:var(--go)}.chip.nogo{background:var(--nogo-bg);color:var(--nogo)}
 .chip.cond{background:var(--cond-bg);color:var(--cond)}
 .rules .card{border-left:4px solid var(--gold)}
+.faq details{border-top:1px solid var(--rule)}.faq details:last-of-type{border-bottom:1px solid var(--rule)}
+.faq summary{position:relative;min-height:44px;padding:14px 36px 14px 0;cursor:pointer;list-style:none;
+font-family:var(--serif);font-size:1.12rem;color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";position:absolute;right:6px;top:11px;font-family:var(--sans);font-size:1.35rem;
+color:var(--gold-text)}.faq details[open] summary:after{content:"−"}
+.faq details p{margin:0 0 18px;max-width:72ch;color:var(--text-2)}
 blockquote{margin:0;padding:12px 18px;background:var(--cond-bg);border-left:4px solid var(--cond);
 border-radius:8px;color:var(--text)}
-code{font-family:var(--mono);font-size:.9em;background:var(--rule-2);padding:.1em .35em;border-radius:4px}
-.doc{max-width:820px}.doc h1{font-family:var(--serif);font-weight:normal;color:var(--ink);font-size:2.1rem;
-margin:36px 0 16px}.doc h2{margin-top:36px}.doc p{margin:.7rem 0}.doc ul{padding-left:1.2rem}
-.doc li{margin:.3rem 0}.doc table{font-size:.9rem}
-footer{background:var(--ink);color:#c8d0dc;padding:28px 0;font-size:.9rem;margin-top:40px}
-footer a{color:#fff;text-decoration:none;margin-right:16px}footer .wrap{display:flex;flex-wrap:wrap;
-gap:12px;justify-content:space-between}
-.search{display:flex;gap:10px;margin:14px 0 6px}.search input{flex:1;padding:10px 12px;
-border:1px solid var(--rule);border-radius:10px;font:inherit}
+code{font-family:var(--mono);font-size:.9em;background:var(--band);padding:.1em .35em;border-radius:4px}
+.doc{max-width:820px}.doc h1{font-family:var(--serif);font-weight:normal;color:var(--ink);
+font-size:clamp(1.8rem,1.4rem + 1.6vw,2.2rem);line-height:1.2;margin:40px 0 16px}
+.doc h2{margin-top:36px}.doc p{margin:.7rem 0}.doc ul{padding-left:1.2rem}.doc li{margin:.3rem 0}
+.doc table{font-size:.9rem}
+footer{margin-top:48px;padding:32px 0;background:var(--head);color:var(--head-muted);font-size:.9rem}
+footer a{display:inline-block;padding:6px 0;margin-right:16px;color:var(--head-text);text-decoration:none}
+footer a:hover{color:var(--gold)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;align-items:center}
+footer .fine{flex-basis:100%;margin:6px 0 0;font-size:.82rem}
+.search{display:flex;gap:10px;margin:14px 0 6px}.search input{flex:1;min-width:0;min-height:44px;
+padding:10px 12px;border:1px solid var(--rule);border-radius:10px;background:var(--card);color:var(--text);font:inherit}
 .refcheck{padding:12px 16px;border-radius:10px;font-weight:600;margin:14px 0 4px}
 .refcheck.ok{background:var(--go-bg);color:var(--go)}.refcheck.ko{background:var(--nogo-bg);color:var(--nogo)}
 tr.hit>td{background:var(--go-bg)}
@@ -134,7 +201,10 @@ tr.hit>td{background:var(--go-bg)}
 .badge-demo img{display:block;max-width:100%;height:auto}
 .card ul{margin:.4rem 0;padding-left:1.1rem}.card li{margin:.25rem 0}
 .muted{color:var(--muted)}.small{font-size:.9rem}.note{font-size:.9rem;color:var(--muted);margin-top:8px}
-@media (max-width:640px){.hero h1{font-size:2rem}.cta.ghost{margin-left:0;margin-top:10px}}
+.hero-grid>div:only-child{grid-column:1/-1}
+@media (max-width:640px){.hero{padding:36px 0 32px}section{padding:38px 0}.card,.offer,.specimen{padding:18px}
+.steps .card{padding-left:58px}.steps .card:before{left:16px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 """
 
 
@@ -236,6 +306,26 @@ T: dict[str, dict[str, object]] = {
         "footer_links": (("methode.html", "Méthode"), ("donnees.html", "Données"),
                          ("cgv.html", "CGV"), ("verification.html", "Vérification")),
         "tagline": "audit statistique de systèmes de trading",
+        "by": "par",
+        "not_advice": "Pas un conseil en investissement : qaudit constate des faits sur un historique de trades et ne prédit aucune performance.",
+        "eyebrow": "Audit indépendant de systèmes de trading",
+        "trust": ("Méthode et seuils publiés avant l'audit", "Moteur open source (AGPL), rapport reproductible",
+                  "Empreinte SHA-256 des données dans chaque rapport", "Attestations inscrites à un registre public"),
+        "spec_label": "Exemple de rapport rendu par le moteur",
+        "spec_kicker": "Exemple · données synthétiques",
+        "spec_title": "Une martingale qui a l'air saine",
+        "spec_meta": "{n} trades · méthode {method} · graine {seed}",
+        "spec_surface": "En surface : {ret} en {months} mois, {wins} de trades gagnants, profit factor {pf}.",
+        "spec_martingale": "Constat bloquant : après une perte, le volume est multiplié par ≥ {ratio} dans {share} des cas.",
+        "spec_rule": "NO-GO si {op} {thr}",
+        "spec_note": "Chaque barrière montre sa valeur, son seuil et sa zone d'indécision ; un seul constat bloquant suffit pour un NO-GO.",
+        "spec_link": "Lire le rapport complet",
+        "barrier_names": {"dsr": "Sharpe déflaté", "pf_p05": "Profit factor, 5e centile (bootstrap)",
+                          "dd_percentile": "Centile du drawdown (permutations)",
+                          "null_pvalue": "p-value contre un système sans avantage",
+                          "wf_efficiency": "Efficacité walk-forward"},
+        "barrier_status": {"ok": "passée", "band": "zone d'indécision", "fail": "échouée", "na": "non évaluée"},
+        "decision_go": "GO", "decision_cond": "GO SOUS CONDITIONS", "decision_nogo": "NO-GO",
         "meta_description": "Audit statistique indépendant de systèmes de trading et d'EA MetaTrader 4 et 5 : surajustement (Sharpe déflaté), bootstrap, détection de martingale et de grille, règles de prop firm, verdict GO / NO-GO. Moteur open source.",
         "title_index": "Audit de systèmes de trading",
         "hero_h1": "Un verdict sur votre système de trading que vous pouvez montrer.",
@@ -380,6 +470,26 @@ T: dict[str, dict[str, object]] = {
         "footer_links": (("methode.html", "Method"), ("donnees.html", "Data"),
                          ("cgv.html", "Terms"), ("verification.html", "Verification")),
         "tagline": "statistical audit of trading systems",
+        "by": "by",
+        "not_advice": "Not investment advice: qaudit states facts about a trade history and predicts no performance.",
+        "eyebrow": "Independent audit of trading systems",
+        "trust": ("Method and thresholds published before the audit", "Open-source engine (AGPL), reproducible report",
+                  "SHA-256 fingerprint of the data in every report", "Attestations recorded in a public registry"),
+        "spec_label": "Sample report rendered by the engine",
+        "spec_kicker": "Sample · synthetic data",
+        "spec_title": "A martingale that looks healthy",
+        "spec_meta": "{n} trades · method {method} · seed {seed}",
+        "spec_surface": "On the surface: {ret} over {months} months, {wins} winning trades, profit factor {pf}.",
+        "spec_martingale": "Blocking finding: after a loss, volume is multiplied by ≥ {ratio} in {share} of cases.",
+        "spec_rule": "NO-GO if {op} {thr}",
+        "spec_note": "Each barrier shows its value, threshold and indecision band; a single blocking finding is enough for a NO-GO.",
+        "spec_link": "Read the full report",
+        "barrier_names": {"dsr": "Deflated Sharpe", "pf_p05": "Profit factor, 5th percentile (bootstrap)",
+                          "dd_percentile": "Drawdown percentile (permutations)",
+                          "null_pvalue": "p-value against a no-edge system",
+                          "wf_efficiency": "Walk-forward efficiency"},
+        "barrier_status": {"ok": "passed", "band": "indecision band", "fail": "failed", "na": "not evaluated"},
+        "decision_go": "GO", "decision_cond": "CONDITIONAL GO", "decision_nogo": "NO-GO",
         "meta_description": "Independent statistical audit of trading systems and MetaTrader 4/5 expert advisors: overfitting (deflated Sharpe ratio), bootstrap, martingale and grid detection, prop-firm rules, GO / NO-GO verdict. Open-source engine.",
         "title_index": "Trading system audit",
         "hero_h1": "A verdict on your trading system that you can show.",
@@ -561,6 +671,8 @@ def shell(cfg: SiteConfig, lang: str, title: str, body: str, *, depth: int = 0,
     assert isinstance(foot_items, tuple)
     foot = "".join(f'<a href="{prefix}{href}">{escape(str(label))}</a>' for href, label in foot_items)
     who = cfg.issuer or cfg.brand
+    by = (f"<small>{escape(t(lang, 'by'))} {escape(cfg.issuer)}</small>"
+          if cfg.issuer and cfg.issuer != cfg.brand else "")
     klass = ' class="wrap doc"' if doc else ' class="wrap"'
     return (
         f'<!DOCTYPE html>\n<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n'
@@ -569,11 +681,12 @@ def shell(cfg: SiteConfig, lang: str, title: str, body: str, *, depth: int = 0,
         + head_meta(cfg, lang, title, path, description)
         + f"<style>{CSS}</style>\n</head>\n<body>\n"
         f'<header class="top"><div class="wrap"><a class="brand" href="{prefix}index.html">'
-        f"<i></i>{escape(cfg.brand)}</a><nav>{nav}</nav></div></header>\n"
+        f"<i></i>{escape(cfg.brand)}{by}</a><nav>{nav}</nav></div></header>\n"
         f"<main{klass}>\n{body}\n</main>\n"
         f'<footer><div class="wrap"><div>{foot}</div>'
         f"<div>{escape(who)} — {escape(t(lang, 'tagline'))} · "
         f'<a href="mailto:{escape(cfg.contact)}">{escape(cfg.contact)}</a></div>'
+        f'<p class="fine">{escape(t(lang, "not_advice"))}</p>'
         "</div></footer>\n</body>\n</html>\n"
     )
 
@@ -595,7 +708,7 @@ def _table(rows: list[str]) -> str:
     body = cells[2:] if len(cells) > 1 and set(cells[1][0]) <= set("-: ") else cells[1:]
     head = "".join(f"<th>{_inline(c)}</th>" for c in cells[0])
     trs = "".join("<tr>" + "".join(f"<td>{_inline(c)}</td>" for c in r) + "</tr>" for r in body)
-    return f"<table><thead><tr>{head}</tr></thead><tbody>{trs}</tbody></table>"
+    return f'<div class="tbl"><table><thead><tr>{head}</tr></thead><tbody>{trs}</tbody></table></div>'
 
 
 def md_to_html(markdown: str) -> str:
@@ -700,46 +813,138 @@ def _badge_section(cfg: SiteConfig, lang: str) -> str:
   <div class="card"><h3>{escape(t(lang, "badge_limits_h"))}</h3><ul>{items("badge_limits")}</ul></div></div></section>"""
 
 
-def page_index(cfg: SiteConfig, lang: str) -> str:
+# Encadré d'exemple de l'accueil : bornes de l'axe de chaque barrière et décimales affichées.
+SPECIMEN_SCALES: dict[str, tuple[float, float, int]] = {
+    "dsr": (0.0, 1.0, 2), "pf_p05": (0.5, 1.5, 2), "dd_percentile": (0.0, 100.0, 1),
+    "null_pvalue": (0.0, 0.2, 3), "wf_efficiency": (0.0, 1.0, 2),
+}
+CHECK_ICON = ('<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+              'stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+              '<path d="M20 6 9 17l-5-5"/></svg>')
+
+
+def load_specimen(path: Path) -> dict[str, object] | None:
+    """Archive JSON d'un rapport d'exemple rendu pour le site. L'encadré de l'accueil en
+    reprend les chiffres tels quels : aucun chiffre n'y est écrit à la main."""
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def _num(x: float, lang: str, dec: int) -> str:
+    text = f"{x:.{dec}f}"
+    return text.replace(".", ",") if lang == "fr" else text
+
+
+def _pct(x: float, lang: str, dec: int = 1, sign: bool = False) -> str:
+    """``x`` en points de pourcentage ; en français, espace fine insécable avant « % »."""
+    return ("+" if sign and x > 0 else "") + _num(x, lang, dec) + ("\N{NARROW NO-BREAK SPACE}%" if lang == "fr" else "%")
+
+
+def _specimen(lang: str, report: dict[str, object]) -> str:
+    """Résumé visuel d'un rapport réel du moteur : verdict, constat bloquant, et chaque
+    barrière avec sa valeur, son seuil et sa zone d'indécision (texte + barre décorative)."""
+    verdict, metrics, data = report["verdict"], report["metrics"], report["data"]
+    findings = report["findings"]
+    for part in (verdict, metrics, data):
+        assert isinstance(part, dict)
+    assert isinstance(findings, list)
+    names, status = T[lang]["barrier_names"], T[lang]["barrier_status"]
+    assert isinstance(names, dict)
+    assert isinstance(status, dict)
+    rows = []
+    for b in verdict["barriers"]:
+        lo, hi, dec = SPECIMEN_SCALES.get(b["name"], (0.0, 1.0, 2))
+
+        def pos(x: float, lo: float = lo, hi: float = hi) -> float:
+            return round(min(100.0, max(0.0, (x - lo) / (hi - lo) * 100)), 1)
+        rule = t(lang, "spec_rule").format(op="<" if b["sense"] == "below" else "≥",
+                                           thr=_num(b["threshold"], lang, dec))
+        if not b["evaluated"] or b["value"] is None:
+            state, value, track = "na", "—", ""
+        else:
+            state = "fail" if b["triggered"] else "band" if b["indecision"] else "ok"
+            value = _num(b["value"], lang, dec)
+            left, right = pos(b["band_low"]), pos(b["band_high"])
+            track = (f'<span class="track" aria-hidden="true"><span class="zone" style="left:{left}%;'
+                     f'width:{round(right - left, 1)}%"></span><span class="thr" style="left:{pos(b["threshold"])}%">'
+                     f'</span><span class="dot {state}" style="left:{pos(b["value"])}%"></span></span>')
+        rows.append(f'<li><span class="lab">{escape(str(names.get(b["name"], b["name"])))}</span>'
+                    f'<span class="val">{value}</span>{track}'
+                    f'<span class="st">{escape(str(status[state]))} · {escape(rule)}</span></li>')
+    decision = str(verdict["decision"])
+    chip = {"GO": "go", "NO_GO": "nogo"}.get(decision, "cond")
+    decision = t(lang, "decision_" + chip)
+    blocking = next((f for f in findings if isinstance(f, dict) and f.get("severity") == "blocking"), None)
+    finding = ""
+    if blocking and blocking.get("code") == "martingale":
+        params = blocking["params"]
+        finding = '<p class="finding">' + escape(t(lang, "spec_martingale").format(
+            ratio=_num(params["ratio_min"], lang, 1), share=_pct(params["share_after_loss"] * 100, lang, 0))) + "</p>"
+    surface = t(lang, "spec_surface").format(
+        ret=_pct(metrics["total_return_pct"], lang, 1, sign=True), months=round(metrics["span_days"] / 30.44),
+        wins=_pct(metrics["win_rate"] * 100, lang, 1), pf=_num(metrics["profit_factor"], lang, 2))
+    meta = t(lang, "spec_meta").format(n=data["n_trades"], method=report["method_version"], seed=report["seed"])
+    return f"""<aside class="specimen" aria-label="{escape(t(lang, "spec_label"))}">
+  <div class="head"><span class="chip {chip}">{escape(decision)}</span><span class="k">{escape(t(lang, "spec_kicker"))}</span></div>
+  <h3>{escape(t(lang, "spec_title"))}</h3><p class="meta">{escape(meta)}</p>
+  <p class="surface">{escape(surface)}</p>{finding}
+  <ul class="bars">{"".join(rows)}</ul>
+  <p class="verdict-note">{escape(t(lang, "spec_note"))} <a href="exemples/martingale.html">{escape(t(lang, "spec_link"))}</a></p>
+</aside>"""
+
+
+def page_index(cfg: SiteConfig, lang: str, specimen: dict[str, object] | None = None) -> str:
     labels = T[lang]["offer_label"]
     blurbs = T[lang]["offer_blurb"]
     assert isinstance(labels, dict)
     assert isinstance(blurbs, dict)
-    attestations = {"cessible": t(lang, "att_transferable"), "go": t(lang, "att_go"), "": t(lang, "att_none")}
-    rows = [
-        f"<tr><td><b>{escape(str(labels[offer.code]))}</b><br><span class='muted small'>"
-        f"{escape(str(blurbs.get(offer.code, '')))}</span></td>"
-        f"<td class='price'>{price(offer.price_eur, lang)}</td>"
-        f"<td>{escape(attestations[offer.attestation])}</td><td>{_offer_action(cfg, lang, offer)}</td></tr>"
-        for offer in cfg.offers
-    ]
-    cols = T[lang]["offers_cols"]
-    assert isinstance(cols, tuple)
-    head = "".join(f"<th>{escape(str(c))}</th>" for c in cols)
+    attestations = {"cessible": t(lang, "att_transferable"), "go": t(lang, "att_go"), "": ""}
+    cards = []
+    for offer in cfg.offers:
+        action = _offer_action(cfg, lang, offer)
+        label = str(labels[offer.code])
+        att = attestations[offer.attestation]
+        if att.lower() in label.lower():  # le titre le dit déjà (« Attestation cessible »)
+            att = ""
+        cards.append(
+            f'<li class="offer{" featured" if offer.code == "attestation_cessible" else ""}">'
+            f"<h3>{escape(label)}</h3><div class=\"price\">{price(offer.price_eur, lang)}</div>"
+            + (f'<div class="att">{escape(att)}</div>' if att else "")
+            + f"<p>{escape(str(blurbs.get(offer.code, '')))}</p>"
+            + (f'<div class="go-to">{action}</div>' if action else "") + "</li>")
     questions = T[lang]["questions"]
     assert isinstance(questions, tuple)
     q_cards = "".join(f'<div class="card"><p class="q">{escape(q)}</p><p>{escape(d)}</p></div>'
                       for q, d in questions)
     faq = T[lang]["faq"]
     assert isinstance(faq, tuple)
-    faq_html = "".join(f"<h3>{escape(q)}</h3><p>{a}</p>" for q, a in faq)
+    faq_html = "".join(f"<details><summary>{escape(q)}</summary><p>{a}</p></details>" for q, a in faq)
+    trust = T[lang]["trust"]
+    assert isinstance(trust, tuple)
+    trust_html = "".join(f"<li>{CHECK_ICON}<span>{escape(str(x))}</span></li>" for x in trust)
+    aside = _specimen(lang, specimen) if specimen else ""
     return f"""
-<section class="hero">
+<section class="hero"><div class="hero-grid"><div>
+  <p class="eyebrow">{escape(t(lang, "eyebrow"))}</p>
   <h1>{escape(t(lang, "hero_h1"))}</h1>
   <p class="lead">{escape(t(lang, "hero_lead"))}</p>
-  <a class="cta" href="{escape(cfg.preverification(lang))}">{escape(t(lang, "cta_pre"))}</a>
-  <a class="cta ghost" href="exemples/index.html">{escape(t(lang, "cta_example"))}</a>
-</section>
+  <div class="actions"><a class="cta" href="{escape(cfg.preverification(lang))}">{escape(t(lang, "cta_pre"))}</a>
+  <a class="cta ghost" href="exemples/index.html">{escape(t(lang, "cta_example"))}</a></div>
+  <ul class="trust">{trust_html}</ul>
+</div>{aside}</div></section>
 <section><h2>{escape(t(lang, "proofs_h2"))}</h2><div class="grid c3">{_cards(T[lang]["proofs"], kicker=True)}</div></section>
 <section><h2>{escape(t(lang, "questions_h2"))}</h2><div class="grid c2">{q_cards}</div>
   <p class="muted small">{escape(t(lang, "detectors_note"))}</p></section>
 <section><h2>{escape(t(lang, "steps_h2"))}</h2><div class="grid c3 steps">{_cards(T[lang]["steps"])}</div></section>
 <section id="offres"><h2>{escape(t(lang, "offers_h2"))}</h2>
-  <table><thead><tr>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table>
+  <ul class="offers">{"".join(cards)}</ul>
   <p class="muted small">{escape(t(lang, "offers_note"))}</p></section>
 {_badge_section(cfg, lang)}
 <section class="rules"><h2>{escape(t(lang, "rules_h2"))}</h2><div class="grid c3">{_cards(T[lang]["rules"])}</div></section>
-<section><h2>{escape(t(lang, "faq_h2"))}</h2>{faq_html}</section>
+<section class="faq"><h2>{escape(t(lang, "faq_h2"))}</h2>{faq_html}</section>
 """
 
 
@@ -754,22 +959,22 @@ def page_preparer(cfg: SiteConfig, lang: str) -> str:
 <section class="hero"><h1>{escape(t(lang, "title_prepare"))}</h1><p class="lead">{escape(t(lang, "prep_lead"))}</p>
   <a class="cta" href="{escape(cfg.preverification(lang))}">{escape(t(lang, "prep_cta"))}</a></section>
 <section><h2>{escape(t(lang, "prep_step1"))}</h2><p>{escape(t(lang, "prep_step1_intro"))}</p>
-  <table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>
+  <div class="tbl"><table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table></div>
   <h3>{escape(t(lang, "prep_req_h3"))}</h3><p>{t(lang, "prep_req1")}</p><p>{t(lang, "prep_req2")}</p>
   <h3>{escape(t(lang, "prep_csv_h3"))}</h3><p>{escape(t(lang, "prep_csv"))}</p>
   <h3>{escape(t(lang, "prep_n_h3"))}</h3><p>{escape(t(lang, "prep_n"))}</p></section>
 <section><h2>{escape(t(lang, "prep_step2"))}</h2><div class="grid c2 steps">{_cards(T[lang]["prep_infos"])}</div></section>
 <section><h2>{escape(t(lang, "prep_step3"))}</h2><div class="grid c3">{_cards(T[lang]["prep_deliverables"])}</div></section>
 <section class="rules"><h2>{escape(t(lang, "prep_rules_h2"))}</h2><div class="grid c3">{_cards(T[lang]["prep_rules"])}</div>
-  <p style="margin-top:22px"><a class="cta" href="{escape(cfg.preverification(lang))}">{escape(t(lang, "prep_cta"))}</a>
-  <a class="cta ghost" href="index.html#offres">{escape(t(lang, "prep_cta2"))}</a></p></section>
+  <div class="actions" style="margin-top:22px"><a class="cta" href="{escape(cfg.preverification(lang))}">{escape(t(lang, "prep_cta"))}</a>
+  <a class="cta ghost" href="index.html#offres">{escape(t(lang, "prep_cta2"))}</a></div></section>
 """
 
 
 def page_verification(lang: str, registry_html: str) -> str:
     table = re.search(r"<table>.*?</table>", registry_html, re.S)
     found = table.group(0) if table else ""
-    body = found if found and "<tbody></tbody>" not in found else (
+    body = f'<div class="tbl">{found}</div>' if found and "<tbody></tbody>" not in found else (
         f"<p class='muted'>{escape(t(lang, 'verify_empty'))}</p>"
     )
     return f"""
@@ -886,8 +1091,9 @@ def build_lang(cfg: SiteConfig, lang: str, root: Path, registry: Path | None) ->
     _write(root / "verification.html", shell(cfg, lang, t(lang, "title_verify"),
                                               page_verification(lang, registry_html), depth=depth,
                                               path="verification.html", description=t(lang, "verify_lead")))
-    _write(root / "index.html", shell(cfg, lang, t(lang, "title_index"), page_index(cfg, lang), depth=depth,
-                                      path="index.html"))
+    specimen = load_specimen(ROOT / "build" / f"site-demo-{lang}" / "archive" / "martingale.json")
+    _write(root / "index.html", shell(cfg, lang, t(lang, "title_index"), page_index(cfg, lang, specimen),
+                                      depth=depth, path="index.html"))
     _write(root / "preparer.html", shell(cfg, lang, t(lang, "title_prepare"), page_preparer(cfg, lang), depth=depth,
                                          path="preparer.html", description=t(lang, "prep_lead")))
     _write(root / "exemples" / "index.html", shell(cfg, lang, t(lang, "title_examples"), page_examples(lang),

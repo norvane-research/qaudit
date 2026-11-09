@@ -80,6 +80,42 @@ def test_personal_data_blocks_the_export(tmp_path: Path) -> None:
     assert not out.exists()  # rien n'est copié
 
 
+def test_published_contact_and_image_bytes_do_not_block(tmp_path: Path) -> None:
+    ep = _module()
+    root, out = _source(tmp_path), tmp_path / "out"
+    contact = "equipe" + "@" + "studio-x.fr"
+    (root / "site.toml").write_text(f'[site]\ncontact = "{contact}"\n', encoding="utf-8")
+    (root / "docs" / "a.md").write_text(f"Écrire à {contact.upper()}\n", encoding="utf-8")
+    (root / "docs" / "img.png").write_bytes(b"\x89PNG\r\n\xe9\xcc@\xe0.\xe7\xe8\n")
+    assert ep.export(root, out) == []
+    other = "jean" + "@" + "studio-x.fr"  # une autre adresse du même domaine reste refusée
+    (root / "docs" / "a.md").write_text(f"{other}\n", encoding="utf-8")
+    assert [f.excerpt for f in ep.export(root, tmp_path / "out2")] == [other]
+
+
+def test_update_refreshes_an_exported_repository_without_committing(tmp_path: Path) -> None:
+    ep = _module()
+    root, out = _source(tmp_path, notice="Copyright (C) 2026 Studio X\n"), tmp_path / "out"
+    assert ep.export(root, out, author="Studio X <contact@example.org>") == []
+    (root / "docs" / "a.md").unlink()
+    (root / "docs" / "b.md").write_text("nouveau\n", encoding="utf-8")
+    (out / "local.tmp").write_text("construction locale\n", encoding="utf-8")
+    with (out / ".git" / "info" / "exclude").open("a", encoding="utf-8") as exclude:
+        exclude.write("local.tmp\n")  # ignoré : la vérification de statut reste exacte
+    assert ep.export(root, out, update=True) == []
+    assert (out / "docs" / "b.md").exists()
+    assert not (out / "docs" / "a.md").exists()
+    assert (out / "local.tmp").exists()  # un fichier non suivi n'est jamais touché
+    assert len(_git(out, "log", "--format=%H").split()) == 1  # rien de commité
+    status = _git(out, "status", "--porcelain").splitlines()
+    assert sorted(line[3:] for line in status) == ["docs/a.md", "docs/b.md"]
+    plain = tmp_path / "autre"
+    plain.mkdir()
+    _git(plain, "init", "-q")
+    with pytest.raises(SystemExit, match="créé par un export"):
+        ep.export(root, plain, update=True)
+
+
 def test_commit_needs_the_rights_holder_then_makes_a_single_commit(tmp_path: Path) -> None:
     ep = _module()
     root, out = _source(tmp_path), tmp_path / "out"

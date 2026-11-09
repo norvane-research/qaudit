@@ -664,7 +664,7 @@ endobj
 << /Type /Page /Parent 18 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 14 0 R >>
 endobj
 16 0 obj
-<< /Length 1353 >>
+<< /Length 1614 >>
 stream
 0.722 0.525 0.043 rg 46.00 775.84 10.00 2.20 re f
 0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 772.84 Td (Footer) Tj ET
@@ -677,6 +677,8 @@ stream
 0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 700.96 Td (qaudit 1.0.0 - method 1.0 - schema 1.0 - seed 0 - fingerprint) Tj ET
 0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 688.18 Td (d4f73aca2abb4c9fc7d98e36556914619a30fd503e57dbe4ac6471c2fb446d5f - service audit_complet.) Tj ET
 0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 673.39 Td (Reproducible: same inputs + same version + same seed = same report, byte for byte.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 658.61 Td (Not investment advice: this report states facts about a trade history and recommends neither trading this system nor) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 645.82 Td (allocating capital to it.) Tj ET
 0.894 0.875 0.831 RG 0.6 w 46.00 70.00 m 549.00 70.00 l S
 0.373 0.420 0.478 rg BT /F1 7.2 Tf 46.00 60.00 Td (qaudit  |  temoin-sain  |  Audit complet) Tj ET
 0.373 0.420 0.478 rg BT /F1 7.2 Tf 534.99 60.00 Td (7 / 7) Tj ET
@@ -710,11 +712,11 @@ xref
 0000041837 00000 n 
 0000051532 00000 n 
 0000051681 00000 n 
-0000053087 00000 n 
-0000053236 00000 n 
-0000053334 00000 n 
+0000053348 00000 n 
+0000053497 00000 n 
+0000053595 00000 n 
 trailer
 << /Size 20 /Root 19 0 R /ID [<0000000000000000> <0000000000000000>] >>
 startxref
-53385
+53646
 %%EOF

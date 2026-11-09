@@ -171,6 +171,7 @@ stop_intro = "Statistical drawdown markers from the block bootstrap, to compare 
 portfolio_single = "Single audit: the portfolio summary only exists in batch mode."
 footer = "qaudit {engine} — method {method} — schema {schema} — seed {seed} — fingerprint {fingerprint} — service {profile}."
 reproducible = "Reproducible: same inputs + same version + same seed = same report, byte for byte."
+not_advice = "Not investment advice: this report states facts about a trade history and recommends neither trading this system nor allocating capital to it."
 
 toc = "Contents"
 brand_line = "Independent audit of trading systems — deterministic engine {version}"

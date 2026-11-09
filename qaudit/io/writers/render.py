@@ -802,7 +802,11 @@ def _pied(doc: Mapping[str, Any], c: Catalog, profile: Profile) -> Section:
         schema=doc["schema_version"],
         profile=profile.code,
     )
-    return Section("pied", _t(c, "report.section.pied"), (text, _t(c, "report.reproducible")))
+    return Section(
+        "pied",
+        _t(c, "report.section.pied"),
+        (text, _t(c, "report.reproducible"), _t(c, "report.not_advice")),
+    )
 
 
 def _day(stamp: object) -> str:

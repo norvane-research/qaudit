@@ -640,7 +640,7 @@ endobj
 << /Type /Page /Parent 18 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 14 0 R >>
 endobj
 16 0 obj
-<< /Length 4989 >>
+<< /Length 5264 >>
 stream
 0.722 0.525 0.043 rg 46.00 778.84 10.00 2.20 re f
 0.043 0.122 0.227 rg BT /F2 12.6 Tf 63.00 775.84 Td (Conditions de mise en production) Tj ET
@@ -692,6 +692,8 @@ stream
 0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 386.04 Td (qaudit 1.0.0 - méthode 1.0 - schéma 1.0 - graine 0 - empreinte) Tj ET
 0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 373.26 Td (ae4badd1047e27534d61db5914dd8b7232470df67bdc4663c85783394ca19ef5 - prestation audit_complet.) Tj ET
 0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 358.47 Td (Reproductible : mêmes entrées + même version + même graine = même rapport, à l'octet près.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 343.69 Td (Pas un conseil en investissement : ce rapport constate des faits sur un historique et ne recommande ni de négocier ce) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 330.90 Td (système, ni de lui allouer un capital.) Tj ET
 0.894 0.875 0.831 RG 0.6 w 46.00 70.00 m 549.00 70.00 l S
 0.373 0.420 0.478 rg BT /F1 7.2 Tf 46.00 60.00 Td (qaudit  |  martingale  |  Audit complet) Tj ET
 0.373 0.420 0.478 rg BT /F1 7.2 Tf 534.99 60.00 Td (7 / 7) Tj ET
@@ -725,11 +727,11 @@ xref
 0000041916 00000 n 
 0000051693 00000 n 
 0000051842 00000 n 
-0000056884 00000 n 
-0000057033 00000 n 
-0000057131 00000 n 
+0000057159 00000 n 
+0000057308 00000 n 
+0000057406 00000 n 
 trailer
 << /Size 20 /Root 19 0 R /ID [<0000000000000000> <0000000000000000>] >>
 startxref
-57182
+57457
 %%EOF

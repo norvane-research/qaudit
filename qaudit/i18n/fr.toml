@@ -171,6 +171,7 @@ stop_intro = "Repères statistiques de drawdown issus du bootstrap par blocs, à
 portfolio_single = "Audit unitaire : la synthèse de portefeuille n'existe qu'en mode lot."
 footer = "qaudit {engine} — méthode {method} — schéma {schema} — graine {seed} — empreinte {fingerprint} — prestation {profile}."
 reproducible = "Reproductible : mêmes entrées + même version + même graine = même rapport, à l'octet près."
+not_advice = "Pas un conseil en investissement : ce rapport constate des faits sur un historique et ne recommande ni de négocier ce système, ni de lui allouer un capital."
 
 toc = "Sommaire"
 brand_line = "Audit indépendant de systèmes de trading — moteur déterministe {version}"

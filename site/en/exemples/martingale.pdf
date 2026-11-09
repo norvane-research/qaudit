@@ -639,7 +639,7 @@ endobj
 << /Type /Page /Parent 18 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R /F2 2 0 R /F3 3 0 R >> >> /Contents 14 0 R >>
 endobj
 16 0 obj
-<< /Length 4082 >>
+<< /Length 4343 >>
 stream
 0.122 0.161 0.200 rg BT /F1 9.4 Tf 58.00 783.22 Td (Barrier "dsr" is 0.5401, inside its indecision band [0.45; 0.55]: human review required.) Tj ET
 0.043 0.122 0.227 rg 48.50 785.82 3.20 3.20 re f
@@ -682,6 +682,8 @@ stream
 0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 478.08 Td (qaudit 1.0.0 - method 1.0 - schema 1.0 - seed 0 - fingerprint) Tj ET
 0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 465.30 Td (ae4badd1047e27534d61db5914dd8b7232470df67bdc4663c85783394ca19ef5 - service audit_complet.) Tj ET
 0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 450.51 Td (Reproducible: same inputs + same version + same seed = same report, byte for byte.) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 435.73 Td (Not investment advice: this report states facts about a trade history and recommends neither trading this system nor) Tj ET
+0.122 0.161 0.200 rg BT /F1 9.4 Tf 46.00 422.94 Td (allocating capital to it.) Tj ET
 0.894 0.875 0.831 RG 0.6 w 46.00 70.00 m 549.00 70.00 l S
 0.373 0.420 0.478 rg BT /F1 7.2 Tf 46.00 60.00 Td (qaudit  |  martingale  |  Audit complet) Tj ET
 0.373 0.420 0.478 rg BT /F1 7.2 Tf 534.99 60.00 Td (7 / 7) Tj ET
@@ -715,11 +717,11 @@ xref
 0000041253 00000 n 
 0000050721 00000 n 
 0000050870 00000 n 
-0000055005 00000 n 
-0000055154 00000 n 
-0000055252 00000 n 
+0000055266 00000 n 
+0000055415 00000 n 
+0000055513 00000 n 
 trailer
 << /Size 20 /Root 19 0 R /ID [<0000000000000000> <0000000000000000>] >>
 startxref
-55303
+55564
 %%EOF
