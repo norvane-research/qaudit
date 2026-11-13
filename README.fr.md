@@ -17,11 +17,11 @@ séparément.
 
 **Vous vendez un EA ou des signaux ?** Le moteur est gratuit. Quand vos
 acheteurs ont besoin d'un résultat vérifiable, Norvane Research refait l'audit
-sur votre fichier et, sur GO, inscrit une attestation numérotée au registre
-public :
-[attestation cessible, 390 €](https://whop.com/lafabrique/qaudit-attestation),
-due quel que soit le verdict · [vérifier une attestation](https://norvane-research.pages.dev/verification.html)
-· la pré-vérification de votre fichier est gratuite.
+sur votre fichier, gratuitement, et vous remet le verdict en privé. Vous ne
+payez que pour afficher un GO : inscription d'une attestation numérotée au
+registre public, 390 €, une fois, proposée après un GO
+· [vérifier une attestation](https://norvane-research.pages.dev/verification.html)
+· aucun paiement ne change un verdict : le moteur est public et quiconque détient le fichier peut refaire le calcul.
 
 ---
 
@@ -420,7 +420,7 @@ public.
 |---|---|---|
 | Moteur open source | gratuit | tout le moteur, tous les rapports, AGPL-3.0-or-later |
 | Pré-vérification | gratuit | votre fichier est-il exploitable ? Réponse avant tout paiement |
-| Attestation cessible | 390 € | nous refaisons l'audit sur votre fichier ; si GO, attestation numérotée au registre public, vérifiable par vos acquéreurs ; due quel que soit le verdict |
+| Attestation cessible | audit gratuit ; inscription 390 € | nous refaisons l'audit sur votre fichier, gratuitement, et le verdict reste privé ; si GO et si vous voulez l'afficher, inscription au registre public (attestation numérotée, badge), 390 € une fois |
 | Portefeuille de systèmes | sur devis | plusieurs systèmes, correction de sélection multiple |
 | Due diligence | sur devis | tout, plus une note de comité d'investissement |
 | Licence commerciale | sur devis | intégrer le moteur dans un produit ou un service fermé, sans les obligations de l'AGPL |

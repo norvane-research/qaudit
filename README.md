@@ -19,11 +19,11 @@ composite score); every point can be challenged on its own.
 > it predicts no performance and it recommends no settings.
 
 **Selling an EA or signals?** The engine is free. When buyers need a result
-they can check, Norvane Research re-runs the audit on your file and, on GO,
-records a numbered attestation in a public registry:
-[transferable attestation, 390 €](https://whop.com/lafabrique/qaudit-attestation),
-due whatever the verdict · [check an attestation](https://norvane-research.pages.dev/en/verification.html)
-· the pre-check of your file is free.
+they can check, Norvane Research re-runs the audit on your file, free, and
+sends you the verdict privately. You pay only to display a GO: a numbered
+attestation listed in the public registry, 390 €, once, offered after a GO
+· [check an attestation](https://norvane-research.pages.dev/en/verification.html)
+· no payment changes a verdict: the engine is public and anyone holding the file can re-run the computation.
 
 ---
 
@@ -319,7 +319,7 @@ give: an audit re-run by a third party and recorded in a public registry.
 |---|---|---|
 | Open-source engine | free | the whole engine, every report, AGPL-3.0-or-later |
 | Pre-check | free | is your file usable? Answer before any payment |
-| Transferable attestation | 390 € | we re-run the audit on your file; on GO, a numbered attestation in the public registry that your buyers verify themselves; due whatever the verdict |
+| Transferable attestation | free audit; listing 390 € | we re-run the audit on your file, free, and the verdict stays private; on GO, if you want to display it, listing in the public registry (numbered attestation, badge), 390 € once |
 | Portfolio of systems | on quote | several systems with the multiple-selection correction |
 | Due diligence | on quote | everything, plus an investment-committee note |
 | Commercial licence | on quote | embed the engine in a closed-source product or service without the AGPL obligations |
